@@ -17,6 +17,14 @@ public class PlayerInfo : IPlayerInfo
     private int _gold;
     private List<IPiece>? _pieceList;
 
+    public PlayerInfo(int _gold = 5)
+    {
+        _level = (int)LevelInfoEnum.MinLevel;
+        _experience = (int)ExperienceInfoEnum.MinExperience;
+        _health = (int)HealthInfoEnum.MaxHealth;
+        this._gold = _gold;
+    }
+
     public int GetExperience()
     {
         return _experience;

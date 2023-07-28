@@ -19,6 +19,7 @@ public class Piece : IPiece
     {
         return _position;
     }
+
     public bool SetPosition(Position _position)
     {
         if (_position.GetX() < 0 || _position.GetY() < 0 || _position.GetX() > board.GetBoardSize() || _position.GetY() > board.GetBoardSize())
@@ -28,6 +29,7 @@ public class Piece : IPiece
         this._position = _position;
         return true;
     }
+    
     public string? GetName()
     {
         return _pieceName;

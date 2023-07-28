@@ -18,5 +18,10 @@
     <Content Include="Class\Position.cs" />
     <Content Include="Class\Player.cs" />
     <Content Include="Interface\IBoard.cs" />
+    <Content Include="Interface\IPlayer.cs" />
+    <Content Include="Interface\IPlayerLevel.cs" />
+    <Content Include="Interface\IPlayerInfo.cs" />
+    <Content Include="Interface\IPlayerHealth.cs" />
+    <Content Include="GameRunner.cs" />
   </ItemGroup>
 </Project>
