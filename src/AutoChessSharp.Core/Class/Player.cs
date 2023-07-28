@@ -10,9 +10,9 @@ public class Player : IPlayer
     private int _playerId;
 
     //* attempt to make the ctor flexible but not overloading
-    public Player(string? name = null)
+    public Player(string? _name = null)
     {
-        _name = name;
+        this._name = _name;
         _playerId = _IDIncrement;
         _IDIncrement ++;
     }

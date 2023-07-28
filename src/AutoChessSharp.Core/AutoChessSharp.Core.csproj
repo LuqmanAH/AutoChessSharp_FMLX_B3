@@ -1,9 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  <ItemGroup>
+    <Content Include="Enums\ArcheTypeEnum.cs" />
+    <Content Include="Enums\LevelInfoEnum.cs" />
+    <Content Include="Enums\HealthInfoEnum.cs" />
+    <Content Include="Class\PlayerInfo.cs" />
+    <Content Include="Enums\ExperienceInfoEnum.cs" />
+    <Content Include="Interface\IPiece.cs" />
+    <Content Include="Class\Piece.cs" />
+    <Content Include="Interface\IPlayerExp.cs" />
+    <Content Include="Class\Board.cs" />
+    <Content Include="Class\Position.cs" />
+    <Content Include="Class\Player.cs" />
+    <Content Include="Interface\IBoard.cs" />
+  </ItemGroup>
 </Project>

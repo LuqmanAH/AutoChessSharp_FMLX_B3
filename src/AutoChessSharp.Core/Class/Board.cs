@@ -3,6 +3,12 @@
 public class Board : IBoard
 {
     private int _size;
+
+    public Board (int size = 0)
+    {
+        _size = size;
+    }
+    
     public int GetBoardSize()
     {
         return _size;

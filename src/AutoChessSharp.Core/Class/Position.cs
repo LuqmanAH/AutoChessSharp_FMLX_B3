@@ -15,23 +15,23 @@ public class Position
         return _y;
     }
 
-    public bool SetX(int x)
+    public bool SetX(int _x)
     {
-        if (x > 0)
+        if (_x < 0)
         {
-            _x = x;
-            return true;
+            return false;
         }
-        return false;
+        this._x = _x;
+        return true;
     }
 
-    public bool SetY(int y)
+    public bool SetY(int _y)
     {
-        if (y > 0)
+        if (_y < 0)
         {
-            _y = y;
-            return true;
+            return false;
         }
-        return false;
+        this._y = _y;
+        return true;
     }
 }
