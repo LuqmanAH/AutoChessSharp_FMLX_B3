@@ -17,6 +17,7 @@ class Program
         Console.Read();
     }
 
+    //* predefined atk and hp values based on the archetype used, no explicit method to set atk and hp, only name
     static void PieceAlgo2Test()
     {
         Board autoChessBoard = new Board(8);
