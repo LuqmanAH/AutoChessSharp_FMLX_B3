@@ -15,6 +15,11 @@ public class Piece : IPiece
 
     }
 
+    public ArcheTypeEnum GetArcheTypeEnum()
+    {
+        return archeType;
+    }
+
     public Position? GetPosition()
     {
         return _position;
