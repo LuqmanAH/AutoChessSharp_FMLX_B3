@@ -10,11 +10,48 @@ class Program
         // BoardTest();
         // Console.WriteLine("\n----------\n");
         // PlayerInfoTest();
-        // Console.WriteLine("\n----------\n");
         // PlayerDictTest();
-        GetHPTest();
+        // GetHPTest();
+        PieceAlgo2Test();
 
         Console.Read();
+    }
+
+    static void PieceAlgo2Test()
+    {
+        Board autoChessBoard = new Board(8);
+        
+
+        Piece warrior = new Piece(autoChessBoard);
+        warrior.SetName("Valerian");
+
+        Piece mage = new Piece(autoChessBoard, 2);
+        mage.SetName("Celestio");
+
+        Piece hunter = new Piece(autoChessBoard, 3);
+        hunter.SetName("Wildtracker");
+
+        Piece assassin = new Piece(autoChessBoard, 4);
+        assassin.SetName("Veliona");
+
+        Helper.ProgramPrinter(warrior.GetName());
+        Helper.ProgramPrinter("HP: " + warrior.GetHealthPoint());
+        Helper.ProgramPrinter("ATK: " + warrior.GetAttack());
+
+        Console.WriteLine("\n----------\n");
+        Helper.ProgramPrinter(mage.GetName());
+        Helper.ProgramPrinter("HP: " + mage.GetHealthPoint());
+        Helper.ProgramPrinter("ATK: " + mage.GetAttack());
+
+        Console.WriteLine("\n----------\n");
+        Helper.ProgramPrinter(hunter.GetName());
+        Helper.ProgramPrinter("HP: " + hunter.GetHealthPoint());
+        Helper.ProgramPrinter("ATK: " + hunter.GetAttack());
+
+        Console.WriteLine("\n----------\n");
+        Helper.ProgramPrinter(assassin.GetName());
+        Helper.ProgramPrinter("HP: " + assassin.GetHealthPoint());
+        Helper.ProgramPrinter("ATK: " + assassin.GetAttack());
     }
 
     static void PlayerTest()
@@ -119,7 +156,7 @@ class Program
 
 class Helper
 {
-    public static void ProgramPrinter(string value)
+    public static void ProgramPrinter<T>(T value)
     {
         Console.WriteLine(value);
     }

@@ -13,6 +13,30 @@ public class Piece : IPiece
         this.board = board;
         this.archeType = (ArcheTypeEnum)archeType;
 
+        switch (archeType)
+        {
+            case (int)ArcheTypeEnum.Warrior:
+                _attack = 12;
+                _healthPoint = 15;
+                break;
+
+            case (int)ArcheTypeEnum.Mage:
+                _attack = 18;
+                _healthPoint = 5;
+                break;
+
+            case (int)ArcheTypeEnum.Hunter:
+                _attack = 15;
+                _healthPoint = 10;
+                break;
+
+            case (int)ArcheTypeEnum.Assassin:
+                _attack = 16;
+                _healthPoint = 10;
+                break;
+
+        }
+
     }
 
     public Position? GetPosition()
@@ -50,29 +74,9 @@ public class Piece : IPiece
         return _healthPoint;
     }
 
-    public bool SetHealthPoint(int _healthPoint)
-    {
-        if (_healthPoint < 0)
-        {
-            return false;
-        }
-        this._healthPoint = _healthPoint;
-        return true;
-    }
-
     public int GetAttack()
     {
         return _attack;
-    }
-
-    public bool SetAttack(int _attack)
-    {
-        if (_attack < 0)
-        {
-            return false;
-        }
-        this._attack = _attack;
-        return true;
     }
 
     public bool IsHealthZero()
