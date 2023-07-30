@@ -12,7 +12,6 @@
     <Content Include="Class\PlayerInfo.cs" />
     <Content Include="Enums\ExperienceInfoEnum.cs" />
     <Content Include="Interface\IPiece.cs" />
-    <Content Include="Class\Piece.cs" />
     <Content Include="Interface\IPlayerExp.cs" />
     <Content Include="Class\Board.cs" />
     <Content Include="Class\Position.cs" />
