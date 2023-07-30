@@ -13,24 +13,8 @@ class Program
         // Console.WriteLine("\n----------\n");
         // PlayerDictTest();
         // GetHPTest();
-        PieceTest();
 
         Console.Read();
-    }
-
-    //* Manually assigns atk and HP, archeType not used in algo
-    static void PieceTest()
-    {
-        Board autoChessBoard = new(8);
-        Piece warrior = new(autoChessBoard, 1); 
-        Piece mage = new(autoChessBoard, 2); 
-        Piece hunter = new(autoChessBoard, 3); 
-        Piece assassin = new(autoChessBoard, 4);
-
-        Helper.ProgramPrinter(warrior.GetArcheTypeEnum());
-        Helper.ProgramPrinter(mage.GetArcheTypeEnum());
-        Helper.ProgramPrinter(hunter.GetArcheTypeEnum());
-        Helper.ProgramPrinter(assassin.GetArcheTypeEnum());
     }
 
     static void PlayerTest()
