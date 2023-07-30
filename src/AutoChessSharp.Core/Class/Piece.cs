@@ -74,9 +74,29 @@ public class Piece : IPiece
         return _healthPoint;
     }
 
+    public bool SetHealthPoint(int _healthPoint)
+    {
+        if (_healthPoint < 0)
+        {
+            return false;
+        }
+        this._healthPoint = _healthPoint;
+        return true;
+    }
+
     public int GetAttack()
     {
         return _attack;
+    }
+
+    public bool SetAttack(int _attack)
+    {
+        if (_attack < 0)
+        {
+            return false;
+        }
+        this._attack = _attack;
+        return true;
     }
 
     public bool IsHealthZero()
