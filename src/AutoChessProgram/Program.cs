@@ -1,20 +1,33 @@
-﻿using AutoChessSharp.Core;
+﻿/*
+
+* as a result of the autochess.core being a library class conditional compilation is mandatory for now
+! TEST for testing, PROGRAM for the real game
+
+*/
+
+#define TEST
+using AutoChessSharp.Core;
 namespace Program;
 
-class Program
+public class Program
 {
     static void Main()
     {
+        #if TEST
         // PlayerTest();
-        // Console.WriteLine("\n----------\n");
         // BoardTest();
-        // Console.WriteLine("\n----------\n");
         // PlayerInfoTest();
         // PlayerDictTest();
-        // // GetHPTest();
-        PieceAlgo2Test();
-
+        // PieceAlgo2Test();
+        StoreCreationTest();
         Console.Read();
+
+        #elif PROGRAM
+        Helper.ProgramPrinter("ready to implement");
+
+        #else
+        #error Production Not Allowed
+        #endif
     }
 
     //* predefined atk and hp values based on the archetype used, no explicit method to set atk and hp, only name
@@ -23,16 +36,16 @@ class Program
         Board autoChessBoard = new Board(8);
         
 
-        Piece warrior = new Piece(autoChessBoard);
+        Piece warrior = new Piece(autoChessBoard, 1, 1);
         warrior.SetName("Valerian");
 
-        Piece mage = new Piece(autoChessBoard, 2);
+        Piece mage = new Piece(autoChessBoard, 2, 1);
         mage.SetName("Celestio");
 
-        Piece hunter = new Piece(autoChessBoard, 3);
+        Piece hunter = new Piece(autoChessBoard, 3, 1);
         hunter.SetName("Wildtracker");
 
-        Piece assassin = new Piece(autoChessBoard, 4);
+        Piece assassin = new Piece(autoChessBoard, 4, 1);
         assassin.SetName("Veliona");
 
         Helper.ProgramPrinter(warrior.GetName());
@@ -153,6 +166,50 @@ class Program
         }
 
     }
+
+    static void StoreCreationTest()
+    {
+        Board autoChessBoard = new Board(8);
+        
+
+        Piece warrior = new Piece(autoChessBoard, 1, 1);
+        warrior.SetName("Valerian");
+
+        Piece mage = new Piece(autoChessBoard, 2, 1);
+        mage.SetName("Celestio");
+
+        Piece hunter = new Piece(autoChessBoard, 3, 1);
+        hunter.SetName("Wildtracker");
+
+        Piece assassin = new Piece(autoChessBoard, 4, 1);
+        assassin.SetName("Veliona");
+
+        Store gameStore = new Store();
+        gameStore.AddPiece(warrior, 1);
+        gameStore.AddPiece(warrior, 3);
+        gameStore.AddPiece(mage, 2);
+        gameStore.AddPiece(hunter, 2);
+        gameStore.AddPiece(assassin, 3);
+
+        int magePrice = gameStore.GetPrice(mage);
+        int warriorPrice = gameStore.GetPrice(warrior);
+
+        Helper.ProgramPrinter($"the price of {mage.GetName()} is {magePrice}");
+        Helper.ProgramPrinter($"the price of {warrior.GetName()} is {warriorPrice}");
+
+        Dictionary<IPiece, int> storeDict = gameStore.GetAllStoreItem();
+
+        Helper.ProgramPrinter(" ");
+
+        foreach (var pairs in storeDict)
+        {
+            IPiece piece = pairs.Key;
+            int itemPrice = pairs.Value;
+
+            Helper.ProgramPrinter($"{piece.GetName()} is available at the store with price {itemPrice} Gold");
+        }
+    }
+
 }
 
 class Helper

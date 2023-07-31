@@ -1,14 +1,21 @@
 ﻿namespace AutoChessSharp.Core;
+
+//! might not be a good idea to create IBoard here
+//? can the price implemented as a field here?
+//? which better? implement positioning method here or in the GR?
+
 public class Piece : IPiece
 {
+    private ArcheTypeEnum archeType;
+    private RarityEnum _rarity;
+
     private IBoard board;
     private Position? _position;
     private string? _pieceName;
-    private ArcheTypeEnum archeType;
     private int _healthPoint;
     private int _attack;
 
-    public Piece(IBoard board, int archeType =1)
+    public Piece(IBoard board, int archeType, int rarity)
     {
         this.board = board;
         this.archeType = (ArcheTypeEnum)archeType;
@@ -18,21 +25,25 @@ public class Piece : IPiece
             case (int)ArcheTypeEnum.Warrior:
                 _attack = 12;
                 _healthPoint = 15;
+                _rarity = (RarityEnum) rarity;
                 break;
 
             case (int)ArcheTypeEnum.Mage:
                 _attack = 18;
                 _healthPoint = 5;
+                _rarity = (RarityEnum) rarity;
                 break;
 
             case (int)ArcheTypeEnum.Hunter:
                 _attack = 15;
                 _healthPoint = 10;
+                _rarity = (RarityEnum) rarity;
                 break;
 
             case (int)ArcheTypeEnum.Assassin:
                 _attack = 16;
                 _healthPoint = 10;
+                _rarity = (RarityEnum) rarity;
                 break;
 
         }
