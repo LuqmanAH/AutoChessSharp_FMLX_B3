@@ -6,52 +6,68 @@
 
 public class Store
 {
-    private Dictionary<IPiece, int> storePieces;
-    private Dictionary<IPiece, int> availPieces;
+    private List<Piece> storePieces;
+    private List<Piece> availPieces;
 
-    public Store()
+    //* store now has composite relation with Piece, list of Piece to be precise
+    public Store(List<Piece> availPieces)
     {
-        storePieces = new Dictionary<IPiece,int>();
+        this.availPieces = availPieces;
     }
 
-    public bool AddPiece(IPiece piece, int price)
+    // * LinQ implementation to populate storePieces
+    public List<Piece> RerollStore()
     {
-        if (storePieces.ContainsKey(piece))
+        Random random= new Random();
+
+        List<Piece> rolledPieces = availPieces.OrderByDescending(p => random.Next()).ToList();
+
+        //? fixed to take 5?
+        storePieces = rolledPieces.Take(5).ToList();
+        return storePieces;
+    }
+
+
+    //! Dependency Inversion warning: params uses Piece rather IPiece
+    public int GetPrice(Piece piece)
+    {
+        if (storePieces == null)
         {
-            storePieces[piece] = price;
+            throw new NullReferenceException(message: "Roll the store first!");
         }
 
-        bool success = storePieces.TryAdd(piece, price);
-        return success;
-    }
-
-    public int GetPrice(IPiece piece)
-    {
-        int price = 0;
-        foreach (var key in storePieces.Keys)
+        if (storePieces.Contains(piece))
         {
-            if (key == piece)
-            {
-                price += storePieces[key];
-            }
+            return piece.GetPrice();
         }
-        return price;
+        else
+        {
+            throw new Exception(message: "Piece is not available in current roll");
+        }
     }
 
-    public Dictionary<IPiece, int> GetAllStoreItem()
+    public List<Piece> GetPrice()
     {
         return storePieces;
     }
 
-    // TODO:
-    public void Reroll()
-    {
-        throw new NotImplementedException();
-    }
 
-    // TODO:
-    public void Lock()
-    {
-        throw new NotImplementedException();
-    }
+    // ? seems Lock method is unnecessary
+    // public void Lock()
+    // {
+    //     throw new NotImplementedException();
+
+    //! method not mandatory
+    // public bool AddPiece(Piece piece, int price)
+    // {
+    //     if (storePieces.ContainsKey(piece))
+    //     {
+    //         storePieces[piece] = price;
+    //     }
+
+    //     bool success = storePieces.TryAdd(piece, price);
+    //     return success;
+    // }
+    // }
+
 }

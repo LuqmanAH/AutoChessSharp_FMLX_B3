@@ -36,16 +36,16 @@ public class Program
         Board autoChessBoard = new Board(8);
         
 
-        Piece warrior = new Piece(autoChessBoard, 1, 1);
+        Piece warrior = new Piece(1, 1);
         warrior.SetName("Valerian");
 
-        Piece mage = new Piece(autoChessBoard, 2, 1);
+        Piece mage = new Piece(2, 1);
         mage.SetName("Celestio");
 
-        Piece hunter = new Piece(autoChessBoard, 3, 1);
+        Piece hunter = new Piece(3, 1);
         hunter.SetName("Wildtracker");
 
-        Piece assassin = new Piece(autoChessBoard, 4, 1);
+        Piece assassin = new Piece(4, 1);
         assassin.SetName("Veliona");
 
         Helper.ProgramPrinter(warrior.GetName());
@@ -169,45 +169,55 @@ public class Program
 
     static void StoreCreationTest()
     {
-        Board autoChessBoard = new Board(8);
-        
+        Piece axe = new Piece(1, 2);
+        axe.SetName("Axe");
 
-        Piece warrior = new Piece(autoChessBoard, 1, 1);
-        warrior.SetName("Valerian");
+        Piece doom = new Piece(1, 1);
+        doom.SetName("Doom");
 
-        Piece mage = new Piece(autoChessBoard, 2, 1);
-        mage.SetName("Celestio");
+        Piece huskar = new Piece(3, 2);
+        huskar.SetName("Huskar");
 
-        Piece hunter = new Piece(autoChessBoard, 3, 1);
-        hunter.SetName("Wildtracker");
+        Piece lina = new Piece(2, 1);
+        lina.SetName("Lina");
 
-        Piece assassin = new Piece(autoChessBoard, 4, 1);
-        assassin.SetName("Veliona");
+        Piece mortdred = new Piece(4, 2);
+        mortdred.SetName("Mortdred");
 
-        Store gameStore = new Store();
-        gameStore.AddPiece(warrior, 1);
-        gameStore.AddPiece(warrior, 3);
-        gameStore.AddPiece(mage, 2);
-        gameStore.AddPiece(hunter, 2);
-        gameStore.AddPiece(assassin, 3);
+        Piece ezalor = new Piece(2, 2);
+        ezalor.SetName("Ezalor");
 
-        int magePrice = gameStore.GetPrice(mage);
-        int warriorPrice = gameStore.GetPrice(warrior);
-
-        Helper.ProgramPrinter($"the price of {mage.GetName()} is {magePrice}");
-        Helper.ProgramPrinter($"the price of {warrior.GetName()} is {warriorPrice}");
-
-        Dictionary<IPiece, int> storeDict = gameStore.GetAllStoreItem();
-
-        Helper.ProgramPrinter(" ");
-
-        foreach (var pairs in storeDict)
+        List<Piece> piecesToPlay = new List<Piece>()
         {
-            IPiece piece = pairs.Key;
-            int itemPrice = pairs.Value;
+            axe,
+            doom,
+            huskar,
+            lina,
+            mortdred,
+            ezalor
+        };
 
-            Helper.ProgramPrinter($"{piece.GetName()} is available at the store with price {itemPrice} Gold");
+        Store store= new Store(piecesToPlay);
+        store.RerollStore();
+        List<Piece> storePieces = store.GetPrice();
+
+        foreach (var piece in storePieces)
+        {
+            string? pieceName = piece.GetName();
+            int piecePrice = piece.GetPrice();
+
+            Helper.ProgramPrinter($"{pieceName} is available for {piecePrice} Golds");
         }
+
+        try
+        {
+            Helper.ProgramPrinter(store.GetPrice(lina));
+        }
+        catch (Exception ex)
+        {
+            Helper.ProgramPrinter(ex.Message);
+        }
+        
     }
 
 }
