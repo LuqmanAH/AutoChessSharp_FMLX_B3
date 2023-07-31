@@ -1,4 +1,7 @@
-﻿namespace AutoChessSharp.Core;
+﻿
+//? method for setting the piece list is kinda wacky, might review when store complete
+
+namespace AutoChessSharp.Core;
 
 public class PlayerInfo : IPlayerInfo
 {
