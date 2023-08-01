@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Program.cs" />
+    <Content Include="TestProgram.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutoChessSharp.Core\AutoChessSharp.Core.csproj" />
