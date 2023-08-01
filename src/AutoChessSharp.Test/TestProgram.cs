@@ -1,33 +1,18 @@
-﻿/*
-
-* as a result of the autochess.core being a library class conditional compilation is mandatory for now
-! TEST for testing, PROGRAM for the real game
-
-*/
-
-#define TEST
-using AutoChessSharp.Core;
+﻿using AutoChessSharp.Core;
 namespace Program;
 
 public class Program
 {
     static void Main()
     {
-        #if TEST
         // PlayerTest();
         // BoardTest();
         // PlayerInfoTest();
-        // PlayerDictTest();
+        PlayerDictTest();
         // PieceAlgo2Test();
-        StoreCreationTest();
+        // StoreCreationTest();
         Console.Read();
 
-        #elif PROGRAM
-        Helper.ProgramPrinter("ready to implement");
-
-        #else
-        #error Production Not Allowed
-        #endif
     }
 
     //* predefined atk and hp values based on the archetype used, no explicit method to set atk and hp, only name
@@ -110,15 +95,50 @@ public class Program
     static void PlayerInfoTest()
     {
         PlayerInfo p1_info = new PlayerInfo();
+        List<Piece> pieces_P1 = new List<Piece>()
+        {
+            new Piece(1,2,"budi"),
+            new Piece(3,2,"poco"),
+            new Piece(4,1,"justin"),
+            new Piece(2,2,"akba"),
+            new Piece(1,2,"sule"),
+        };
+
         Helper.ProgramPrinter("Level: " + p1_info.GetLevel().ToString());
         Helper.ProgramPrinter("Gold: " + p1_info.GetGold().ToString());
         Helper.ProgramPrinter("Exp: " + p1_info.GetExperience().ToString());
         Helper.ProgramPrinter("HP: " + p1_info.GetHealth().ToString());
+
+        bool stat = p1_info.SetPieces(pieces_P1);
+
+        if (stat == true)
+        {
+            Helper.ProgramPrinter("set piece success");
+            List<Piece>? p1_Pieces = p1_info.GetPieces();
+            
+            if (p1_Pieces != null)
+            {
+                foreach (var piece in p1_Pieces)
+                {
+                    Helper.ProgramPrinter($"{piece.GetName()} a brave {piece.GetArcheType()} belongs to p1");
+                }
+
+            }
+
+        }
+        else
+        {
+            Helper.ProgramPrinter("set piece FAIL!");
+        }
     }
 
     static void PlayerDictTest()
     {
-        GameRunner autoChess = new GameRunner();
+        List<Piece> pieces = new List<Piece>();
+        Board board = new(8);
+        Store store = new(pieces);
+
+        GameRunner autoChess = new GameRunner(board, store);
         Player player1= new Player("Baal");
         Player player2= new Player("Buer");
 
@@ -134,11 +154,18 @@ public class Program
             Helper.ProgramPrinter($"{player.GetName()} associated with {info}");
 
         }
+
+        int playersLeft = autoChess.PlayersLeft();
+        Helper.ProgramPrinter(playersLeft);
     }
 
     static void GetHPTest()
     {
-        GameRunner autoChess = new GameRunner();
+        List<Piece> pieces = new List<Piece>();
+        Board board = new(8);
+        Store store = new(pieces);
+
+        GameRunner autoChess = new GameRunner(board, store);
         Player player1= new Player("Baal");
         Player player2= new Player("Buer");
         Player player3= new Player("Barbatos");
@@ -170,21 +197,17 @@ public class Program
     static void StoreCreationTest()
     {
         Piece axe = new Piece(1, 2);
-        axe.SetName("Axe");
-
         Piece doom = new Piece(1, 1);
-        doom.SetName("Doom");
-
         Piece huskar = new Piece(3, 2);
-        huskar.SetName("Huskar");
-
         Piece lina = new Piece(2, 1);
-        lina.SetName("Lina");
-
         Piece mortdred = new Piece(4, 2);
-        mortdred.SetName("Mortdred");
-
         Piece ezalor = new Piece(2, 2);
+
+        axe.SetName("Axe");
+        doom.SetName("Doom");
+        huskar.SetName("Huskar");
+        lina.SetName("Lina");
+        mortdred.SetName("Mortdred");
         ezalor.SetName("Ezalor");
 
         List<Piece> piecesToPlay = new List<Piece>()
@@ -199,7 +222,7 @@ public class Program
 
         Store store= new Store(piecesToPlay);
         store.RerollStore();
-        List<Piece> storePieces = store.GetPrice();
+        List<Piece> storePieces = store.GetFromStore();
 
         foreach (var piece in storePieces)
         {
@@ -211,7 +234,18 @@ public class Program
 
         try
         {
-            Helper.ProgramPrinter(store.GetPrice(lina));
+            Helper.ProgramPrinter(store.GetFromStore(lina));
+        }
+        catch (Exception ex)
+        {
+            Helper.ProgramPrinter(ex.Message);
+        }
+
+        store.LockStore();
+
+        try
+        {
+            store.RerollStore();
         }
         catch (Exception ex)
         {

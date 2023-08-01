@@ -18,7 +18,7 @@ public class PlayerInfo : IPlayerInfo
     HealthInfoEnum minHealth = HealthInfoEnum.MinHealth;
 
     private int _gold;
-    private List<IPiece>? _pieceList;
+    private List<Piece>? _pieceList;
 
     public PlayerInfo(int _gold = 5)
     {
@@ -48,7 +48,7 @@ public class PlayerInfo : IPlayerInfo
         return _gold;
     }
 
-    public List<IPiece>? GetPieces()
+    public List<Piece>? GetPieces()
     {
         return _pieceList;
     }
@@ -93,7 +93,7 @@ public class PlayerInfo : IPlayerInfo
         return true;
     }
 
-    public bool SetPieces (List<IPiece>? _pieceList)
+    public bool SetPieces (List<Piece>? _pieceList)
     {
         if (_pieceList is null)
         {

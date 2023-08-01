@@ -16,9 +16,11 @@ public class Piece : IPiece
     private int _healthPoint;
     private int _attack;
 
-    public Piece(int archeType, int rarity)
+    public Piece(int archeType, int rarity, string? pieceName = null)
     {
-        this._archeType = (ArcheTypeEnum)archeType;
+        _archeType = (ArcheTypeEnum)archeType;
+        _rarity = (RarityEnum)rarity;
+        _pieceName = pieceName;
 
         switch (archeType)
         {
@@ -26,28 +28,24 @@ public class Piece : IPiece
                 _attack = 12 * rarity;
                 _healthPoint = 15 * rarity;
                 _price = 1 * rarity;
-                _rarity = (RarityEnum) rarity;
                 break;
 
             case (int)ArcheTypeEnum.Mage:
                 _attack = 18 * rarity;
                 _healthPoint = 5 * rarity;
                 _price = 2 * rarity;
-                _rarity = (RarityEnum) rarity;
                 break;
 
             case (int)ArcheTypeEnum.Hunter:
                 _attack = 15 * rarity;
                 _healthPoint = 6 * rarity;
                 _price = 1 * rarity;
-                _rarity = (RarityEnum) rarity;
                 break;
 
             case (int)ArcheTypeEnum.Assassin:
                 _attack = 16 * rarity;
                 _healthPoint = 10 * rarity;
                 _price = 3 * rarity;
-                _rarity = (RarityEnum) rarity;
                 break;
 
         }

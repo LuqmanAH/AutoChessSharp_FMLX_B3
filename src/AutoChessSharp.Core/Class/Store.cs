@@ -1,42 +1,41 @@
 ﻿namespace AutoChessSharp.Core;
 
-//* Core Store Mechanics, not yet implement reroll and lock
-//* passing instances manually by method
-//! key difference from the cd, use dict instead of list
-
 public class Store
 {
-    private List<Piece> storePieces;
-    private List<Piece> availPieces;
+    private List<Piece>? _storePieces;
+    private List<Piece> _availPieces;
+    private bool _isRollable = true;
 
     //* store now has composite relation with Piece, list of Piece to be precise
     public Store(List<Piece> availPieces)
     {
-        this.availPieces = availPieces;
+        _availPieces = availPieces;
     }
 
     // * LinQ implementation to populate storePieces
     public List<Piece> RerollStore()
     {
+        if (!_isRollable)
+        {
+            throw new Exception(message: "You have locked your store!");
+        }
         Random random= new Random();
 
-        List<Piece> rolledPieces = availPieces.OrderByDescending(p => random.Next()).ToList();
+        List<Piece> rolledPieces = _availPieces.OrderByDescending(p => random.Next()).ToList();
 
         //? fixed to take 5?
-        storePieces = rolledPieces.Take(5).ToList();
-        return storePieces;
+        _storePieces = rolledPieces.Take(5).ToList();
+        return _storePieces;
     }
 
-
-    //! Dependency Inversion warning: params uses Piece rather IPiece
-    public int GetPrice(Piece piece)
+    public int GetFromStore(Piece piece)
     {
-        if (storePieces == null)
+        if (_storePieces == null)
         {
             throw new NullReferenceException(message: "Roll the store first!");
         }
 
-        if (storePieces.Contains(piece))
+        if (_storePieces.Contains(piece))
         {
             return piece.GetPrice();
         }
@@ -46,28 +45,37 @@ public class Store
         }
     }
 
-    public List<Piece> GetPrice()
+    public List<Piece> GetFromStore()
     {
-        return storePieces;
+        if (_storePieces == null)
+        {
+            throw new NullReferenceException(message: "Store piece is not rolled yet!");
+        }
+        return _storePieces;
     }
 
+    // ? seems Lock method is unnecessary, bingung implementasinya
 
-    // ? seems Lock method is unnecessary
-    // public void Lock()
-    // {
-    //     throw new NotImplementedException();
+    // allow user to lock current roll for the next round
+    public bool LockStore()
+    {
+        if (_isRollable == true)
+        {
+            _isRollable = false;
+            return true;
+        }
+        return false;
+    }
 
-    //! method not mandatory
-    // public bool AddPiece(Piece piece, int price)
-    // {
-    //     if (storePieces.ContainsKey(piece))
-    //     {
-    //         storePieces[piece] = price;
-    //     }
-
-    //     bool success = storePieces.TryAdd(piece, price);
-    //     return success;
-    // }
-    // }
+    // program should automatically unlock after the lock round
+    public bool UnlockStore()
+    {
+        if (_isRollable == false)
+        {
+            _isRollable = true;
+            return true;
+        }
+        return false;
+    }
 
 }
