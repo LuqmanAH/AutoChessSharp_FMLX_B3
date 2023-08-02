@@ -18,6 +18,8 @@ public class PlayerInfo : IPlayerInfo
     HealthInfoEnum minHealth = HealthInfoEnum.MinHealth;
 
     private int _gold;
+    private int _requiredExperience;
+
     private List<Piece>? _pieceList;
 
     public PlayerInfo(int _gold = 5)
@@ -101,5 +103,16 @@ public class PlayerInfo : IPlayerInfo
         }
         this._pieceList = _pieceList;
         return true;
+    }
+
+    public bool IncrementLevel()
+    {
+        if (_experience == _requiredExperience)
+        {
+            _level ++;
+            _experience = (int)minExp;
+            return true;
+        }
+        return false;
     }
 }

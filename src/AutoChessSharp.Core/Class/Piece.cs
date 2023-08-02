@@ -7,7 +7,7 @@
 public class Piece : IPiece
 {
     private ArcheTypeEnum _archeType;
-    private RarityEnum _rarity;
+    private int _rarity;
 
     private Position? _position;
     private int _price;
@@ -16,51 +16,56 @@ public class Piece : IPiece
     private int _healthPoint;
     private int _attack;
 
-    public Piece(int archeType, int rarity, string? pieceName = null)
+    public Piece(ArcheTypeEnum archeType, RarityEnum rarity, string? pieceName = null)
     {
-        _archeType = (ArcheTypeEnum)archeType;
-        _rarity = (RarityEnum)rarity;
+        _archeType = archeType;
+        _rarity = (int)rarity;
         _pieceName = pieceName;
+        _position = new Position(0,0);
 
         switch (archeType)
         {
-            case (int)ArcheTypeEnum.Warrior:
-                _attack = 12 * rarity;
-                _healthPoint = 15 * rarity;
-                _price = 1 * rarity;
+            case ArcheTypeEnum.Warrior:
+                _attack = 12 * _rarity;
+                _healthPoint = 15 * _rarity;
+                _price = 1 * _rarity;
                 break;
 
-            case (int)ArcheTypeEnum.Mage:
-                _attack = 18 * rarity;
-                _healthPoint = 5 * rarity;
-                _price = 2 * rarity;
+            case ArcheTypeEnum.Mage:
+                _attack = 18 * _rarity;
+                _healthPoint = 5 * _rarity;
+                _price = 2 * _rarity;
                 break;
 
-            case (int)ArcheTypeEnum.Hunter:
-                _attack = 15 * rarity;
-                _healthPoint = 6 * rarity;
-                _price = 1 * rarity;
+            case ArcheTypeEnum.Hunter:
+                _attack = 15 * _rarity;
+                _healthPoint = 6 * _rarity;
+                _price = 1 * _rarity;
                 break;
 
-            case (int)ArcheTypeEnum.Assassin:
-                _attack = 16 * rarity;
-                _healthPoint = 10 * rarity;
-                _price = 3 * rarity;
+            case ArcheTypeEnum.Assassin:
+                _attack = 16 * _rarity;
+                _healthPoint = 10 * _rarity;
+                _price = 3 * _rarity;
                 break;
 
         }
 
     }
 
-    public Position? GetPosition()
+    public Position GetPosition()
     {
+        if (_position == null)
+        {
+            throw new NullReferenceException(message:"Position unset!");
+        }
         return _position;
     }
 
-    //* position setting applied in GR, piece position should null until in game
+    //* position setting applied in GR, piece position should zero until in game
     // public bool SetPosition(Position _position)
     // {
-    //     if (_position.GetX() < 0 || _position.GetY() < 0 || _position.GetX() > board.GetBoardSize() || _position.GetY() > board.GetBoardSize())
+    //     if (_position.GetX() < 0 || _position.GetY() < 0)
     //     {
     //         return false;
     //     }
@@ -137,6 +142,6 @@ public class Piece : IPiece
 
     public RarityEnum GetRarityEnum()
     {
-        return _rarity;
+        return (RarityEnum)_rarity;
     }
 }

@@ -30,7 +30,7 @@ public class GameRunner
     }
 
     //* Round getter/setter
-    public int GetRound()
+    public int GetCurrentRound()
     {
         return _round;
     }
@@ -43,6 +43,16 @@ public class GameRunner
         }
         _round = round;
         return true;
+    }
+
+    public bool GoNextRound()
+    {
+        if (_countDown == 0)
+        {
+            _round ++;
+            return true;
+        }
+        return false;
     }
 
     //* Countdown getter/setter
@@ -68,51 +78,80 @@ public class GameRunner
         return _gameStatus;
     }
 
+    public bool SetGameStatus(GameStatusEnum gameStatus)
+    {
+        if (gameStatus == _gameStatus)
+        {
+            return false;
+        }
+        _gameStatus = gameStatus;
+        return true;
+    }
+
     //TODO: Many things sadge
 
-    public List<int> CurrentRound()
+    public Dictionary<IPlayer, int> GameClash()
     {
-        throw new NotImplementedException();
-    }
+        List<Piece>? player1Pieces = new();
+        List<Piece>? player2Pieces = new();
+        
+        Player player1 = new();
+        Player player2 = new();
+        Random random= new Random();
 
-    public Dictionary<IPlayer, List<int>> GameClash()
-    {
-        throw new NotImplementedException();
-    }
+        //! masih salah brow
+        foreach (var playerData in _playerDetail)
+        {
+            PlayerInfo player1Info = playerData.Value;
 
-    public bool OnTerritory(Position position)
-    {
-        throw new NotImplementedException();
-    }
+            player1Pieces = player1Info.GetPieces();
 
-    public bool GoNextRound(int x, int y)
-    {
-        throw new NotImplementedException();
+            player1 = (Player)playerData.Key;
+            player1 = (Player)playerData.Key;
+        }
+        //!
+
+        if (player1Pieces.Count == 0 && player2Pieces.Count == 0)
+        {
+            throw new Exception(message: "No players placed their pieces!");
+        }
+
+        int player1Survivors = random.Next(0, 5);
+        int player2Survivors = random.Next(0, 5);
+
+        List<Piece> player1Survivor = new List<Piece>();
+        List<Piece> player2Survivor = new List<Piece>();
+
+        player1Pieces = player1Pieces.OrderByDescending(player1Pieces => random.Next()).ToList();
+        player2Pieces = player2Pieces.OrderByDescending(player2Pieces => random.Next()).ToList();
+
+        player1Survivor = player1Pieces.Take(player1Survivors).ToList();
+        player2Survivor = player2Pieces.Take(player2Survivors).ToList();
+
+        int player1SurvivorCount = player1Survivor.Count();
+        int player2SurvivorCount = player2Survivor.Count();
+        
+        Dictionary<IPlayer, int> afterClashResult = new Dictionary<IPlayer, int>();
+        afterClashResult.Add(player1, player1SurvivorCount);
     }
 
     public int DecreasePlayerHealth(IPlayer player, List<Piece> piecesLeft)
     {
         throw new NotImplementedException();
     }
-
-    public bool GameOver()
-    {
-        throw new NotImplementedException();
-
-    }
-
-    public IPlayer CheckWinner()
+    public bool OnTerritory(Position position)
     {
         throw new NotImplementedException();
     }
 
+    
     //* Player methods
     public bool AddPlayer(IPlayer player)
     {
         bool addSuccess = _playerDetail.TryAdd(player, new PlayerInfo());
         return addSuccess;
     }
-
+    
     public Dictionary<IPlayer, PlayerInfo> GetAllPlayers()
     {
         return _playerDetail;

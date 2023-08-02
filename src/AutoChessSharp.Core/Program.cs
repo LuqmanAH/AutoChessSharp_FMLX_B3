@@ -37,12 +37,12 @@ class Program
 
     public static List<Piece> SetAvailablePieces()
     {
-        Piece axe = new Piece(1, 2);
-        Piece doom = new Piece(1, 1);
-        Piece huskar = new Piece(3, 2);
-        Piece lina = new Piece(2, 1);
-        Piece mortdred = new Piece(4, 2);
-        Piece ezalor = new Piece(2, 2);
+        Piece axe = new Piece(ArcheTypeEnum.Warrior, RarityEnum.Uncommon);
+        Piece doom = new Piece(ArcheTypeEnum.Warrior, RarityEnum.Common);
+        Piece huskar = new Piece(ArcheTypeEnum.Hunter, RarityEnum.Uncommon);
+        Piece lina = new Piece(ArcheTypeEnum.Mage, RarityEnum.Common);
+        Piece mortdred = new Piece(ArcheTypeEnum.Assassin, RarityEnum.Uncommon);
+        Piece ezalor = new Piece(ArcheTypeEnum.Mage, RarityEnum.Uncommon);
 
         axe.SetName("Axe");
         doom.SetName("Doom");

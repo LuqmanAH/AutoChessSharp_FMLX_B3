@@ -8,9 +8,9 @@ public class Program
         // PlayerTest();
         // BoardTest();
         // PlayerInfoTest();
-        PlayerDictTest();
+        // PlayerDictTest();
         // PieceAlgo2Test();
-        // StoreCreationTest();
+        StoreCreationTest();
         Console.Read();
 
     }
@@ -18,39 +18,40 @@ public class Program
     //* predefined atk and hp values based on the archetype used, no explicit method to set atk and hp, only name
     static void PieceAlgo2Test()
     {
-        Board autoChessBoard = new Board(8);
-        
-
-        Piece warrior = new Piece(1, 1);
+        Piece warrior = new Piece(ArcheTypeEnum.Warrior, RarityEnum.Uncommon);
         warrior.SetName("Valerian");
 
-        Piece mage = new Piece(2, 1);
+        Piece mage = new Piece(ArcheTypeEnum.Mage, RarityEnum.Common);
         mage.SetName("Celestio");
 
-        Piece hunter = new Piece(3, 1);
+        Piece hunter = new Piece(ArcheTypeEnum.Hunter, RarityEnum.Rare);
         hunter.SetName("Wildtracker");
 
-        Piece assassin = new Piece(4, 1);
+        Piece assassin = new Piece(ArcheTypeEnum.Assassin, RarityEnum.Legendary);
         assassin.SetName("Veliona");
 
         Helper.ProgramPrinter(warrior.GetName());
         Helper.ProgramPrinter("HP: " + warrior.GetHealthPoint());
         Helper.ProgramPrinter("ATK: " + warrior.GetAttack());
+        Helper.ProgramPrinter($"Default Position:({warrior.GetPosition().GetX()}, {warrior.GetPosition().GetY()})");
 
         Console.WriteLine("\n----------\n");
         Helper.ProgramPrinter(mage.GetName());
         Helper.ProgramPrinter("HP: " + mage.GetHealthPoint());
         Helper.ProgramPrinter("ATK: " + mage.GetAttack());
+        Helper.ProgramPrinter($"Default Position:({mage.GetPosition().GetX()}, {mage.GetPosition().GetY()})");
 
         Console.WriteLine("\n----------\n");
         Helper.ProgramPrinter(hunter.GetName());
         Helper.ProgramPrinter("HP: " + hunter.GetHealthPoint());
         Helper.ProgramPrinter("ATK: " + hunter.GetAttack());
+        Helper.ProgramPrinter($"Default Position:({hunter.GetPosition().GetX()}, {hunter.GetPosition().GetY()})");
 
         Console.WriteLine("\n----------\n");
         Helper.ProgramPrinter(assassin.GetName());
         Helper.ProgramPrinter("HP: " + assassin.GetHealthPoint());
         Helper.ProgramPrinter("ATK: " + assassin.GetAttack());
+        Helper.ProgramPrinter($"Default Position:({assassin.GetPosition().GetX()}, {assassin.GetPosition().GetY()})");
     }
 
     static void PlayerTest()
@@ -97,11 +98,11 @@ public class Program
         PlayerInfo p1_info = new PlayerInfo();
         List<Piece> pieces_P1 = new List<Piece>()
         {
-            new Piece(1,2,"budi"),
-            new Piece(3,2,"poco"),
-            new Piece(4,1,"justin"),
-            new Piece(2,2,"akba"),
-            new Piece(1,2,"sule"),
+            new Piece(ArcheTypeEnum.Warrior, RarityEnum.Uncommon,"budi"),
+            new Piece(ArcheTypeEnum.Mage, RarityEnum.Rare,"poco"),
+            new Piece(ArcheTypeEnum.Hunter, RarityEnum.Rare,"justin"),
+            new Piece(ArcheTypeEnum.Hunter, RarityEnum.Uncommon,"akba"),
+            new Piece(ArcheTypeEnum.Warrior, RarityEnum.Rare,"sule"),
         };
 
         Helper.ProgramPrinter("Level: " + p1_info.GetLevel().ToString());
@@ -196,12 +197,12 @@ public class Program
 
     static void StoreCreationTest()
     {
-        Piece axe = new Piece(1, 2);
-        Piece doom = new Piece(1, 1);
-        Piece huskar = new Piece(3, 2);
-        Piece lina = new Piece(2, 1);
-        Piece mortdred = new Piece(4, 2);
-        Piece ezalor = new Piece(2, 2);
+        Piece axe = new Piece(ArcheTypeEnum.Warrior, RarityEnum.Uncommon);
+        Piece doom = new Piece(ArcheTypeEnum.Warrior, RarityEnum.Common);
+        Piece huskar = new Piece(ArcheTypeEnum.Hunter, RarityEnum.Rare);
+        Piece lina = new Piece(ArcheTypeEnum.Mage, RarityEnum.Epic);
+        Piece mortdred = new Piece(ArcheTypeEnum.Assassin,RarityEnum.Common);
+        Piece ezalor = new Piece(ArcheTypeEnum.Mage, RarityEnum.Uncommon);
 
         axe.SetName("Axe");
         doom.SetName("Doom");
@@ -241,7 +242,7 @@ public class Program
             Helper.ProgramPrinter(ex.Message);
         }
 
-        store.LockStore();
+        // store.LockStore();
 
         try
         {
