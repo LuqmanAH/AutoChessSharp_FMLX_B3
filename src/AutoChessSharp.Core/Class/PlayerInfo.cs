@@ -50,8 +50,12 @@ public class PlayerInfo : IPlayerInfo
         return _gold;
     }
 
-    public List<Piece>? GetPieces()
+    public List<Piece> GetPieces()
     {
+        if (_pieceList == null)
+        {
+            throw new NullReferenceException(message: "No Piece is set to player!");
+        }
         return _pieceList;
     }
 
@@ -95,13 +99,13 @@ public class PlayerInfo : IPlayerInfo
         return true;
     }
 
-    public bool SetPieces (List<Piece>? _pieceList)
+    public bool SetPieces (List<Piece>? pieceList)
     {
-        if (_pieceList is null)
+        if (pieceList is null)
         {
             return false;
         }
-        this._pieceList = _pieceList;
+        _pieceList = pieceList;
         return true;
     }
 

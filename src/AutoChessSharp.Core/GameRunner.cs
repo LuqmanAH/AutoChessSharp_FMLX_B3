@@ -2,6 +2,7 @@
 public class GameRunner
 {
     private Dictionary<IPlayer, PlayerInfo> _playerDetail;
+    private int _playerCount;
     private IBoard _board;
     private Store _store;
     private GameStatusEnum _gameStatus;
@@ -16,6 +17,7 @@ public class GameRunner
         _store = store;
         _gameStatus = GameStatusEnum.NotStarted;
         _playerDetail = new Dictionary<IPlayer, PlayerInfo>();
+        _playerCount = _playerDetail.Keys.Count();
     }
 
     //* Board and store getters
@@ -92,47 +94,52 @@ public class GameRunner
 
     public Dictionary<IPlayer, int> GameClash()
     {
-        List<Piece>? player1Pieces = new();
-        List<Piece>? player2Pieces = new();
-        
-        Player player1 = new();
-        Player player2 = new();
-        Random random= new Random();
+        //* Inisiasi variable untuk clash
+        Dictionary<IPlayer, int> afterClash = new Dictionary<IPlayer, int>();
+        Random rng = new Random();
 
-        //! masih salah brow
-        foreach (var playerData in _playerDetail)
+        //TODO decouple algoritma: extract list of piece from pDetail
+        List<Piece>[] eachPlayerPieces = new List<Piece>[_playerCount];
+        foreach (var playerData in _playerDetail.Values)
         {
-            PlayerInfo player1Info = playerData.Value;
-
-            player1Pieces = player1Info.GetPieces();
-
-            player1 = (Player)playerData.Key;
-            player1 = (Player)playerData.Key;
-        }
-        //!
-
-        if (player1Pieces.Count == 0 && player2Pieces.Count == 0)
-        {
-            throw new Exception(message: "No players placed their pieces!");
+            for (int playerID = 0; playerID < _playerCount; playerID++)
+            {
+                if (eachPlayerPieces[playerID] is null)
+                {
+                    eachPlayerPieces[playerID] = playerData.GetPieces();
+                }
+            }
         }
 
-        int player1Survivors = random.Next(0, 5);
-        int player2Survivors = random.Next(0, 5);
+        //TODO decouple algoritma: shuffle random list of piece
+        List<Piece>[] shuffledPlayerPieces = new List<Piece>[_playerCount];
+        for (int playerID = 0; playerID < _playerCount; playerID++)
+        {
+            shuffledPlayerPieces[playerID] = eachPlayerPieces[playerID].OrderByDescending(playerID => rng.Next()).ToList();
+        }
 
-        List<Piece> player1Survivor = new List<Piece>();
-        List<Piece> player2Survivor = new List<Piece>();
+        //TODO decouple algoritma: extract random count from shuffled
+        List<Piece>[] playerSurvivorPieces = new List<Piece>[_playerCount];
+        for (int playerID = 0; playerID < _playerCount; playerID++)
+        {
+            playerSurvivorPieces[playerID] = shuffledPlayerPieces[playerID].Take(rng.Next(0, 3)).ToList();
+        }
 
-        player1Pieces = player1Pieces.OrderByDescending(player1Pieces => random.Next()).ToList();
-        player2Pieces = player2Pieces.OrderByDescending(player2Pieces => random.Next()).ToList();
+        //TODO decouple algoritma: build the dictionary
+        int[] playerSurvivorsCount = new int[_playerCount];
 
-        player1Survivor = player1Pieces.Take(player1Survivors).ToList();
-        player2Survivor = player2Pieces.Take(player2Survivors).ToList();
+        playerSurvivorsCount[0] = playerSurvivorPieces[0].Count;
+        playerSurvivorsCount[1] = playerSurvivorPieces[1].Count;
+        int survivorIndex = 0;
 
-        int player1SurvivorCount = player1Survivor.Count();
-        int player2SurvivorCount = player2Survivor.Count();
-        
-        Dictionary<IPlayer, int> afterClashResult = new Dictionary<IPlayer, int>();
-        afterClashResult.Add(player1, player1SurvivorCount);
+        foreach (var player in _playerDetail.Keys)
+        {
+            afterClash.Add(player, playerSurvivorsCount[survivorIndex]);
+            survivorIndex ++;
+        }
+
+        //* Returned value
+        return afterClash;
     }
 
     public int DecreasePlayerHealth(IPlayer player, List<Piece> piecesLeft)
