@@ -139,7 +139,6 @@ public class Piece : IPiece
         return _archeType;
     }
 
-
     public RarityEnum GetRarityEnum()
     {
         return (RarityEnum)_rarity;

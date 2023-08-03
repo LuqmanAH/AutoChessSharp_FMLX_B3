@@ -2,5 +2,6 @@
 public enum GameStatusEnum
 {
     NotStarted,
-    Ongoing
+    Ongoing,
+    Completed
 }

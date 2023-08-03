@@ -2,7 +2,7 @@ using AutoChessSharp.Core;
 
 class Program
 {
-    public static void Main(string[] args)
+    public static void Main()
     {
         List<Piece> piecesToPlay = SetAvailablePieces();
         Store storeToPlay = new Store(piecesToPlay);
@@ -11,7 +11,7 @@ class Program
         Board autoChessBoard = new Board(8);
         GameRunner autoChessGame = new GameRunner(autoChessBoard, storeToPlay);
         
-        Clean();
+        CleanScreen();
         Player[] players = new Player[2]
         {
             new Player(),
@@ -25,7 +25,7 @@ class Program
 
         Dictionary<IPlayer, PlayerInfo> playerInGame = autoChessGame.GetAllPlayers();
 
-        Clean();
+        CleanScreen();
         foreach (var playerData in playerInGame)
         {
             IPlayer player = playerData.Key;
@@ -33,6 +33,26 @@ class Program
         }
         DisplayHelper("Let The Game Begins.. When you're ready (Press any key)");
         UserInputPrompt();
+
+        CleanScreen();
+        autoChessGame.SetGameStatus(GameStatusEnum.Ongoing);
+
+        while (autoChessGame.GetGameStatus() == GameStatusEnum.Ongoing)
+        {
+
+            DisplayHelper($"==== Beginning Round {autoChessGame.GetCurrentRound()} ====");
+            DisplayHelper($"==== Buying Phase ====");
+            DisplayHelper($"Store stock:");
+
+            foreach (var piece in storeToPlay.GetStoreStock())
+            {
+                DisplayHelper($"{piece.GetName()} as {piece.GetArcheType()} for {piece.GetPrice()}");
+            }
+
+            UserInputPrompt();
+            autoChessGame.SetGameStatus(GameStatusEnum.Completed);
+        }
+
     }
 
     public static List<Piece> SetAvailablePieces()
@@ -69,7 +89,7 @@ class Program
         Console.WriteLine(value);
     }
 
-    public static void Clean()
+    public static void CleanScreen()
     {
         Console.Clear();
     }
@@ -83,7 +103,7 @@ class Program
 
     public static void InitPrompt(GameRunner gameRunner, Player player, int ID)
     {
-        Clean();
+        CleanScreen();
         DisplayHelper("====Auto Chess Game====");
         DisplayHelper("* This is the two players version of the game ");
         DisplayHelper($"* Enter string as player {ID} name: ");
@@ -93,13 +113,13 @@ class Program
 
         while (!checkOne)
         {
-            Clean();
+            CleanScreen();
             DisplayHelper("Name cannot be set, please use another..");
             playerOneName = UserInputPrompt();
             checkOne = player.SetPlayerName(playerOneName);
         }
 
-        Clean();
+        CleanScreen();
         DisplayHelper("Name successfully set, press any key to continue..");
         UserInputPrompt();
     }

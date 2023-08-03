@@ -4,7 +4,7 @@ namespace AutoChessSharp.Core;
 public class GameRunner
 {
     private Dictionary<IPlayer, PlayerInfo> _playerDetail;
-    private int _playerCount;
+    // private int _playerCount;
     private IBoard _board;
     private Store _store;
     private GameStatusEnum _gameStatus;
@@ -14,12 +14,12 @@ public class GameRunner
     //* ctor
     public GameRunner(IBoard board, Store store)
     {
-        _round = 0;
+        _round = 1;
         _board = board;
         _store = store;
         _gameStatus = GameStatusEnum.NotStarted;
         _playerDetail = new Dictionary<IPlayer, PlayerInfo>();
-        _playerCount = _playerDetail.Keys.Count();
+        // _playerCount = _playerDetail.Keys.Count();
     }
 
     //* Board and store getters
@@ -100,40 +100,19 @@ public class GameRunner
         Dictionary<IPlayer, int> afterClash = new Dictionary<IPlayer, int>();
         Random rng = new Random();
 
-        //TODO decouple algoritma: extract list of piece from pDetail
-        List<Piece>[] eachPlayerPieces = new List<Piece>[_playerCount];
-        foreach (var playerData in _playerDetail.Values)
-        {
-            for (int playerID = 0; playerID < _playerCount; playerID++)
-            {
-                if (eachPlayerPieces[playerID] is null)
-                {
-                    eachPlayerPieces[playerID] = playerData.GetPieces();
-                }
-            }
-        }
+        // decouple algoritma: extract list of piece from pDetail
+        List<Piece>[] eachPlayerPieces = GetEachPlayerPiece();
 
-        //TODO decouple algoritma: shuffle random list of piece
-        List<Piece>[] shuffledPlayerPieces = new List<Piece>[_playerCount];
-        for (int playerID = 0; playerID < _playerCount; playerID++)
-        {
-            shuffledPlayerPieces[playerID] = eachPlayerPieces[playerID].OrderByDescending(playerID => rng.Next()).ToList();
-        }
+        // decouple algoritma: shuffle random list of piece
+        List<Piece>[] shuffledPlayerPieces = PlayerPieceShuffle(eachPlayerPieces, rng);
 
-        //TODO decouple algoritma: extract random count from shuffled
-        List<Piece>[] playerSurvivorPieces = new List<Piece>[_playerCount];
-        for (int playerID = 0; playerID < _playerCount; playerID++)
-        {
-            playerSurvivorPieces[playerID] = shuffledPlayerPieces[playerID].Take(rng.Next(0, 3)).ToList();
-        }
+        // decouple algoritma: extract random count from shuffled
+        List<Piece>[] playerSurvivorPieces = SurvivorRandomExtract(shuffledPlayerPieces, rng, 3);
 
-        //TODO decouple algoritma: build the dictionary
-        int[] playerSurvivorsCount = new int[_playerCount];
+        // decouple algoritma: build the dictionary
+        int[] playerSurvivorsCount = SurvivorsCount(playerSurvivorPieces);
 
-        playerSurvivorsCount[0] = playerSurvivorPieces[0].Count;
-        playerSurvivorsCount[1] = playerSurvivorPieces[1].Count;
         int survivorIndex = 0;
-
         foreach (var player in _playerDetail.Keys)
         {
             afterClash.Add(player, playerSurvivorsCount[survivorIndex]);
@@ -144,12 +123,12 @@ public class GameRunner
         return afterClash;
     }
 
-    private List<Piece>[] PlayerPieceExtract()
+    private List<Piece>[] GetEachPlayerPiece()
     {
-        List<Piece>[] eachPlayerPieces = new List<Piece>[_playerCount];
+        List<Piece>[] eachPlayerPieces = new List<Piece>[PlayersLeft()];
         foreach (var playerData in _playerDetail.Values)
         {
-            for (int playerID = 0; playerID < _playerCount; playerID++)
+            for (int playerID = 0; playerID < PlayersLeft(); playerID++)
             {
                 if (eachPlayerPieces[playerID] is null)
                 {
@@ -162,8 +141,8 @@ public class GameRunner
 
     private List<Piece>[] PlayerPieceShuffle(List<Piece>[] piecesToShuffle, Random rng)
     {
-        List<Piece>[] shuffledPlayerPieces = new List<Piece>[_playerCount];
-        for (int playerID = 0; playerID < _playerCount; playerID++)
+        List<Piece>[] shuffledPlayerPieces = new List<Piece>[PlayersLeft()];
+        for (int playerID = 0; playerID < PlayersLeft(); playerID++)
         {
             shuffledPlayerPieces[playerID] = piecesToShuffle[playerID].OrderByDescending(playerID => rng.Next()).ToList();
         }
@@ -172,17 +151,29 @@ public class GameRunner
 
     private List<Piece>[] SurvivorRandomExtract(List<Piece>[] survivorsToExtract, Random rng, int maxAmount)
     {
-        List<Piece>[] playerSurvivorPieces = new List<Piece>[_playerCount];
-        for (int playerID = 0; playerID < _playerCount; playerID++)
+        List<Piece>[] playerSurvivorPieces = new List<Piece>[PlayersLeft()];
+
+        int firstExtract = maxAmount + 1;
+
+        for (int playerID = 0; playerID < PlayersLeft(); playerID++)
         {
-            playerSurvivorPieces[playerID] = survivorsToExtract[playerID].Take(rng.Next(0, maxAmount)).ToList();
+            int secondExtract = rng.Next(0, maxAmount);
+
+            while(firstExtract == secondExtract)
+            {
+                secondExtract = rng.Next(0, maxAmount);
+            }
+
+            firstExtract = secondExtract;
+            
+            playerSurvivorPieces[playerID] = survivorsToExtract[playerID].Take(firstExtract).ToList();
         }
         return playerSurvivorPieces;
     }
 
     private int[] SurvivorsCount(List<Piece>[] survivorsToCount)
     {
-        int[] playerSurvivorsCount = new int[_playerCount];
+        int[] playerSurvivorsCount = new int[PlayersLeft()];
 
         playerSurvivorsCount[0] = survivorsToCount[0].Count;
         playerSurvivorsCount[1] = survivorsToCount[1].Count;
@@ -190,15 +181,39 @@ public class GameRunner
         return playerSurvivorsCount;
     }
 
-    public int DecreasePlayerHealth(IPlayer player, List<Piece> piecesLeft)
+    public List<Piece> GetPlayersPiece(Player player)
     {
-        throw new NotImplementedException();
+        List<Piece> playerPieces = new();
+        foreach (var playerData in _playerDetail)
+        {
+            if (playerData.Key == player)
+            {
+                playerPieces = playerData.Value.GetPieces();
+            }
+        }
+        return playerPieces;
     }
-    public bool OnTerritory(Position position)
+
+    public bool BuyFromStore(Player player, Piece piece)
+    {
+        //! if (!_store.Contains)
+        //! Gold belum dikurangi
+
+        _playerDetail[player].GetPieces().Add(piece);
+        return true;
+    }
+
+    //TODO
+
+    public KeyValuePair<Player, int> GetClashLoser(Dictionary<IPlayer, int> clashResult)
     {
         throw new NotImplementedException();
     }
 
+    public int DecreasePlayerHealth(IPlayer player, List<Piece> piecesLeft)
+    {
+        throw new NotImplementedException();
+    }
     
     //* Player methods
     public bool AddPlayer(IPlayer player)
@@ -212,7 +227,6 @@ public class GameRunner
         return _playerDetail;
     }
 
-    //! different return type from cd
     public Dictionary<IPlayer, int> ShowPlayerHealth()
     {
         if (_playerDetail == null)

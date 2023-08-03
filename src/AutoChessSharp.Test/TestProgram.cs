@@ -11,6 +11,7 @@ public class Program
         // PlayerDictTest();
         // PieceAlgo2Test();
         StoreCreationTest();
+        // GameClashTest();
         Console.Read();
 
     }
@@ -223,7 +224,7 @@ public class Program
 
         Store store= new Store(piecesToPlay);
         store.RerollStore();
-        List<Piece> storePieces = store.GetFromStore();
+        List<Piece> storePieces = store.GetStoreStock();
 
         foreach (var piece in storePieces)
         {
@@ -255,6 +256,63 @@ public class Program
         
     }
 
+    static void GameClashTest()
+    {
+        List<Piece> pieces = new List<Piece>();
+
+        List<Piece> pieces_P1 = new List<Piece>()
+        {
+            new Piece(ArcheTypeEnum.Warrior, RarityEnum.Uncommon,"budi"),
+            new Piece(ArcheTypeEnum.Mage, RarityEnum.Rare,"poco"),
+            new Piece(ArcheTypeEnum.Hunter, RarityEnum.Rare,"justin"),
+            new Piece(ArcheTypeEnum.Hunter, RarityEnum.Uncommon,"akba"),
+            new Piece(ArcheTypeEnum.Warrior, RarityEnum.Rare,"sule"),
+        };
+
+        List<Piece> pieces_P2 = new List<Piece>()
+        {
+            new Piece(ArcheTypeEnum.Warrior, RarityEnum.Uncommon,"budi"),
+            new Piece(ArcheTypeEnum.Mage, RarityEnum.Rare,"poco"),
+            new Piece(ArcheTypeEnum.Hunter, RarityEnum.Rare,"justin"),
+            new Piece(ArcheTypeEnum.Hunter, RarityEnum.Uncommon,"akba"),
+            new Piece(ArcheTypeEnum.Warrior, RarityEnum.Rare,"sule"),
+        };
+
+        Board board = new(8);
+        Store store = new(pieces);
+
+        GameRunner autoChess = new GameRunner(board, store);
+        Player player1= new Player("Baal");
+        Player player2= new Player("Buer");
+
+        autoChess.AddPlayer(player1);
+        autoChess.AddPlayer(player2);
+
+
+        Helper.ProgramPrinter(autoChess.PlayersLeft());
+
+        foreach (Piece piece in pieces_P1)
+        {
+            Helper.ProgramPrinter(autoChess.BuyFromStore(player1, piece));
+        }
+
+        foreach (Piece piece in pieces_P2)
+        {
+            Helper.ProgramPrinter(autoChess.BuyFromStore(player2, piece));
+        }
+
+        Helper.ProgramPrinter(" ");
+        List<Piece> baalPieces = autoChess.GetPlayersPiece(player1);
+        List<Piece> buerPieces = autoChess.GetPlayersPiece(player2);
+
+        Helper.ProgramPrinter(autoChess.PlayersLeft());
+        Dictionary<IPlayer, int> afterClash =  autoChess.GameClash();
+
+        foreach(var survivors in afterClash)
+        {
+            Helper.ProgramPrinter($"{survivors.Key.GetName()} now has {survivors.Value} pieces left");
+        }
+    }
 }
 
 class Helper

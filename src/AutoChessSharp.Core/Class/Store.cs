@@ -19,7 +19,7 @@ public class Store
         List<Piece> rolledPieces = _availPieces.OrderByDescending(p => random.Next()).ToList();
 
         //? fixed to take 5?
-        _storePieces = rolledPieces.Take(0).ToList();
+        _storePieces = rolledPieces.Take(5).ToList();
         return _storePieces;
     }
 
@@ -40,7 +40,7 @@ public class Store
         }
     }
 
-    public List<Piece> GetFromStore()
+    public List<Piece> GetStoreStock()
     {
         if (_storePieces == null)
         {
@@ -48,29 +48,5 @@ public class Store
         }
         return _storePieces;
     }
-
-    ////  seems Lock method is unnecessary, bingung implementasinya
-
-    // * allow user to lock current roll for the next round
-    // public bool LockStore()
-    // {
-    //     if (_isRollable == true)
-    //     {
-    //         _isRollable = false;
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
-    //// program should automatically unlock after the lock round
-    // public bool UnlockStore()
-    // {
-    //     if (_isRollable == false)
-    //     {
-    //         _isRollable = true;
-    //         return true;
-    //     }
-    //     return false;
-    // }
 
 }
