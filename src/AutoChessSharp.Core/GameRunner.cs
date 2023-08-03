@@ -1,4 +1,6 @@
-﻿namespace AutoChessSharp.Core;
+﻿using System.ComponentModel;
+
+namespace AutoChessSharp.Core;
 public class GameRunner
 {
     private Dictionary<IPlayer, PlayerInfo> _playerDetail;
@@ -140,6 +142,52 @@ public class GameRunner
 
         //* Returned value
         return afterClash;
+    }
+
+    private List<Piece>[] PlayerPieceExtract()
+    {
+        List<Piece>[] eachPlayerPieces = new List<Piece>[_playerCount];
+        foreach (var playerData in _playerDetail.Values)
+        {
+            for (int playerID = 0; playerID < _playerCount; playerID++)
+            {
+                if (eachPlayerPieces[playerID] is null)
+                {
+                    eachPlayerPieces[playerID] = playerData.GetPieces();
+                }
+            }
+        }
+        return eachPlayerPieces;
+    }
+
+    private List<Piece>[] PlayerPieceShuffle(List<Piece>[] piecesToShuffle, Random rng)
+    {
+        List<Piece>[] shuffledPlayerPieces = new List<Piece>[_playerCount];
+        for (int playerID = 0; playerID < _playerCount; playerID++)
+        {
+            shuffledPlayerPieces[playerID] = piecesToShuffle[playerID].OrderByDescending(playerID => rng.Next()).ToList();
+        }
+        return shuffledPlayerPieces;
+    }
+
+    private List<Piece>[] SurvivorRandomExtract(List<Piece>[] survivorsToExtract, Random rng, int maxAmount)
+    {
+        List<Piece>[] playerSurvivorPieces = new List<Piece>[_playerCount];
+        for (int playerID = 0; playerID < _playerCount; playerID++)
+        {
+            playerSurvivorPieces[playerID] = survivorsToExtract[playerID].Take(rng.Next(0, maxAmount)).ToList();
+        }
+        return playerSurvivorPieces;
+    }
+
+    private int[] SurvivorsCount(List<Piece>[] survivorsToCount)
+    {
+        int[] playerSurvivorsCount = new int[_playerCount];
+
+        playerSurvivorsCount[0] = survivorsToCount[0].Count;
+        playerSurvivorsCount[1] = survivorsToCount[1].Count;
+
+        return playerSurvivorsCount;
     }
 
     public int DecreasePlayerHealth(IPlayer player, List<Piece> piecesLeft)
