@@ -10,8 +10,8 @@ public class Program
         // PlayerInfoTest();
         // PlayerDictTest();
         // PieceAlgo2Test();
-        StoreCreationTest();
-        // GameClashTest();
+        // StoreCreationTest();
+        GameClashTest();
         Console.Read();
 
     }
@@ -306,11 +306,11 @@ public class Program
         List<Piece> buerPieces = autoChess.GetPlayersPiece(player2);
 
         Helper.ProgramPrinter(autoChess.PlayersLeft());
-        Dictionary<IPlayer, int> afterClash =  autoChess.GameClash();
+        SortedDictionary<int, IPlayer> afterClash =  autoChess.GameClash();
 
         foreach(var survivors in afterClash)
         {
-            Helper.ProgramPrinter($"{survivors.Key.GetName()} now has {survivors.Value} pieces left");
+            Helper.ProgramPrinter($"{survivors.Value.GetName()} now has {survivors.Key} pieces left");
         }
     }
 }

@@ -1,10 +1,11 @@
 using AutoChessSharp.Core;
+using System.Runtime.Serialization.Json;
 
 class Program
 {
     public static void Main()
     {
-        List<Piece> piecesToPlay = SetAvailablePieces();
+        List<Piece> piecesToPlay = PieceInitializer();
         Store storeToPlay = new Store(piecesToPlay);
         storeToPlay.RerollStore();
 
@@ -55,35 +56,6 @@ class Program
 
     }
 
-    public static List<Piece> SetAvailablePieces()
-    {
-        Piece axe = new Piece(ArcheTypeEnum.Warrior, RarityEnum.Uncommon);
-        Piece doom = new Piece(ArcheTypeEnum.Warrior, RarityEnum.Common);
-        Piece huskar = new Piece(ArcheTypeEnum.Hunter, RarityEnum.Uncommon);
-        Piece lina = new Piece(ArcheTypeEnum.Mage, RarityEnum.Common);
-        Piece mortdred = new Piece(ArcheTypeEnum.Assassin, RarityEnum.Uncommon);
-        Piece ezalor = new Piece(ArcheTypeEnum.Mage, RarityEnum.Uncommon);
-
-        axe.SetName("Axe");
-        doom.SetName("Doom");
-        huskar.SetName("Huskar");
-        lina.SetName("Lina");
-        mortdred.SetName("Mortdred");
-        ezalor.SetName("Ezalor");
-
-        List<Piece> piecesToPlay = new List<Piece>()
-        {
-            axe,
-            doom,
-            huskar,
-            lina,
-            mortdred,
-            ezalor
-        };
-
-        return piecesToPlay;
-    }
-
     public static void DisplayHelper<T>(T value)
     {
         Console.WriteLine(value);
@@ -123,4 +95,16 @@ class Program
         DisplayHelper("Name successfully set, press any key to continue..");
         UserInputPrompt();
     }
+
+    public static List<Piece> PieceInitializer()
+    {
+        var deserializer = new DataContractJsonSerializer(typeof(List<Piece>));
+        FileStream fileStream= new FileStream(@"..\AutoChessSharp.PieceFactory\PiecesToPlay.json", FileMode.Open);
+
+
+        List<Piece> piecesToPlay = (List<Piece>)deserializer?.ReadObject(fileStream);
+
+        return piecesToPlay;
+    }
+
 }

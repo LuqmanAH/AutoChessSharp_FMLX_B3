@@ -92,10 +92,10 @@ public class GameRunner
 
     //TODO: Many things sadge
 
-    public Dictionary<IPlayer, int> GameClash()
+    public SortedDictionary<int, IPlayer> GameClash()
     {
         //* Inisiasi variable untuk clash
-        Dictionary<IPlayer, int> afterClash = new Dictionary<IPlayer, int>();
+        SortedDictionary<int, IPlayer> afterClash = new SortedDictionary<int, IPlayer>();
         Random rng = new Random();
 
         // decouple algoritma: extract list of piece from pDetail
@@ -113,7 +113,7 @@ public class GameRunner
         int survivorIndex = 0;
         foreach (var player in _playerDetail.Keys)
         {
-            afterClash.Add(player, playerSurvivorsCount[survivorIndex]);
+            afterClash.Add(playerSurvivorsCount[survivorIndex], player);
             survivorIndex ++;
         }
 
@@ -201,21 +201,20 @@ public class GameRunner
         return true;
     }
 
-    //TODO
+    //TODO clash loser
 
-    // public KeyValuePair<Player, int> GetClashLoser(Dictionary<IPlayer, int> clashResult)
-    // {
-    //     if (clashResult == null)
-    //     {
-    //         throw new NullReferenceException(message: "Clash not yet started!");
-    //     }
+    public KeyValuePair<int, IPlayer> GetClashLoser(SortedDictionary<int, IPlayer> clashResult)
+    {
+        if (clashResult == null)
+        {
+            throw new NullReferenceException(message: "Clash not yet started!");
+        }
+        KeyValuePair<int, IPlayer> loserPair = clashResult.First();
+        KeyValuePair<int, IPlayer> winnerPair = clashResult.Reverse().First();
+        KeyValuePair<int, IPlayer> playerDamaged = new KeyValuePair<int, IPlayer>(winnerPair.Key, loserPair.Value);
 
-    //     int loserPiecesLeft = new();
-    //     foreach (var playersLeft in clashResult.Values)
-    //     {
-    //         if (playe)
-    //     }
-    // }
+        return playerDamaged;
+    }
 
     public int DecreasePlayerHealth(IPlayer player, List<Piece> piecesLeft)
     {
