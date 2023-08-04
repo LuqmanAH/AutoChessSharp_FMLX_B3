@@ -147,7 +147,7 @@ public class Program
         autoChess.AddPlayer(player1);
         autoChess.AddPlayer(player2);
 
-        Dictionary<IPlayer, PlayerInfo> ListOfPlayers = autoChess.GetAllPlayers();
+        Dictionary<IPlayer, PlayerInfo> ListOfPlayers = autoChess.GetInGamePlayers();
 
         foreach (var playersInfo in ListOfPlayers)
         {

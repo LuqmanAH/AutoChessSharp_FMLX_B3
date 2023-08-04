@@ -5,8 +5,8 @@ class Program
 {
     public static void Main()
     {
-        List<Piece> piecesToPlay = PieceInitializer();
-        Store storeToPlay = new Store(piecesToPlay);
+        List<Piece>? piecesToPlay = PieceInitializer();
+        Store? storeToPlay = new Store(piecesToPlay);
         storeToPlay.RerollStore();
 
         Board autoChessBoard = new Board(8);
@@ -24,7 +24,10 @@ class Program
             InitPrompt(autoChessGame, player, player.GetID());
         }
 
-        Dictionary<IPlayer, PlayerInfo> playerInGame = autoChessGame.GetAllPlayers();
+        Player player1 = players[0];
+        Player player2 = players[1];
+
+        Dictionary<IPlayer, PlayerInfo> playerInGame = autoChessGame.GetInGamePlayers();
 
         CleanScreen();
         foreach (var playerData in playerInGame)
@@ -41,17 +44,24 @@ class Program
         while (autoChessGame.GetGameStatus() == GameStatusEnum.Ongoing)
         {
 
-            DisplayHelper($"==== Beginning Round {autoChessGame.GetCurrentRound()} ====");
-            DisplayHelper($"==== Buying Phase ====");
+            DisplayHelper($"==== Beginning Round {autoChessGame.GetCurrentRound()} ====\n");
+            DisplayHelper($"player {player1.GetName()} stats:");
+            foreach (var stat in autoChessGame.GetPlayerStats(players[0]))
+            {
+                DisplayHelper($"{stat.Key} = {stat.Value}");
+            }
+            DisplayHelper($"\n==== Buying Phase ====");
             DisplayHelper($"Store stock:");
+
 
             foreach (var piece in storeToPlay.GetStoreStock())
             {
-                DisplayHelper($"{piece.GetName()} as {piece.GetArcheType()} for {piece.GetPrice()}");
+                DisplayHelper($"{piece.GetName()} {piece.GetRarityEnum()} {piece.GetArcheType()} for {piece.GetPrice()} Gold");
             }
 
             UserInputPrompt();
             autoChessGame.SetGameStatus(GameStatusEnum.Completed);
+
         }
 
     }
@@ -66,10 +76,15 @@ class Program
         Console.Clear();
     }
 
-    public static string UserInputPrompt()
+    public static char Choose()
     {
-        var userInput = Console.ReadLine().ToString();
+        var userChoice = Console.ReadKey().KeyChar;
+        return userChoice;
+    }
 
+    public static string? UserInputPrompt()
+    {
+        string? userInput = Console.ReadLine();
         return userInput;
     }
 
@@ -79,7 +94,7 @@ class Program
         DisplayHelper("====Auto Chess Game====");
         DisplayHelper("* This is the two players version of the game ");
         DisplayHelper($"* Enter string as player {ID} name: ");
-        string playerOneName = UserInputPrompt();
+        string? playerOneName = UserInputPrompt();
         bool checkOne = player.SetPlayerName(playerOneName);
         gameRunner.AddPlayer(player);
 
@@ -96,13 +111,12 @@ class Program
         UserInputPrompt();
     }
 
-    public static List<Piece> PieceInitializer()
+    public static List<Piece>? PieceInitializer()
     {
         var deserializer = new DataContractJsonSerializer(typeof(List<Piece>));
         FileStream fileStream= new FileStream(@"..\AutoChessSharp.PieceFactory\PiecesToPlay.json", FileMode.Open);
 
-
-        List<Piece> piecesToPlay = (List<Piece>)deserializer?.ReadObject(fileStream);
+        List<Piece>? piecesToPlay = (List<Piece>?)deserializer.ReadObject(fileStream);
 
         return piecesToPlay;
     }

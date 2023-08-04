@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace AutoChessSharp.Core;
+﻿namespace AutoChessSharp.Core;
 public partial class GameRunner
 {
     private Dictionary<IPlayer, PlayerInfo> _playerDetail;
@@ -21,6 +19,7 @@ public partial class GameRunner
     }
 
     //* Board and store getters
+
     public Store GetStore()
     {
         return _store;
@@ -31,7 +30,8 @@ public partial class GameRunner
         return _board;
     }
 
-    //* Round getter/setter
+    //* Round mech
+
     public int GetCurrentRound()
     {
         return _round;
@@ -73,7 +73,7 @@ public partial class GameRunner
         return true;
     }
 
-    //* Game status getter/ (setter?)
+    //* Game status getter/setter
 
     public GameStatusEnum GetGameStatus()
     {
@@ -105,6 +105,7 @@ public partial class GameRunner
         return playerPieces;
     }
 
+    //? include to player methods?
     public bool BuyFromStore(Player player, Piece piece)
     {
         //! if (!_store.Contains)
@@ -114,81 +115,4 @@ public partial class GameRunner
         return true;
     }
     
-    //* Player methods
-    public bool AddPlayer(IPlayer player)
-    {
-        bool addSuccess = _playerDetail.TryAdd(player, new PlayerInfo());
-        return addSuccess;
-    }
-    
-    public Dictionary<IPlayer, PlayerInfo> GetAllPlayers()
-    {
-        return _playerDetail;
-    }
-
-    public Dictionary<IPlayer, int> ShowPlayerHealth()
-    {
-        if (_playerDetail == null)
-        {
-            throw new NullReferenceException(message : "No Added Players Yet!");
-        }
-
-        Dictionary<IPlayer, int> PlayersHealth = new();
-        foreach (var details in _playerDetail)
-        {
-            IPlayer playerInGame = details.Key;
-            int playerHealthPoint = details.Value.GetHealth();
-
-            PlayersHealth.Add(playerInGame, playerHealthPoint);
-        }
-        return PlayersHealth;
-    }
-    public int ShowPlayerHealth(IPlayer player)
-    {
-        if (_playerDetail == null)
-        {
-            throw new NullReferenceException(message : "No Added Players Yet!");
-        }
-
-        if (!_playerDetail.ContainsKey(player))
-        {
-            throw new KeyNotFoundException(message : "Player Not Found");
-        }
-
-        int playerHealth = 0;
-        foreach (var details in _playerDetail)
-        {
-            if (details.Key.GetID() == player.GetID())
-            {
-                playerHealth += details.Value.GetHealth();
-            }
-        }
-        return playerHealth;
-    }
-
-    public List<IPlayer> GetAlivePlayers()
-    {
-        if (_playerDetail == null)
-        {
-            throw new NullReferenceException(message : "No Added Player Yet!");
-        }
-
-        List<IPlayer> alivePlayers = new();
-        foreach (var details in _playerDetail)
-        {
-            int playerHealthPoint = details.Value.GetHealth();
-
-            if (playerHealthPoint > 0)
-            {
-                alivePlayers.Add(details.Key);
-            }
-        }
-        return alivePlayers;
-    }
-
-    public int PlayersLeft()
-    {
-        List<IPlayer> alivePlayers = GetAlivePlayers();
-        return alivePlayers.Count;
-    }
 }

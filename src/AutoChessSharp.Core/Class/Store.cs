@@ -6,9 +6,9 @@ public class Store
     private List<Piece> _availPieces;
 
     //* store now has composite relation with Piece, list of Piece to be precise
-    public Store(List<Piece> availPieces)
+    public Store(List<Piece>? availPieces)
     {
-        _availPieces = availPieces;
+        _availPieces = availPieces ?? throw new NullReferenceException(message:"The Available Pieces are not set!");
     }
 
     // * LinQ implementation to populate storePieces

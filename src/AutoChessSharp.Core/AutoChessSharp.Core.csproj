@@ -22,10 +22,10 @@
     <Content Include="Interface\IPlayerLevel.cs" />
     <Content Include="Interface\IPlayerInfo.cs" />
     <Content Include="Interface\IPlayerHealth.cs" />
-    <Content Include="GameRunner.cs" />
     <Content Include="Class\Piece.cs" />
     <Content Include="Enums\RarityEnum.cs" />
     <Content Include="Enums\GameStatusEnum.cs" />
     <Content Include="Program.cs" />
+    <Content Include="GameRunner\GameRunner.cs" />
   </ItemGroup>
 </Project>
