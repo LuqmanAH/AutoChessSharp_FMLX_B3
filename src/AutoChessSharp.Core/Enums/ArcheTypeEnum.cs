@@ -1,5 +1,8 @@
-﻿namespace AutoChessSharp.Core;
+﻿using System.Runtime.Serialization;
 
+namespace AutoChessSharp.Core;
+
+[DataContract]
 public enum ArcheTypeEnum
 {
     Warrior = 1,

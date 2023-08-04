@@ -1,8 +1,14 @@
-﻿namespace AutoChessSharp.Core;
+﻿using System.Runtime.Serialization;
 
+namespace AutoChessSharp.Core;
+
+[DataContract]
 public class Position
 {
+    [DataMember(Name = "_x")]
     private int _x;
+
+    [DataMember(Name = "_y")]
     private int _y;
 
     public Position(int x, int y)

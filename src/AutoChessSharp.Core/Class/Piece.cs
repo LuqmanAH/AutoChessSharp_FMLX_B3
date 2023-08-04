@@ -1,19 +1,33 @@
-﻿namespace AutoChessSharp.Core;
+﻿using System.Runtime.Serialization;
+
+namespace AutoChessSharp.Core;
 
 // might not be a good idea to create IBoard here SOLVE
 //? can the price implemented as a field here?
 //? which better? implement positioning method here or in the GR?
 
+[DataContract(Name = "Piece")]
 public class Piece : IPiece
 {
+    [DataMember(Name="_archeType")]
     private ArcheTypeEnum _archeType;
+
+    [DataMember(Name="_rarity")]
     private int _rarity;
 
+    [DataMember(Name="_position")]
     private Position? _position;
+
+    [DataMember(Name="_price")]
     private int _price;
 
+    [DataMember(Name="_pieceName")]
     private string? _pieceName;
+
+    [DataMember(Name = "_healthPoint")]
     private int _healthPoint;
+
+    [DataMember(Name = "_attack")]
     private int _attack;
 
     public Piece(ArcheTypeEnum archeType, RarityEnum rarity, string? pieceName = null)
@@ -61,17 +75,6 @@ public class Piece : IPiece
         }
         return _position;
     }
-
-    //* position setting applied in GR, piece position should zero until in game
-    // public bool SetPosition(Position _position)
-    // {
-    //     if (_position.GetX() < 0 || _position.GetY() < 0)
-    //     {
-    //         return false;
-    //     }
-    //     this._position = _position;
-    //     return true;
-    // }
     
     public string? GetName()
     {
@@ -127,8 +130,8 @@ public class Piece : IPiece
         return true;
 
     }
-
     public int GetPrice()
+
     {
         return _price;
     }

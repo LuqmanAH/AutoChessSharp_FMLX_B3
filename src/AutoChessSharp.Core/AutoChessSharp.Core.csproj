@@ -26,5 +26,6 @@
     <Content Include="Class\Piece.cs" />
     <Content Include="Enums\RarityEnum.cs" />
     <Content Include="Enums\GameStatusEnum.cs" />
+    <Content Include="Program.cs" />
   </ItemGroup>
 </Project>

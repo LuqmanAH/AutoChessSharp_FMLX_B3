@@ -4,7 +4,6 @@ namespace AutoChessSharp.Core;
 public class GameRunner
 {
     private Dictionary<IPlayer, PlayerInfo> _playerDetail;
-    // private int _playerCount;
     private IBoard _board;
     private Store _store;
     private GameStatusEnum _gameStatus;
@@ -19,7 +18,6 @@ public class GameRunner
         _store = store;
         _gameStatus = GameStatusEnum.NotStarted;
         _playerDetail = new Dictionary<IPlayer, PlayerInfo>();
-        // _playerCount = _playerDetail.Keys.Count();
     }
 
     //* Board and store getters
@@ -205,10 +203,19 @@ public class GameRunner
 
     //TODO
 
-    public KeyValuePair<Player, int> GetClashLoser(Dictionary<IPlayer, int> clashResult)
-    {
-        throw new NotImplementedException();
-    }
+    // public KeyValuePair<Player, int> GetClashLoser(Dictionary<IPlayer, int> clashResult)
+    // {
+    //     if (clashResult == null)
+    //     {
+    //         throw new NullReferenceException(message: "Clash not yet started!");
+    //     }
+
+    //     int loserPiecesLeft = new();
+    //     foreach (var playersLeft in clashResult.Values)
+    //     {
+    //         if (playe)
+    //     }
+    // }
 
     public int DecreasePlayerHealth(IPlayer player, List<Piece> piecesLeft)
     {
