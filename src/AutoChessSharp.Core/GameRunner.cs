@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace AutoChessSharp.Core;
-public class GameRunner
+public partial class GameRunner
 {
     private Dictionary<IPlayer, PlayerInfo> _playerDetail;
     private IBoard _board;
@@ -92,93 +92,6 @@ public class GameRunner
 
     //TODO: Many things sadge
 
-    public SortedDictionary<int, IPlayer> GameClash()
-    {
-        //* Inisiasi variable untuk clash
-        SortedDictionary<int, IPlayer> afterClash = new SortedDictionary<int, IPlayer>();
-        Random rng = new Random();
-
-        // decouple algoritma: extract list of piece from pDetail
-        List<Piece>[] eachPlayerPieces = GetEachPlayerPiece();
-
-        // decouple algoritma: shuffle random list of piece
-        List<Piece>[] shuffledPlayerPieces = PlayerPieceShuffle(eachPlayerPieces, rng);
-
-        // decouple algoritma: extract random count from shuffled
-        List<Piece>[] playerSurvivorPieces = SurvivorRandomExtract(shuffledPlayerPieces, rng, 3);
-
-        // decouple algoritma: build the dictionary
-        int[] playerSurvivorsCount = SurvivorsCount(playerSurvivorPieces);
-
-        int survivorIndex = 0;
-        foreach (var player in _playerDetail.Keys)
-        {
-            afterClash.Add(playerSurvivorsCount[survivorIndex], player);
-            survivorIndex ++;
-        }
-
-        //* Returned value
-        return afterClash;
-    }
-
-    private List<Piece>[] GetEachPlayerPiece()
-    {
-        List<Piece>[] eachPlayerPieces = new List<Piece>[PlayersLeft()];
-        foreach (var playerData in _playerDetail.Values)
-        {
-            for (int playerID = 0; playerID < PlayersLeft(); playerID++)
-            {
-                if (eachPlayerPieces[playerID] is null)
-                {
-                    eachPlayerPieces[playerID] = playerData.GetPieces();
-                }
-            }
-        }
-        return eachPlayerPieces;
-    }
-
-    private List<Piece>[] PlayerPieceShuffle(List<Piece>[] piecesToShuffle, Random rng)
-    {
-        List<Piece>[] shuffledPlayerPieces = new List<Piece>[PlayersLeft()];
-        for (int playerID = 0; playerID < PlayersLeft(); playerID++)
-        {
-            shuffledPlayerPieces[playerID] = piecesToShuffle[playerID].OrderByDescending(playerID => rng.Next()).ToList();
-        }
-        return shuffledPlayerPieces;
-    }
-
-    private List<Piece>[] SurvivorRandomExtract(List<Piece>[] survivorsToExtract, Random rng, int maxAmount)
-    {
-        List<Piece>[] playerSurvivorPieces = new List<Piece>[PlayersLeft()];
-
-        int firstExtract = maxAmount + 1;
-
-        for (int playerID = 0; playerID < PlayersLeft(); playerID++)
-        {
-            int secondExtract = rng.Next(0, maxAmount);
-
-            while(firstExtract == secondExtract)
-            {
-                secondExtract = rng.Next(0, maxAmount);
-            }
-
-            firstExtract = secondExtract;
-            
-            playerSurvivorPieces[playerID] = survivorsToExtract[playerID].Take(firstExtract).ToList();
-        }
-        return playerSurvivorPieces;
-    }
-
-    private int[] SurvivorsCount(List<Piece>[] survivorsToCount)
-    {
-        int[] playerSurvivorsCount = new int[PlayersLeft()];
-
-        playerSurvivorsCount[0] = survivorsToCount[0].Count;
-        playerSurvivorsCount[1] = survivorsToCount[1].Count;
-
-        return playerSurvivorsCount;
-    }
-
     public List<Piece> GetPlayersPiece(Player player)
     {
         List<Piece> playerPieces = new();
@@ -199,26 +112,6 @@ public class GameRunner
 
         _playerDetail[player].GetPieces().Add(piece);
         return true;
-    }
-
-    //TODO clash loser
-
-    public KeyValuePair<int, IPlayer> GetClashLoser(SortedDictionary<int, IPlayer> clashResult)
-    {
-        if (clashResult == null)
-        {
-            throw new NullReferenceException(message: "Clash not yet started!");
-        }
-        KeyValuePair<int, IPlayer> loserPair = clashResult.First();
-        KeyValuePair<int, IPlayer> winnerPair = clashResult.Reverse().First();
-        KeyValuePair<int, IPlayer> playerDamaged = new KeyValuePair<int, IPlayer>(winnerPair.Key, loserPair.Value);
-
-        return playerDamaged;
-    }
-
-    public int DecreasePlayerHealth(IPlayer player, List<Piece> piecesLeft)
-    {
-        throw new NotImplementedException();
     }
     
     //* Player methods

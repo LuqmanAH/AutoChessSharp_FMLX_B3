@@ -305,13 +305,11 @@ public class Program
         List<Piece> baalPieces = autoChess.GetPlayersPiece(player1);
         List<Piece> buerPieces = autoChess.GetPlayersPiece(player2);
 
-        Helper.ProgramPrinter(autoChess.PlayersLeft());
         SortedDictionary<int, IPlayer> afterClash =  autoChess.GameClash();
+        KeyValuePair<int, IPlayer> clashLoser = autoChess.GetClashLoser(afterClash);
 
-        foreach(var survivors in afterClash)
-        {
-            Helper.ProgramPrinter($"{survivors.Value.GetName()} now has {survivors.Key} pieces left");
-        }
+        int loserUpdatedHealth = autoChess.DecreasePlayerHealth(clashLoser);
+        Helper.ProgramPrinter($"{clashLoser.Value.GetName()} has lost the clash, damaged, and the current HP is now: {loserUpdatedHealth}");
     }
 }
 
