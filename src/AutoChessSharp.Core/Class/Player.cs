@@ -44,7 +44,7 @@ public class Player : IPlayer
 
     public bool SetPlayerName(string _name)
     {
-        if (this._name == _name || _name == null)
+        if (this._name == _name || _name == "")
         {
             return false;
         }

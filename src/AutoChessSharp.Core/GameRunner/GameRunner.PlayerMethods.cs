@@ -13,6 +13,11 @@ public partial class GameRunner
         return _playerDetail;
     }
 
+    public Player GetPlayer(int playerIndex)
+    {
+        return (Player)_playerDetail.Keys.ElementAt(playerIndex - 1);
+    }
+
     public Dictionary<string, int> GetPlayerStats(IPlayer player)
     {
         PlayerInfo playerInfo = _playerDetail[player];
@@ -30,6 +35,19 @@ public partial class GameRunner
             playerStats.Add(stat.Key, stat.Value);
         }
         return playerStats;
+    }
+
+    public List<Piece> GetPlayerPiece(Player player)
+    {
+        List<Piece> playerPieces = new();
+        foreach (var playerData in _playerDetail)
+        {
+            if (playerData.Key == player)
+            {
+                playerPieces = playerData.Value.GetPieces();
+            }
+        }
+        return playerPieces;
     }
 
     public Dictionary<IPlayer, int> ShowPlayerHealth()

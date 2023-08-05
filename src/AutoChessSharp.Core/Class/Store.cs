@@ -23,7 +23,7 @@ public class Store
         return _storePieces;
     }
 
-    public int GetFromStore(Piece piece)
+    public int GetPiecePrice(Piece piece)
     {
         if (_storePieces == null)
         {

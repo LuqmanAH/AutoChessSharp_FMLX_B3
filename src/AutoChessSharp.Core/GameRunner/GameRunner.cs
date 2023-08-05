@@ -74,7 +74,6 @@ public partial class GameRunner
     }
 
     //* Game status getter/setter
-
     public GameStatusEnum GetGameStatus()
     {
         return _gameStatus;
@@ -90,28 +89,22 @@ public partial class GameRunner
         return true;
     }
 
-    //TODO: Many things sadge
-
-    public List<Piece> GetPlayersPiece(Player player)
-    {
-        List<Piece> playerPieces = new();
-        foreach (var playerData in _playerDetail)
-        {
-            if (playerData.Key == player)
-            {
-                playerPieces = playerData.Value.GetPieces();
-            }
-        }
-        return playerPieces;
-    }
-
     //? include to player methods?
     public bool BuyFromStore(Player player, Piece piece)
     {
-        //! if (!_store.Contains)
-        //! Gold belum dikurangi
+        
+        int piecePrice = _store.GetPiecePrice(piece);
+        int playerBalance = GetPlayerStats(player)["Gold"];
 
-        _playerDetail[player].GetPieces().Add(piece);
+        int updatedBalance = playerBalance - piecePrice;
+        bool buySuccess = GetInGamePlayers()[player].SetGold(updatedBalance);
+
+        if (!buySuccess)
+        {
+            return false;
+        }
+
+        _playerDetail[player].SetPieceToList(piece);
         return true;
     }
     

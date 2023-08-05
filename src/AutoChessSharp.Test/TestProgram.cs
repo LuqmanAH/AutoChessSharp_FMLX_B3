@@ -236,7 +236,7 @@ public class Program
 
         try
         {
-            Helper.ProgramPrinter(store.GetFromStore(lina));
+            Helper.ProgramPrinter(store.GetPiecePrice(lina));
         }
         catch (Exception ex)
         {
@@ -302,8 +302,8 @@ public class Program
         }
 
         Helper.ProgramPrinter(" ");
-        List<Piece> baalPieces = autoChess.GetPlayersPiece(player1);
-        List<Piece> buerPieces = autoChess.GetPlayersPiece(player2);
+        List<Piece> baalPieces = autoChess.GetPlayerPiece(player1);
+        List<Piece> buerPieces = autoChess.GetPlayerPiece(player2);
 
         SortedDictionary<int, IPlayer> afterClash =  autoChess.GameClash();
         KeyValuePair<int, IPlayer> clashLoser = autoChess.GetClashLoser(afterClash);
