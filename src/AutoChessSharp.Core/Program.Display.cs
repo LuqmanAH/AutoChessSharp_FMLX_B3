@@ -7,6 +7,11 @@ partial class Program
         Console.WriteLine(value);
     }
 
+    public static void InlineDisplayHelper<T>(T value)
+    {
+        Console.Write(value);
+    }
+
     public static void CleanScreen()
     {
         Console.Clear();

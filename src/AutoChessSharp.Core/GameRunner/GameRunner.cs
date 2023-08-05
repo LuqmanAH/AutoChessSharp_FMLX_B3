@@ -52,6 +52,20 @@ public partial class GameRunner
         if (_countDown == 0)
         {
             _round ++;
+
+            foreach (var playerInfos in _playerDetail.Values)
+            {
+                int exp = playerInfos.GetExperience();
+                int gold = playerInfos.GetGold();
+
+                exp += 1;
+                gold += 2;
+
+                playerInfos.SetExperience(exp);
+                playerInfos.SetGold(gold);
+                // playerInfos.IncrementLevel();
+            }
+
             return true;
         }
         return false;

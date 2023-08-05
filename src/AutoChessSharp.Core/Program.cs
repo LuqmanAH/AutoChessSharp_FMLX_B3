@@ -41,23 +41,23 @@ partial class Program
         //* Game commencing
         CleanScreen();
         autoChessGame.SetGameStatus(GameStatusEnum.Ongoing);
-        Player player1 = autoChessGame.GetPlayer(1);
-        Player player2 = autoChessGame.GetPlayer(2);
 
         while (autoChessGame.GetGameStatus() == GameStatusEnum.Ongoing)
         {
-            List<Piece> storeStock = storeToPlay.GetStoreStock();
-
-            DisplayHelper($"==== Beginning Round {autoChessGame.GetCurrentRound()} ====\n");
+            List<Piece> storeStock = autoChessGame.GetStore().GetStoreStock();
+            autoChessGame.SetCountDown(5);
 
             foreach (Player player in players)
             {
-                int buyOrLeave = -1;
+                int buyOrLeave;
                 do
                 {
                     CleanScreen();
+                    DisplayHelper($"==== Beginning Round {autoChessGame.GetCurrentRound()} ====\n");
                     DisplayHelper($"player {player.GetName()} stats:");
                     ShowPlayerStats(autoChessGame, player);
+                    DisplayHelper($"\n player {player.GetName()} pieces List:");
+                    DisplayPlayerPieces(autoChessGame, player);
                     DisplayHelper($"\n==== Buying Phase ====");
                     DisplayHelper($"Store stock:");
                     ShowStoreStock(storeStock);
@@ -67,8 +67,49 @@ partial class Program
 
             }
 
+            //TODO decouple and try to omit using thread sleep
+            CleanScreen();
+            DisplayHelper("Initiating Clash... press any key when ready");
             UserInputPrompt();
-            autoChessGame.SetGameStatus(GameStatusEnum.Completed);
+            DisplayHelper($"Starting Randomized clash");
+            for (int elapsedCountDown = 0; elapsedCountDown < autoChessGame.GetCountDown(); elapsedCountDown++)
+            {
+                Thread.Sleep(1000);
+                InlineDisplayHelper(".");
+            }
+            autoChessGame.SetCountDown(0);
+
+            SortedDictionary<int, IPlayer> afterClash = autoChessGame.GameClash();
+            KeyValuePair<int, IPlayer> clashLoser = autoChessGame.GetClashLoser(afterClash);
+            KeyValuePair<int, IPlayer> clashWinner = autoChessGame.GetClashWinner(afterClash);
+            autoChessGame.DecreasePlayerHealth(clashLoser);
+
+            CleanScreen();
+            DisplayHelper($"{clashWinner.Value.GetName()} Wins the clash with {clashWinner.Key} Pieces left!");
+            DisplayHelper($"\n{clashLoser.Value.GetName()} has lost the clash, damaged, and the current HP is now: {autoChessGame.ShowPlayerHealth(clashLoser.Value)}");
+            DisplayHelper("Press any key..");
+            UserInputPrompt();
+
+            CleanScreen();
+            DisplayHelper($"=== Round {autoChessGame.GetCurrentRound()} Concluded ===");
+            foreach (var playerHealth in autoChessGame.ShowPlayerHealth())
+            {
+                DisplayHelper($"{playerHealth.Key.GetName()} Now Has HP of {playerHealth.Value}");
+            }
+
+            UserInputPrompt();
+
+            CleanScreen();
+            if (autoChessGame.GetAlivePlayers().Count() == 1)
+            {
+                autoChessGame.SetGameStatus(GameStatusEnum.Completed);
+                DisplayHelper("Game Concluded");
+                UserInputPrompt();
+            }
+            DisplayHelper("Proceeding to next round...");
+            autoChessGame.GoNextRound();
+            storeToPlay.RerollStore();
+            UserInputPrompt();
 
         }
 
@@ -100,7 +141,7 @@ partial class Program
     public static List<Piece>? PieceInitializer()
     {
         var deserializer = new DataContractJsonSerializer(typeof(List<Piece>));
-        FileStream fileStream= new FileStream(@"..\AutoChessSharp.PieceFactory\PiecesToPlay.json", FileMode.Open);
+        FileStream fileStream= new FileStream(@"..\..\..\..\AutoChessSharp.PieceFactory\PiecesToPlay.json", FileMode.Open);
 
         List<Piece>? piecesToPlay = (List<Piece>?)deserializer.ReadObject(fileStream);
 

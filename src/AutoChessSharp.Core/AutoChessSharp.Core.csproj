@@ -31,5 +31,6 @@
     <Content Include="Class\Store.cs" />
     <Content Include="Program.Display.cs" />
     <Content Include="Program.BuyPhase.cs" />
+    <Content Include="GameRunner\GameRunner.GameClash.cs" />
   </ItemGroup>
 </Project>

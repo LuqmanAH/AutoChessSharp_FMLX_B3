@@ -77,6 +77,11 @@ public partial class GameRunner
         return playerSurvivorPieces;
     }
 
+    private bool ResetPlayerPieces(List<Piece>[] playerSurvivorPieces)
+    {
+        throw new NotImplementedException();
+    }
+
     private int[] SurvivorsCount(List<Piece>[] survivorsToCount)
     {
         int[] playerSurvivorsCount = new int[PlayersLeft()];
@@ -91,7 +96,7 @@ public partial class GameRunner
     /// Extract the loser that will lose HP after a clash
     /// </summary>
     /// <param name="clashResult"></param>
-    /// <returns> key value pair representing the damage received as the key, and the damaged player as the value </returns>
+    /// <returns> key value pair representing the damage received as the key, and the damaged player as the value. Damage received based on winner remaining pieces </returns>
     /// <exception cref="NullReferenceException"></exception>
     public KeyValuePair<int, IPlayer> GetClashLoser(SortedDictionary<int, IPlayer> clashResult)
     {
@@ -104,6 +109,16 @@ public partial class GameRunner
         KeyValuePair<int, IPlayer> playerDamaged = new KeyValuePair<int, IPlayer>(winnerPair.Key, loserPair.Value);
 
         return playerDamaged;
+    }
+
+    public KeyValuePair<int,IPlayer> GetClashWinner(SortedDictionary<int, IPlayer> clashResult)
+    {
+        if (clashResult == null)
+        {
+            throw new NullReferenceException(message: "Clash not yet started!");
+        }
+
+        return clashResult.Reverse().First();
     }
 
     /// <summary>
