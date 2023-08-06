@@ -69,7 +69,14 @@ partial class Program
 
             //TODO decouple and try to omit using thread sleep
             CleanScreen();
-            DisplayHelper("Initiating Clash... press any key when ready");
+
+            DisplayHelper($"\n{players[0].GetName()} Pieces:\n");
+            DisplayPlayerPieces(autoChessGame, players[0]);
+            DisplayHelper("\nVs\n");
+            DisplayHelper($"\n{players[1].GetName()} Pieces:\n");
+            DisplayPlayerPieces(autoChessGame, players[1]);
+            
+            DisplayHelper("\n\nInitiating Clash... press any key when ready");
             UserInputPrompt();
             DisplayHelper($"Starting Randomized clash");
             for (int elapsedCountDown = 0; elapsedCountDown < autoChessGame.GetCountDown(); elapsedCountDown++)
@@ -86,8 +93,14 @@ partial class Program
             CleanScreen();
             autoChessGame.SetCountDown(0);
             DisplayHelper($"{clashWinner.Value.GetName()} Wins the clash with {clashWinner.Key} Pieces left!");
-            DisplayHelper($"\n{clashLoser.Value.GetName()} has lost the clash, damaged, and the current HP is now: {autoChessGame.ShowPlayerHealth(clashLoser.Value)}");
-            DisplayHelper("Press any key..");
+            DisplayHelper($"{clashLoser.Value.GetName()} has lost the clash, damaged, and the current HP is now: {autoChessGame.ShowPlayerHealth(clashLoser.Value)}");
+
+            DisplayHelper($"\n{players[0].GetName()} Pieces:\n");
+            DisplayPlayerPieces(autoChessGame, players[0]);
+            DisplayHelper($"\n{players[1].GetName()} Pieces:\n");
+            DisplayPlayerPieces(autoChessGame, players[1]);
+
+            DisplayHelper("\n\nPress any key..");
             UserInputPrompt();
 
             CleanScreen();

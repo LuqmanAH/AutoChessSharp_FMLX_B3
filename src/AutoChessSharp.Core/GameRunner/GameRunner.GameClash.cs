@@ -1,5 +1,6 @@
 ﻿namespace AutoChessSharp.Core;
 
+//! 
 public partial class GameRunner
 {
     /// <summary>
@@ -91,15 +92,15 @@ public partial class GameRunner
             
             playerSurvivorPieces[playerID] = survivorsToExtract[playerID].Take(firstExtract).ToList();
         }
-        // foreach (var playerDetail in _playerDetail)
-        // {
-        //     ResetPlayerPieces(playerDetail.Value, playerSurvivorPieces[playerDetail.Key.GetID() - 1]);
-        // }
+        foreach (var playerDetail in _playerDetail)
+        {
+            ResetPlayerPieces(playerDetail.Value, playerSurvivorPieces[playerDetail.Key.GetID() - 1]);
+        }
 
         return playerSurvivorPieces;
     }
 
-    //TODO this still doesnt work
+    //TODO this still doesnt work [Very Experimental]
     private bool ResetPlayerPieces(PlayerInfo playerInfo, List<Piece> playerSurvivorPiece)
     {
         if (playerSurvivorPiece == null)
