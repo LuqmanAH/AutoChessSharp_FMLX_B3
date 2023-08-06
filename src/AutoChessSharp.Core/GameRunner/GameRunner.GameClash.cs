@@ -29,6 +29,10 @@ public partial class GameRunner
         return afterClash;
     }
 
+    /// <summary>
+    /// Extract every available pieces in the hand of in game player
+    /// </summary>
+    /// <returns>Array of player pieces list, not sorted</returns>
     private List<Piece>[] GetEachPlayerPiece()
     {
         List<Piece>[] eachPlayerPieces = new List<Piece>[PlayersLeft()];
@@ -45,6 +49,12 @@ public partial class GameRunner
         return eachPlayerPieces;
     }
 
+    /// <summary>
+    /// Shuffle the list of pieces by a random number generator. The rng does not have boundary values
+    /// </summary>
+    /// <param name="piecesToShuffle"></param>
+    /// <param name="rng"></param>
+    /// <returns>Array of player pieces list, shuffled randomly</returns>
     private List<Piece>[] PlayerPieceShuffle(List<Piece>[] piecesToShuffle, Random rng)
     {
         List<Piece>[] shuffledPlayerPieces = new List<Piece>[PlayersLeft()];
@@ -55,6 +65,13 @@ public partial class GameRunner
         return shuffledPlayerPieces;
     }
 
+    /// <summary>
+    /// Simulate piece death by subtracting pieces by a randomly generated amount
+    /// </summary>
+    /// <param name="survivorsToExtract"></param>
+    /// <param name="rng"></param>
+    /// <param name="maxAmount"></param>
+    /// <returns>Array of player pieces list left after the subtraction</returns>
     private List<Piece>[] SurvivorRandomExtract(List<Piece>[] survivorsToExtract, Random rng, int maxAmount)
     {
         List<Piece>[] playerSurvivorPieces = new List<Piece>[PlayersLeft()];
@@ -74,12 +91,25 @@ public partial class GameRunner
             
             playerSurvivorPieces[playerID] = survivorsToExtract[playerID].Take(firstExtract).ToList();
         }
+        // foreach (var playerDetail in _playerDetail)
+        // {
+        //     ResetPlayerPieces(playerDetail.Value, playerSurvivorPieces[playerDetail.Key.GetID() - 1]);
+        // }
+
         return playerSurvivorPieces;
     }
 
-    private bool ResetPlayerPieces(List<Piece>[] playerSurvivorPieces)
+    //TODO this still doesnt work
+    private bool ResetPlayerPieces(PlayerInfo playerInfo, List<Piece> playerSurvivorPiece)
     {
-        throw new NotImplementedException();
+        if (playerSurvivorPiece == null)
+        {
+            return false;
+        }
+
+        playerInfo.SetPieces(playerSurvivorPiece);
+
+        return true;
     }
 
     private int[] SurvivorsCount(List<Piece>[] survivorsToCount)

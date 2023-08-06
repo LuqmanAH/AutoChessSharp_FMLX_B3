@@ -77,7 +77,6 @@ partial class Program
                 Thread.Sleep(1000);
                 InlineDisplayHelper(".");
             }
-            autoChessGame.SetCountDown(0);
 
             SortedDictionary<int, IPlayer> afterClash = autoChessGame.GameClash();
             KeyValuePair<int, IPlayer> clashLoser = autoChessGame.GetClashLoser(afterClash);
@@ -85,6 +84,7 @@ partial class Program
             autoChessGame.DecreasePlayerHealth(clashLoser);
 
             CleanScreen();
+            autoChessGame.SetCountDown(0);
             DisplayHelper($"{clashWinner.Value.GetName()} Wins the clash with {clashWinner.Key} Pieces left!");
             DisplayHelper($"\n{clashLoser.Value.GetName()} has lost the clash, damaged, and the current HP is now: {autoChessGame.ShowPlayerHealth(clashLoser.Value)}");
             DisplayHelper("Press any key..");
@@ -100,17 +100,23 @@ partial class Program
             UserInputPrompt();
 
             CleanScreen();
-            if (autoChessGame.GetAlivePlayers().Count() == 1)
+            if (autoChessGame.PlayersLeft() == 1)
             {
+                IPlayer winner  = autoChessGame.GetAlivePlayers().First();
                 autoChessGame.SetGameStatus(GameStatusEnum.Completed);
                 DisplayHelper("Game Concluded");
+                DisplayHelper($"The winner is: {winner.GetName()}");
                 UserInputPrompt();
             }
-            DisplayHelper("Proceeding to next round...");
-            autoChessGame.GoNextRound();
-            storeToPlay.RerollStore();
-            UserInputPrompt();
 
+            else
+            {
+
+                DisplayHelper("Proceeding to next round...");
+                autoChessGame.GoNextRound();
+                storeToPlay.RerollStore();
+                UserInputPrompt();
+            }
         }
 
     }

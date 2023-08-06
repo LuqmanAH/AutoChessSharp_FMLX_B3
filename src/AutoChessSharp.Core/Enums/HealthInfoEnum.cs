@@ -2,5 +2,5 @@
 public enum HealthInfoEnum
 {
     MinHealth = 0,
-    MaxHealth = 10
+    MaxHealth = 5
 }

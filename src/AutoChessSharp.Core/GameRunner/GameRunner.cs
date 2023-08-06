@@ -63,7 +63,7 @@ public partial class GameRunner
 
                 playerInfos.SetExperience(exp);
                 playerInfos.SetGold(gold);
-                // playerInfos.IncrementLevel();
+                playerInfos.IncrementLevel();
             }
 
             return true;
@@ -79,7 +79,7 @@ public partial class GameRunner
 
     public bool SetCountDown(int countDown)
     {
-        if (countDown <= 0)
+        if (countDown < 0)
         {
             return false;
         }

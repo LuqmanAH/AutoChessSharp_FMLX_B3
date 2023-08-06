@@ -125,7 +125,7 @@ public class PlayerInfo : IPlayerInfo
         if (_experience == _requiredExperience)
         {
             _level ++;
-            _experience = (int)minExp;
+            _requiredExperience ++;
             return true;
         }
         return false;
