@@ -116,4 +116,5 @@ public partial class GameRunner
         List<IPlayer> alivePlayers = GetAlivePlayers();
         return alivePlayers.Count;
     }
+    
 }

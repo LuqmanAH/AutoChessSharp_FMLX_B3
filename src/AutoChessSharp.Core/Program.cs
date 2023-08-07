@@ -67,6 +67,7 @@ partial class Program
 
             }
 
+            //* Pre clash startup
             //TODO decouple and try to omit using thread sleep
             CleanScreen();
 
@@ -85,11 +86,13 @@ partial class Program
                 InlineDisplayHelper(".");
             }
 
+            //* Chaos Ensues
             SortedDictionary<int, IPlayer> afterClash = autoChessGame.GameClash();
             KeyValuePair<int, IPlayer> clashLoser = autoChessGame.GetClashLoser(afterClash);
             KeyValuePair<int, IPlayer> clashWinner = autoChessGame.GetClashWinner(afterClash);
             autoChessGame.DecreasePlayerHealth(clashLoser);
 
+            //* Post-Chaos
             CleanScreen();
             autoChessGame.SetCountDown(0);
             DisplayHelper($"{clashWinner.Value.GetName()} Wins the clash with {clashWinner.Key} Pieces left!");
@@ -157,6 +160,8 @@ partial class Program
         UserInputPrompt();
     }
 
+
+    //TODO pindah ke GameRunner
     public static List<Piece>? PieceInitializer()
     {
         var deserializer = new DataContractJsonSerializer(typeof(List<Piece>));

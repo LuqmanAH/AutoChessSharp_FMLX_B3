@@ -1,6 +1,6 @@
 ﻿namespace AutoChessSharp.Core;
 
-//! 
+//! Overall experimental algorithm, may return unexpected bugs
 public partial class GameRunner
 {
     /// <summary>
