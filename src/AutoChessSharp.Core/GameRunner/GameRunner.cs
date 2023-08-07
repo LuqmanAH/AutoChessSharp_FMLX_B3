@@ -35,14 +35,14 @@ public partial class GameRunner
         }
     }
 
-    public List<Piece> GetStorePiecesDB(string path)
+    private List<Piece> GetStorePiecesDB(string path)
     {
         var deserializer = new DataContractJsonSerializer(typeof(List<Piece>));
-        FileStream fileStream= new FileStream(path, FileMode.Open);
 
+        using FileStream fileStream = new FileStream(path, FileMode.Open);
         List<Piece>? piecesToPlay = (List<Piece>?)deserializer.ReadObject(fileStream);
-
         return piecesToPlay;
+
     }
 
     //* Board and store getters

@@ -5,8 +5,8 @@ partial class Program
     async static Task Main()
     {
         //* env init
-        string pathForDebug = @".\Database\PiecesToPlay.json";
-        string pathForRelease = @"..\..\Database\PiecesToPlay.json";
+        string pathForDebug = @"Database\Pieces.ToPlay.json";
+        string pathForRelease = @"..\..\..\Database\Pieces.ToPlay.json";
         Board autoChessBoard = new Board(8);
 
         GameRunner autoChessGame = new GameRunner(autoChessBoard);
@@ -30,6 +30,7 @@ partial class Program
         }
 
         Dictionary<IPlayer, PlayerInfo> playerInGame = autoChessGame.GetInGamePlayers();
+        autoChessGame.GetStore().RerollStore();
 
         //* player check
         CleanScreen();
@@ -71,7 +72,7 @@ partial class Program
             }
 
             //* Pre clash startup
-            //TODO decouple and try to omit using thread sleep
+            //TODO decouple and try to omit using thread sleep (resolved, yet to decouple)
             CleanScreen();
 
             DisplayHelper($"\n{players[0].GetName()} Pieces:\n");
@@ -138,29 +139,6 @@ partial class Program
             }
         }
 
-    }
-
-    public static void InitPrompt(GameRunner gameRunner, Player player, int ID)
-    {
-        CleanScreen();
-        DisplayHelper("====Auto Chess Game====");
-        DisplayHelper("* This is the two players version of the game ");
-        DisplayHelper($"* Enter string as player {ID} name: ");
-        string? playerOneName = UserInputPrompt();
-        bool checkOne = player.SetPlayerName(playerOneName);
-        gameRunner.AddPlayer(player);
-
-        while (!checkOne)
-        {
-            CleanScreen();
-            DisplayHelper("Name cannot be set, please Input another: ");
-            playerOneName = UserInputPrompt();
-            checkOne = player.SetPlayerName(playerOneName);
-        }
-
-        CleanScreen();
-        DisplayHelper("Name successfully set, press any key to continue..");
-        UserInputPrompt();
     }
 
 }

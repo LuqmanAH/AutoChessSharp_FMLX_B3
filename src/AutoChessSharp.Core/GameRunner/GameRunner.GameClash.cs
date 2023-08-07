@@ -100,7 +100,7 @@ public partial class GameRunner
         return playerSurvivorPieces;
     }
 
-    //TODO this still doesnt work [Very Experimental]
+    //! this still doesnt work [Very Experimental]
     private bool ResetPlayerPieces(PlayerInfo playerInfo, List<Piece> playerSurvivorPiece)
     {
         if (playerSurvivorPiece == null)
@@ -129,6 +129,7 @@ public partial class GameRunner
     /// <param name="clashResult"></param>
     /// <returns> key value pair representing the damage received as the key, and the damaged player as the value. Damage received based on winner remaining pieces </returns>
     /// <exception cref="NullReferenceException"></exception>
+    //TODO can implement Delegate clashLoser and clashWinner to GameClash
     public KeyValuePair<int, IPlayer> GetClashLoser(SortedDictionary<int, IPlayer> clashResult)
     {
         if (clashResult == null)

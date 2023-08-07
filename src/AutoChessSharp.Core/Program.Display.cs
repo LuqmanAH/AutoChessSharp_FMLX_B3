@@ -2,6 +2,30 @@
 
 partial class Program
 {
+
+    public static void InitPrompt(GameRunner gameRunner, Player player, int ID)
+    {
+        CleanScreen();
+        DisplayHelper("====Auto Chess Game====");
+        DisplayHelper("* This is the two players version of the game ");
+        DisplayHelper($"* Enter string as player {ID} name: ");
+        string? playerOneName = UserInputPrompt();
+        bool checkOne = player.SetPlayerName(playerOneName);
+        gameRunner.AddPlayer(player);
+
+        while (!checkOne)
+        {
+            CleanScreen();
+            DisplayHelper("Name cannot be set, please Input another: ");
+            playerOneName = UserInputPrompt();
+            checkOne = player.SetPlayerName(playerOneName);
+        }
+
+        CleanScreen();
+        DisplayHelper("Name successfully set, press any key to continue..");
+        UserInputPrompt();
+    }
+
     public static void DisplayHelper<T>(T value)
     {
         Console.WriteLine(value);
