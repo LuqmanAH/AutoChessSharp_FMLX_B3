@@ -17,6 +17,10 @@ public partial class GameRunner
     private AfterClashEvent afterClashEvent;
 
     //* ctor
+    /// <summary>
+    /// Represents the auto chess game runner class, shares composition with a board class
+    /// </summary>
+    /// <param name="board"></param>
     public GameRunner(IBoard board)
     {
         _round = 1;
@@ -29,6 +33,11 @@ public partial class GameRunner
         afterClashEvent += ClashWinnerEvent;
     }
 
+    /// <summary>
+    /// Attempt to populate store _available piece collection from external JSON data
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns>true when path given is valid</returns>
     public bool SetStorePieces(string path)
     {
         try
@@ -43,6 +52,11 @@ public partial class GameRunner
         }
     }
 
+    /// <summary>
+    /// Deserializer to read from JSON serialized object
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns>Piece collection</returns>
     private List<Piece> GetStorePiecesDB(string path)
     {
         var deserializer = new DataContractJsonSerializer(typeof(List<Piece>));
@@ -55,11 +69,19 @@ public partial class GameRunner
 
     //* Board and store getters
 
+    /// <summary>
+    /// Give access to store methods
+    /// </summary>
+    /// <returns>store associated to a game instance</returns>
     public Store GetStore()
     {
         return _store;
     }
 
+    /// <summary>
+    /// Give access to Board boundary
+    /// </summary>
+    /// <returns>Board associated to a game instance</returns>
     public IBoard GetBoard()
     {
         return _board;
@@ -67,11 +89,20 @@ public partial class GameRunner
 
     //* Round mech
 
+    /// <summary>
+    /// Access current on going round in a game
+    /// </summary>
+    /// <returns>integer representing round</returns>
     public int GetCurrentRound()
     {
         return _round;
     }
 
+    /// <summary>
+    /// Attempts to set the round field of a game instance
+    /// </summary>
+    /// <param name="round"></param>
+    /// <returns>true when the integer given is not negative value</returns>
     public bool SetRound(int round)
     {
         if (round < 0)
@@ -82,7 +113,13 @@ public partial class GameRunner
         return true;
     }
 
-    public bool GoNextRound()
+    /// <summary>
+    /// Advances the game round, dispensing exp and gold to every player based on arguments
+    /// </summary>
+    /// <param name="expGiven"></param>
+    /// <param name="goldGiven"></param>
+    /// <returns>true when the countdown reached 0</returns>
+    public bool GoNextRound(int expGiven, int goldGiven)
     {
         if (_countDown == 0)
         {
@@ -93,8 +130,8 @@ public partial class GameRunner
                 int exp = playerInfos.GetExperience();
                 int gold = playerInfos.GetGold();
 
-                exp += 1;
-                gold += 2;
+                exp += expGiven;
+                gold += goldGiven;
 
                 playerInfos.SetExperience(exp);
                 playerInfos.SetGold(gold);
@@ -107,11 +144,20 @@ public partial class GameRunner
     }
 
     //* Countdown getter/setter
+    /// <summary>
+    /// Give access to countdown variable
+    /// </summary>
+    /// <returns>integer representing countdown</returns>
     public int GetCountDown()
     {
         return _countDown;
     }
 
+    /// <summary>
+    /// Set an integer as countdown timer for clash purpose, may be used for other purposes in the game flow
+    /// </summary>
+    /// <param name="countDown"></param>
+    /// <returns></returns>
     public bool SetCountDown(int countDown)
     {
         if (countDown < 0)
@@ -123,11 +169,20 @@ public partial class GameRunner
     }
 
     //* Game status getter/setter
+    /// <summary>
+    /// Give access to current status of the game
+    /// </summary>
+    /// <returns>game status enum</returns>
     public GameStatusEnum GetGameStatus()
     {
         return _gameStatus;
     }
 
+    /// <summary>
+    /// change the game status variable based on the passed argument
+    /// </summary>
+    /// <param name="gameStatus"></param>
+    /// <returns>true when the passed argument is different from current status</returns>
     public bool SetGameStatus(GameStatusEnum gameStatus)
     {
         if (gameStatus == _gameStatus)
@@ -139,6 +194,12 @@ public partial class GameRunner
     }
 
     //? include to player methods?
+    /// <summary>
+    /// Simulate the piece transaction process by the player
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="piece"></param>
+    /// <returns>true when the corresponding player gold sufficient</returns>
     public bool BuyFromStore(Player player, Piece piece)
     {
         

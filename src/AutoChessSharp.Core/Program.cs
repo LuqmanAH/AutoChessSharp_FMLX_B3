@@ -84,6 +84,7 @@ partial class Program
             DisplayHelper("\n\nInitiating Clash... press any key when ready");
             UserInputPrompt();
             DisplayHelper($"Starting Randomized clash");
+            
             for (int elapsedCountDown = 0; elapsedCountDown < autoChessGame.GetCountDown(); elapsedCountDown++)
             {
                 await Task.Delay(1000);
@@ -91,6 +92,7 @@ partial class Program
             }
 
             //* Chaos Ensues
+            //TODO Debug step in to this brok
             autoChessGame.GameClash();
             KeyValuePair<int, IPlayer> clashLoser = autoChessGame.GetClashLoser();
             KeyValuePair<int, IPlayer> clashWinner = autoChessGame.GetClashWinner();
@@ -119,6 +121,7 @@ partial class Program
 
             UserInputPrompt();
 
+            //? might be better to implement a standalone logic in gamerunner to invoke winner
             CleanScreen();
             if (autoChessGame.PlayersLeft() == 1)
             {
@@ -133,7 +136,7 @@ partial class Program
             {
 
                 DisplayHelper("Proceeding to next round...");
-                autoChessGame.GoNextRound();
+                autoChessGame.GoNextRound(1, 2);
                 autoChessGame.GetStore().RerollStore();
                 UserInputPrompt();
             }
