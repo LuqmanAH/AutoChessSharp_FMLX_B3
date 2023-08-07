@@ -6,9 +6,9 @@ public class Store
     private List<Piece> _availPieces;
 
     //* store now has composite relation with Piece, list of Piece to be precise
-    public Store(List<Piece>? availPieces)
+    public Store()
     {
-        _availPieces = availPieces ?? throw new NullReferenceException(message:"The Available Pieces are not set!");
+        _availPieces = new List<Piece>();
     }
 
     // * LinQ implementation to populate storePieces
@@ -47,6 +47,16 @@ public class Store
             throw new NullReferenceException(message: "Store piece is not rolled yet!");
         }
         return _storePieces;
+    }
+
+    public bool SetStorePieces(List<Piece> piecesList)
+    {
+        if (piecesList == null)
+        {
+            return false;
+        }
+        _availPieces = piecesList;
+        return true;
     }
 
 }

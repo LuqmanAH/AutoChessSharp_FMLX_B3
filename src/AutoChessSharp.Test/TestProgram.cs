@@ -140,7 +140,7 @@ public class Program
         Board board = new(8);
         Store store = new(pieces);
 
-        GameRunner autoChess = new GameRunner(board, store);
+        GameRunner autoChess = new GameRunner(board);
         Player player1= new Player("Baal");
         Player player2= new Player("Buer");
 
@@ -167,7 +167,7 @@ public class Program
         Board board = new(8);
         Store store = new(pieces);
 
-        GameRunner autoChess = new GameRunner(board, store);
+        GameRunner autoChess = new GameRunner(board);
         Player player1= new Player("Baal");
         Player player2= new Player("Buer");
         Player player3= new Player("Barbatos");
@@ -281,7 +281,7 @@ public class Program
         Board board = new(8);
         Store store = new(pieces);
 
-        GameRunner autoChess = new GameRunner(board, store);
+        GameRunner autoChess = new GameRunner(board);
         Player player1= new Player("Baal");
         Player player2= new Player("Buer");
 

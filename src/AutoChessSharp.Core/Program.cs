@@ -1,17 +1,20 @@
 using AutoChessSharp.Core;
-using System.Runtime.Serialization.Json;
 
 partial class Program
 {
     async static Task Main()
     {
         //* env init
-        List<Piece>? piecesToPlay = PieceInitializer();
-        Store? storeToPlay = new Store(piecesToPlay);
-        storeToPlay.RerollStore();
-
+        string pathForDebug = @".\Database\PiecesToPlay.json";
+        string pathForRelease = @"..\..\Database\PiecesToPlay.json";
         Board autoChessBoard = new Board(8);
-        GameRunner autoChessGame = new GameRunner(autoChessBoard, storeToPlay);
+
+        GameRunner autoChessGame = new GameRunner(autoChessBoard);
+
+        if (!autoChessGame.SetStorePieces(pathForDebug))
+        {
+            autoChessGame.SetStorePieces(pathForRelease);
+        }
         
         //* players insertion
         CleanScreen();
@@ -130,7 +133,7 @@ partial class Program
 
                 DisplayHelper("Proceeding to next round...");
                 autoChessGame.GoNextRound();
-                storeToPlay.RerollStore();
+                autoChessGame.GetStore().RerollStore();
                 UserInputPrompt();
             }
         }
@@ -158,18 +161,6 @@ partial class Program
         CleanScreen();
         DisplayHelper("Name successfully set, press any key to continue..");
         UserInputPrompt();
-    }
-
-
-    //TODO pindah ke GameRunner
-    public static List<Piece>? PieceInitializer()
-    {
-        var deserializer = new DataContractJsonSerializer(typeof(List<Piece>));
-        FileStream fileStream= new FileStream(@"..\..\..\..\AutoChessSharp.PieceFactory\PiecesToPlay.json", FileMode.Open);
-
-        List<Piece>? piecesToPlay = (List<Piece>?)deserializer.ReadObject(fileStream);
-
-        return piecesToPlay;
     }
 
 }

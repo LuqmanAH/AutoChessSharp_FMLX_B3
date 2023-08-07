@@ -1,6 +1,5 @@
 ﻿using AutoChessSharp.Core;
 using System.Text;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
 class PieceFactory
@@ -43,8 +42,10 @@ class PieceFactory
 
         List<Piece> piecesToSerialize = SetAvailablePieces();
 
+        string path = @"..\AutoChessSharp.Core\Database\Pieces.ToPlay.json";
+
         var jsonSer = new DataContractJsonSerializer(typeof(List<Piece>), Settings);
-        FileStream streamer = new FileStream("PiecesToPlay.json", FileMode.Create);
+        FileStream streamer = new FileStream(path, FileMode.Create);
 
         using (var writer = JsonReaderWriterFactory.CreateJsonWriter(streamer, Encoding.UTF8, true, true, " "))
         {

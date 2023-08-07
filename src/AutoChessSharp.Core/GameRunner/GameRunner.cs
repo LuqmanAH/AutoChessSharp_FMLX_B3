@@ -1,4 +1,6 @@
-﻿namespace AutoChessSharp.Core;
+﻿using System.Runtime.Serialization.Json;
+
+namespace AutoChessSharp.Core;
 public partial class GameRunner
 {
     private Dictionary<IPlayer, PlayerInfo> _playerDetail;
@@ -9,13 +11,38 @@ public partial class GameRunner
     private int _countDown;
 
     //* ctor
-    public GameRunner(IBoard board, Store store)
+    public GameRunner(IBoard board)
     {
         _round = 1;
         _board = board;
-        _store = store;
+        _store = new Store();
+        _store.RerollStore();
         _gameStatus = GameStatusEnum.NotStarted;
         _playerDetail = new Dictionary<IPlayer, PlayerInfo>();
+    }
+
+    public bool SetStorePieces(string path)
+    {
+        try
+        {
+            List<Piece> storePieces = GetStorePiecesDB(path);
+            _store.SetStorePieces(storePieces);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public List<Piece> GetStorePiecesDB(string path)
+    {
+        var deserializer = new DataContractJsonSerializer(typeof(List<Piece>));
+        FileStream fileStream= new FileStream(path, FileMode.Open);
+
+        List<Piece>? piecesToPlay = (List<Piece>?)deserializer.ReadObject(fileStream);
+
+        return piecesToPlay;
     }
 
     //* Board and store getters
