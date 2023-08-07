@@ -39,15 +39,12 @@ public partial class GameRunner
     private List<Piece>[] GetEachPlayerPiece()
     {
         List<Piece>[] eachPlayerPieces = new List<Piece>[PlayersLeft()];
+        int playerID = 0;
         foreach (var playerData in _playerDetail.Values)
         {
-            for (int playerID = 0; playerID < PlayersLeft(); playerID++)
-            {
-                if (eachPlayerPieces[playerID] is null)
-                {
-                    eachPlayerPieces[playerID] = playerData.GetPieces();
-                }
-            }
+            eachPlayerPieces[playerID] = playerData.GetPieces();
+            playerID ++;
+
         }
         return eachPlayerPieces;
     }
@@ -79,6 +76,7 @@ public partial class GameRunner
     {
         List<Piece>[] playerSurvivorPieces = new List<Piece>[PlayersLeft()];
 
+        //* might be buggy
         int firstExtract = maxAmount + 1;
 
         for (int playerID = 0; playerID < PlayersLeft(); playerID++)
@@ -102,7 +100,6 @@ public partial class GameRunner
         return playerSurvivorPieces;
     }
 
-    //! this still doesnt work [Very Experimental]
     private bool ResetPlayerPieces(PlayerInfo playerInfo, List<Piece> playerSurvivorPiece)
     {
         if (playerSurvivorPiece == null)
