@@ -3,7 +3,7 @@ using System.Runtime.Serialization.Json;
 
 partial class Program
 {
-    public static void Main()
+    async static Task Main()
     {
         //* env init
         List<Piece>? piecesToPlay = PieceInitializer();
@@ -82,7 +82,7 @@ partial class Program
             DisplayHelper($"Starting Randomized clash");
             for (int elapsedCountDown = 0; elapsedCountDown < autoChessGame.GetCountDown(); elapsedCountDown++)
             {
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
                 InlineDisplayHelper(".");
             }
 
