@@ -1,6 +1,9 @@
 ﻿using System.Runtime.Serialization.Json;
 
 namespace AutoChessSharp.Core;
+
+public delegate void AfterClashEvent(SortedDictionary<int, IPlayer> clashResult); 
+
 public partial class GameRunner
 {
     private Dictionary<IPlayer, PlayerInfo> _playerDetail;
@@ -9,6 +12,9 @@ public partial class GameRunner
     private GameStatusEnum _gameStatus;
     private int _round;
     private int _countDown;
+    private KeyValuePair<int, IPlayer> _clashLoser;
+    private KeyValuePair<int, IPlayer> _clashWinner;
+    private AfterClashEvent afterClashEvent;
 
     //* ctor
     public GameRunner(IBoard board)
@@ -19,6 +25,8 @@ public partial class GameRunner
         _store.RerollStore();
         _gameStatus = GameStatusEnum.NotStarted;
         _playerDetail = new Dictionary<IPlayer, PlayerInfo>();
+        afterClashEvent= new(ClashLoserEvent);
+        afterClashEvent += ClashWinnerEvent;
     }
 
     public bool SetStorePieces(string path)

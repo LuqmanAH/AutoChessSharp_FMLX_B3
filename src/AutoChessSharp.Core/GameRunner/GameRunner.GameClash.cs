@@ -27,6 +27,8 @@ public partial class GameRunner
             survivorIndex ++;
         }
 
+        afterClashEvent.Invoke(afterClash);
+
         return afterClash;
     }
 
@@ -130,27 +132,29 @@ public partial class GameRunner
     /// <returns> key value pair representing the damage received as the key, and the damaged player as the value. Damage received based on winner remaining pieces </returns>
     /// <exception cref="NullReferenceException"></exception>
     //TODO can implement Delegate clashLoser and clashWinner to GameClash
-    public KeyValuePair<int, IPlayer> GetClashLoser(SortedDictionary<int, IPlayer> clashResult)
+    
+    private void ClashLoserEvent(SortedDictionary<int, IPlayer> clashResult)
     {
-        if (clashResult == null)
-        {
-            throw new NullReferenceException(message: "Clash not yet started!");
-        }
         KeyValuePair<int, IPlayer> loserPair = clashResult.First();
         KeyValuePair<int, IPlayer> winnerPair = clashResult.Reverse().First();
         KeyValuePair<int, IPlayer> playerDamaged = new KeyValuePair<int, IPlayer>(winnerPair.Key, loserPair.Value);
 
-        return playerDamaged;
+        _clashLoser = playerDamaged;
     }
 
-    public KeyValuePair<int,IPlayer> GetClashWinner(SortedDictionary<int, IPlayer> clashResult)
+    private void ClashWinnerEvent(SortedDictionary<int, IPlayer> clashResult)
     {
-        if (clashResult == null)
-        {
-            throw new NullReferenceException(message: "Clash not yet started!");
-        }
+        _clashWinner = clashResult.Reverse().First();
+    }
 
-        return clashResult.Reverse().First();
+    public KeyValuePair<int, IPlayer> GetClashLoser()
+    {
+        return _clashLoser;
+    }
+
+    public KeyValuePair<int, IPlayer> GetClashWinner()
+    {
+        return _clashWinner;
     }
 
     /// <summary>

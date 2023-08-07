@@ -91,9 +91,9 @@ partial class Program
             }
 
             //* Chaos Ensues
-            SortedDictionary<int, IPlayer> afterClash = autoChessGame.GameClash();
-            KeyValuePair<int, IPlayer> clashLoser = autoChessGame.GetClashLoser(afterClash);
-            KeyValuePair<int, IPlayer> clashWinner = autoChessGame.GetClashWinner(afterClash);
+            autoChessGame.GameClash();
+            KeyValuePair<int, IPlayer> clashLoser = autoChessGame.GetClashLoser();
+            KeyValuePair<int, IPlayer> clashWinner = autoChessGame.GetClashWinner();
             autoChessGame.DecreasePlayerHealth(clashLoser);
 
             //* Post-Chaos
