@@ -11,6 +11,8 @@ partial class Program
         switch (storeIndex)
         {
             case 0:
+                CleanScreen();
+                DisplayHelper("BUY AT LEAST ONE PIECE PLS");
                 break;
 
             case 1 :

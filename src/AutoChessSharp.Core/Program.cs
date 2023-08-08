@@ -60,10 +60,10 @@ partial class Program
                     DisplayHelper($"==== Beginning Round {autoChessGame.GetCurrentRound()} ====\n");
                     DisplayHelper($"player {player.GetName()} stats:");
                     ShowPlayerStats(autoChessGame, player);
-                    DisplayHelper($"\n player {player.GetName()} pieces List:");
+                    DisplayHelper($"\nplayer {player.GetName()} pieces List:");
                     DisplayPlayerPieces(autoChessGame, player);
                     DisplayHelper($"\n==== Buying Phase ====");
-                    DisplayHelper($"Store stock:");
+                    DisplayHelper($"index\tStore stock");
                     ShowStoreStock(storeStock);
                     buyOrLeave = BuyingPhaseLoop(autoChessGame, player,storeStock);
 
