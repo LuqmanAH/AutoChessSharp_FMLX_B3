@@ -20,14 +20,14 @@ public class PlayerInfo : IPlayerInfo
     private int _gold;
     private int _requiredExperience = 1;
 
-    private List<Piece>? _pieceList;
+    private List<IPiece>? _pieceList;
 
     public PlayerInfo(int _gold = 5)
     {
         _level = (int)LevelInfoEnum.MinLevel;
         _experience = (int)ExperienceInfoEnum.MinExperience;
         _health = (int)HealthInfoEnum.MaxHealth;
-        _pieceList = new List<Piece>();
+        _pieceList = new List<IPiece>();
         this._gold = _gold;
     }
 
@@ -52,7 +52,7 @@ public class PlayerInfo : IPlayerInfo
     }
 
     
-    public List<Piece> GetPieces()
+    public List<IPiece> GetPieces()
     {
         if (_pieceList == null)
         {
@@ -101,7 +101,7 @@ public class PlayerInfo : IPlayerInfo
         return true;
     }
 
-    public bool SetPieces (List<Piece>? pieceList)
+    public bool SetPieces (List<IPiece>? pieceList)
     {
         if (pieceList is null)
         {

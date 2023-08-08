@@ -13,7 +13,7 @@ public partial class GameRunner
         return _playerDetail;
     }
 
-    public Player GetPlayer(int playerIndex)
+    public IPlayer GetPlayer(int playerIndex)
     {
         return (Player)_playerDetail.Keys.ElementAt(playerIndex - 1);
     }
@@ -38,9 +38,37 @@ public partial class GameRunner
         return playerStats;
     }
 
-    public List<Piece> GetPlayerPiece(Player player)
+    public int GetPlayerCurrentLevel(IPlayer player)
     {
-        List<Piece> playerPieces = new();
+        PlayerInfo playerInfo = _playerDetail[player];
+        return playerInfo.GetLevel();
+
+    }
+    
+    public int GetPlayerCurrentExperience(IPlayer player)
+    {
+        PlayerInfo playerInfo = _playerDetail[player];
+        return playerInfo.GetExperience();
+
+    }
+    
+    public int GetPlayerCurrentHP(IPlayer player)
+    {
+        PlayerInfo playerInfo = _playerDetail[player];
+        return playerInfo.GetHealth();
+
+    }
+    
+    public int GetPlayerCurrentGold(IPlayer player)
+    {
+        PlayerInfo playerInfo = _playerDetail[player];
+        return playerInfo.GetGold();
+
+    }
+
+    public List<IPiece> GetPlayerPiece(IPlayer player)
+    {
+        List<IPiece> playerPieces = new();
         foreach (var playerData in _playerDetail)
         {
             if (playerData.Key == player)

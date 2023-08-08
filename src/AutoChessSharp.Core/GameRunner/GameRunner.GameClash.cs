@@ -6,17 +6,17 @@ public partial class GameRunner
     /// <summary>
     /// Simulate a randomized war process in autochess, current version supports fixed small range random number generator
     /// </summary>
-    /// <returns>SortedDictionary where the key represents piece left after the clash and the value represents the corresponding player</returns>
+    /// <returns>SortedDictionary where the key represents IPiece left after the clash and the value represents the corresponding player</returns>
     public SortedDictionary<int, IPlayer> GameClash()
     {
         SortedDictionary<int, IPlayer> afterClash = new SortedDictionary<int, IPlayer>();
         Random rng = new Random();
         
-        List<Piece>[] eachPlayerPieces = GetEachPlayerPiece();
+        List<IPiece>[] eachPlayerPieces = GetEachPlayerPiece();
         
-        List<Piece>[] shuffledPlayerPieces = PlayerPieceShuffle(eachPlayerPieces, rng);
+        List<IPiece>[] shuffledPlayerPieces = PlayerPieceShuffle(eachPlayerPieces, rng);
         
-        List<Piece>[] playerSurvivorPieces = SurvivorRandomExtract(shuffledPlayerPieces, rng, 3);
+        List<IPiece>[] playerSurvivorPieces = SurvivorRandomExtract(shuffledPlayerPieces, rng, 3);
         
         int[] playerSurvivorsCount = SurvivorsCount(playerSurvivorPieces);
 
@@ -36,9 +36,9 @@ public partial class GameRunner
     /// Extract every available pieces in the hand of in game player
     /// </summary>
     /// <returns>Array of player pieces list, not sorted</returns>
-    private List<Piece>[] GetEachPlayerPiece()
+    private List<IPiece>[] GetEachPlayerPiece()
     {
-        List<Piece>[] eachPlayerPieces = new List<Piece>[PlayersLeft()];
+        List<IPiece>[] eachPlayerPieces = new List<IPiece>[PlayersLeft()];
         int playerID = 0;
         foreach (var playerData in _playerDetail.Values)
         {
@@ -55,9 +55,9 @@ public partial class GameRunner
     /// <param name="piecesToShuffle"></param>
     /// <param name="rng"></param>
     /// <returns>Array of player pieces list, shuffled randomly</returns>
-    private List<Piece>[] PlayerPieceShuffle(List<Piece>[] piecesToShuffle, Random rng)
+    private List<IPiece>[] PlayerPieceShuffle(List<IPiece>[] piecesToShuffle, Random rng)
     {
-        List<Piece>[] shuffledPlayerPieces = new List<Piece>[PlayersLeft()];
+        List<IPiece>[] shuffledPlayerPieces = new List<IPiece>[PlayersLeft()];
         for (int playerID = 0; playerID < PlayersLeft(); playerID++)
         {
             shuffledPlayerPieces[playerID] = piecesToShuffle[playerID].OrderByDescending(playerID => rng.Next()).ToList();
@@ -66,15 +66,15 @@ public partial class GameRunner
     }
 
     /// <summary>
-    /// Simulate piece death by subtracting pieces by a randomly generated amount
+    /// Simulate IPiece death by subtracting pieces by a randomly generated amount
     /// </summary>
     /// <param name="survivorsToExtract"></param>
     /// <param name="rng"></param>
     /// <param name="maxAmount"></param>
     /// <returns>Array of player pieces list left after the subtraction</returns>
-    private List<Piece>[] SurvivorRandomExtract(List<Piece>[] survivorsToExtract, Random rng, int maxAmount)
+    private List<IPiece>[] SurvivorRandomExtract(List<IPiece>[] survivorsToExtract, Random rng, int maxAmount)
     {
-        List<Piece>[] playerSurvivorPieces = new List<Piece>[PlayersLeft()];
+        List<IPiece>[] playerSurvivorPieces = new List<IPiece>[PlayersLeft()];
 
         //* might be buggy
         int firstExtract = maxAmount + 1;
@@ -100,7 +100,7 @@ public partial class GameRunner
         return playerSurvivorPieces;
     }
 
-    private bool ResetPlayerPieces(PlayerInfo playerInfo, List<Piece> playerSurvivorPiece)
+    private bool ResetPlayerPieces(PlayerInfo playerInfo, List<IPiece> playerSurvivorPiece)
     {
         if (playerSurvivorPiece == null)
         {
@@ -112,7 +112,7 @@ public partial class GameRunner
         return true;
     }
 
-    private int[] SurvivorsCount(List<Piece>[] survivorsToCount)
+    private int[] SurvivorsCount(List<IPiece>[] survivorsToCount)
     {
         int[] playerSurvivorsCount = new int[PlayersLeft()];
 

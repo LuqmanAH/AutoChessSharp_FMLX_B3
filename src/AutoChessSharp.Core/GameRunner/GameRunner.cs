@@ -13,7 +13,7 @@ public partial class GameRunner
     private int _round;
     private int _countDown;
     private KeyValuePair<int, IPlayer> _clashLoser;
-    private KeyValuePair<int, IPlayer> _clashWinzner;
+    private KeyValuePair<int, IPlayer> _clashWinner;
     private AfterClashEvent afterClashEvent;
 
     //* ctor
@@ -61,9 +61,11 @@ public partial class GameRunner
     {
         var deserializer = new DataContractJsonSerializer(typeof(List<Piece>));
 
-        using FileStream fileStream = new FileStream(path, FileMode.Open);
-        List<Piece>? piecesToPlay = (List<Piece>?)deserializer.ReadObject(fileStream);
-        return piecesToPlay;
+        using (FileStream fileStream = new FileStream(path, FileMode.Open))
+        {
+            List<Piece>? piecesToPlay = (List<Piece>?)deserializer.ReadObject(fileStream);
+            return piecesToPlay;
+        }
 
     }
 
@@ -204,7 +206,7 @@ public partial class GameRunner
     {
         
         int piecePrice = _store.GetPiecePrice(piece);
-        int playerBalance = GetPlayerStats(player)["Gold"];
+        int playerBalance = GetPlayerCurrentGold(player);
 
         int updatedBalance = playerBalance - piecePrice;
         bool buySuccess = GetInGamePlayers()[player].SetGold(updatedBalance);

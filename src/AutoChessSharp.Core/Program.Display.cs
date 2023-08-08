@@ -66,7 +66,7 @@ partial class Program
     {
         foreach (var piece in storeStock)
         {
-            DisplayHelper($"{storeStock.IndexOf(piece)+ 1} ] {piece.GetName()} {piece.GetRarityEnum()} {piece.GetArcheType()} for {piece.GetPrice()} Gold");
+            DisplayHelper($"{storeStock.IndexOf(piece)+ 1} ] {piece.GetName()} {piece.GetRarityEnum()} {piece.GetArcheType()} for {piece.GetPrice()} Gold\nstats: ATK: {piece.GetAttack()} HP: {piece.GetHealthPoint()}\n");
         }
     }
 }

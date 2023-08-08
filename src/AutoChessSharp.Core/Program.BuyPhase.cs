@@ -20,9 +20,9 @@ partial class Program
                 {
                     CleanScreen();
                     DisplayHelper($"Successfully bought {storeStock[0].GetName()}");
-                    DisplayHelper($"Updated Gold: {autoChessGame.GetPlayerStats(player)["Gold"]}");
+                    DisplayHelper($"Updated Gold: {autoChessGame.GetPlayerCurrentGold(player)}");
                     DisplayHelper($"\n{player.GetName()} Updated Piece List:");
-
+ 
                     DisplayPlayerPieces(autoChessGame, player);
                     DisplayHelper("\nPress any key to continue..");
                     UserInputPrompt();
@@ -39,7 +39,7 @@ partial class Program
                 {
                     CleanScreen();
                     DisplayHelper($"Successfully bought {storeStock[1].GetName()}");
-                    DisplayHelper($"Updated Gold: {autoChessGame.GetPlayerStats(player)["Gold"]}");
+                    DisplayHelper($"Updated Gold: {autoChessGame.GetPlayerCurrentGold(player)}");
                     DisplayHelper($"\n{player.GetName()} Updated Piece List:");
 
                     DisplayPlayerPieces(autoChessGame, player);
@@ -58,7 +58,7 @@ partial class Program
                 {
                     CleanScreen();
                     DisplayHelper($"Successfully bought {storeStock[2].GetName()}");
-                    DisplayHelper($"Updated Gold: {autoChessGame.GetPlayerStats(player)["Gold"]}");
+                    DisplayHelper($"Updated Gold: {autoChessGame.GetPlayerCurrentGold(player)}");
                     DisplayHelper($"\n{player.GetName()} Updated Piece List:");
 
                     DisplayPlayerPieces(autoChessGame, player);
@@ -77,7 +77,7 @@ partial class Program
                 {
                     CleanScreen();
                     DisplayHelper($"Successfully bought {storeStock[3].GetName()}");
-                    DisplayHelper($"Updated Gold: {autoChessGame.GetPlayerStats(player)["Gold"]}");
+                    DisplayHelper($"Updated Gold: {autoChessGame.GetPlayerCurrentGold(player)}");
                     DisplayHelper($"\n{player.GetName()} Updated Piece List:");
 
                     DisplayPlayerPieces(autoChessGame, player);
@@ -96,7 +96,7 @@ partial class Program
                 {
                     CleanScreen();
                     DisplayHelper($"Successfully bought {storeStock[4].GetName()}");
-                    DisplayHelper($"Updated Gold: {autoChessGame.GetPlayerStats(player)["Gold"]}");
+                    DisplayHelper($"Updated Gold: {autoChessGame.GetPlayerCurrentGold(player)}");
                     DisplayHelper($"\n{player.GetName()} Updated Piece List:");
 
                     DisplayPlayerPieces(autoChessGame, player);
