@@ -53,6 +53,8 @@ partial class Program
 
             foreach (Player player in players)
             {
+                DisplayHelper($"{player.GetName()} turn to pick\npress enter to continue..");
+                UserInputPrompt();
                 int buyOrLeave;
                 do
                 {
@@ -68,7 +70,7 @@ partial class Program
                     buyOrLeave = BuyingPhaseLoop(autoChessGame, player,storeStock);
 
                 }while (buyOrLeave != 0 || autoChessGame.GetPlayerPiece(player).Count == 0);
-
+                CleanScreen();
             }
 
             //* Pre clash startup
