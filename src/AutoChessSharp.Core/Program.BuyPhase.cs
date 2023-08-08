@@ -4,15 +4,13 @@ partial class Program
 {
     public static int BuyingPhaseLoop(GameRunner autoChessGame, Player player, List<Piece> storeStock)
     {
-        DisplayHelper("write the number of the piece in the store you want to buy, write 0 to exit store..");
-        int storeIndex = int.Parse(UserInputPrompt()); //tryparse
+        DisplayHelper("write the number of the piece in the store you want to buy, press other key to exit, you may only exit when you have at least 1 piece in your deck!");
+        //tryparse
+        _ = int.TryParse(UserInputPrompt(), out int storeIndex);
 
         switch (storeIndex)
         {
             case 0:
-                CleanScreen();
-                DisplayHelper($"Exitting store.. Proceed to clash with {autoChessGame.GetPlayerPiece(player).Count()} pieces");
-                UserInputPrompt();
                 break;
 
             case 1 :

@@ -67,7 +67,7 @@ partial class Program
                     ShowStoreStock(storeStock);
                     buyOrLeave = BuyingPhaseLoop(autoChessGame, player,storeStock);
 
-                }while (buyOrLeave != 0);
+                }while (buyOrLeave != 0 || autoChessGame.GetPlayerPiece(player).Count == 0);
 
             }
 

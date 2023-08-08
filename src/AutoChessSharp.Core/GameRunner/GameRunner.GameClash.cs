@@ -77,7 +77,7 @@ public partial class GameRunner
         List<IPiece>[] playerSurvivorPieces = new List<IPiece>[PlayersLeft()];
 
         //* might be buggy
-        int firstExtract = maxAmount + 1;
+        int firstExtract = new();
 
         for (int playerID = 0; playerID < PlayersLeft(); playerID++)
         {
