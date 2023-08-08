@@ -51,6 +51,7 @@ public class PlayerInfo : IPlayerInfo
         return _gold;
     }
 
+    
     public List<Piece> GetPieces()
     {
         if (_pieceList == null)

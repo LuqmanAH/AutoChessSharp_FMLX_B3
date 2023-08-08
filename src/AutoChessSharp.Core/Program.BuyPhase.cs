@@ -5,7 +5,7 @@ partial class Program
     public static int BuyingPhaseLoop(GameRunner autoChessGame, Player player, List<Piece> storeStock)
     {
         DisplayHelper("write the number of the piece in the store you want to buy, write 0 to exit store..");
-        int storeIndex = int.Parse(UserInputPrompt());
+        int storeIndex = int.Parse(UserInputPrompt()); //tryparse
 
         switch (storeIndex)
         {

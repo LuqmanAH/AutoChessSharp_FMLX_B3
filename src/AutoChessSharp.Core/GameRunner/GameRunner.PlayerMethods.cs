@@ -18,6 +18,7 @@ public partial class GameRunner
         return (Player)_playerDetail.Keys.ElementAt(playerIndex - 1);
     }
 
+    //* buat separasi methods, sesuai dengan stat yang diinput user
     public Dictionary<string, int> GetPlayerStats(IPlayer player)
     {
         PlayerInfo playerInfo = _playerDetail[player];

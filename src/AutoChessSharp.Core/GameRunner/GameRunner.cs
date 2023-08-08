@@ -13,7 +13,7 @@ public partial class GameRunner
     private int _round;
     private int _countDown;
     private KeyValuePair<int, IPlayer> _clashLoser;
-    private KeyValuePair<int, IPlayer> _clashWinner;
+    private KeyValuePair<int, IPlayer> _clashWinzner;
     private AfterClashEvent afterClashEvent;
 
     //* ctor
