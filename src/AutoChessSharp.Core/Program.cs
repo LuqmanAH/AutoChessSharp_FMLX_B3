@@ -98,15 +98,24 @@ partial class Program
             //* Chaos Ensues
             //TODO Debug step in to this brok
             autoChessGame.GameClash();
-            KeyValuePair<int, IPlayer> clashLoser = autoChessGame.GetClashLoser();
-            KeyValuePair<int, IPlayer> clashWinner = autoChessGame.GetClashWinner();
-            autoChessGame.DecreasePlayerHealth(clashLoser);
+            KeyValuePair<IPlayer, int> clashLoser = autoChessGame.GetClashLoser();
+            KeyValuePair<IPlayer, int> clashWinner = autoChessGame.TryGetClashWinner();
+            bool clashStatus = autoChessGame.TryDecreasePlayerHealth(clashLoser);
 
             //* Post-Chaos
-            CleanScreen();
-            autoChessGame.SetCountDown(0);
-            DisplayHelper($"{clashWinner.Value.GetName()} Wins the clash with {clashWinner.Key} Pieces left!");
-            DisplayHelper($"{clashLoser.Value.GetName()} has lost the clash, damaged, and the current HP is now: {autoChessGame.ShowPlayerHealth(clashLoser.Value)}");
+            if (!clashStatus || clashWinner.Value < 0)
+            {
+                CleanScreen();
+                autoChessGame.SetCountDown(0);
+                DisplayHelper("Clash Returned as tied, no damage done to players...");
+            }
+            else
+            {
+                CleanScreen();
+                autoChessGame.SetCountDown(0);
+                DisplayHelper($"{clashWinner.Key.GetName()} Wins the clash with {clashWinner.Value} Pieces left!");
+                DisplayHelper($"{clashLoser.Key.GetName()} has lost the clash, damaged, and the current HP is now: {autoChessGame.ShowPlayerHealth(clashLoser.Key)}");
+            }
 
             DisplayHelper($"\n{players[0].GetName()} Pieces:\n");
             DisplayPlayerPieces(autoChessGame, players[0]);
