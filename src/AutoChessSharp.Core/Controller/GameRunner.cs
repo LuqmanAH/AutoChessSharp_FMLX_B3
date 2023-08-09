@@ -2,13 +2,10 @@
 
 namespace AutoChessSharp.Core;
 
-<<<<<<< HEAD:src/AutoChessSharp.Core/Controller/GameRunner.cs
 /// <summary>
 /// Delegate designed to act as multicaster to after clash events such as clash winner and clash loser event
 /// </summary>
 /// <param name="clashResult"></param>
-=======
->>>>>>> 93e0f15acc19f9a30caefea58405e905d698e03d:src/AutoChessSharp.Core/GameRunner/GameRunner.cs
 public delegate void AfterClashEvent(Dictionary<IPlayer, int> clashResult); 
 
 /// <summary>
