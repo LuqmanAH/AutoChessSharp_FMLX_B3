@@ -97,11 +97,11 @@ partial class Program
             //TODO Debug step in to this brok
             autoChessGame.GameClash();
             KeyValuePair<IPlayer, int> clashLoser = autoChessGame.GetClashLoser();
-            KeyValuePair<IPlayer, int> clashWinner = autoChessGame.GetClashWinner();
+            KeyValuePair<IPlayer, int> clashWinner = autoChessGame.TryGetClashWinner();
             bool clashStatus = autoChessGame.TryDecreasePlayerHealth(clashLoser);
 
             //* Post-Chaos
-            if (!clashStatus)
+            if (!clashStatus || clashWinner.Value < 0)
             {
                 CleanScreen();
                 DisplayHelper("Clash Returned as tied, no damage done to players...");
