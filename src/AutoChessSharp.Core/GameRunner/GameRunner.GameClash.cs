@@ -1,12 +1,12 @@
 ﻿namespace AutoChessSharp.Core;
 
-//! Overall experimental algorithm, may return unexpected bugs
+//* Bugs handled, but algorithm does not consider each piece atk and hp in the decision making
 public partial class GameRunner
 {
     /// <summary>
     /// Simulate a randomized war process in autochess, current version supports fixed small range random number generator
     /// </summary>
-    /// <returns>SortedDictionary where the key represents IPiece left after the clash and the value represents the corresponding player</returns>
+    /// <returns>Dictionary that has been sorted descending by the piece amount value left after the clash</returns>
     public Dictionary<IPlayer, int> GameClash()
     {
         Dictionary<IPlayer, int> clashResult = new Dictionary<IPlayer, int>();
@@ -103,6 +103,12 @@ public partial class GameRunner
         return playerSurvivorPieces;
     }
 
+    /// <summary>
+    /// Attempt to reset the pieces owned by the player after the clash
+    /// </summary>
+    /// <param name="playerInfo"></param>
+    /// <param name="playerSurvivorPiece"></param>
+    /// <returns>true when the clash is not tied</returns>
     private bool ResetPlayerPieces(PlayerInfo playerInfo, List<IPiece> playerSurvivorPiece)
     {
         if (playerSurvivorPiece == null)
@@ -115,10 +121,16 @@ public partial class GameRunner
         return true;
     }
 
+    /// <summary>
+    /// Extracts the number of pieces left after clash event
+    /// </summary>
+    /// <param name="survivorsToCount"></param>
+    /// <returns>array of integer representing pieces left from each player</returns>
     private int[] SurvivorsCount(List<IPiece>[] survivorsToCount)
     {
         int[] playerSurvivorsCount = new int[PlayersLeft()];
 
+        //! iterate
         playerSurvivorsCount[0] = survivorsToCount[0].Count;
         playerSurvivorsCount[1] = survivorsToCount[1].Count;
 
@@ -126,11 +138,9 @@ public partial class GameRunner
     }
 
     /// <summary>
-    /// Extract the loser that will lose HP after a clash
+    /// Set the clash loser based on the clash event. Sets key value pair representing the damage received as the value, and the damaged player as the key. Damage received based on winner remaining pieces.
     /// </summary>
     /// <param name="clashResult"></param>
-    /// <returns> key value pair representing the damage received as the key, and the damaged player as the value. Damage received based on winner remaining pieces </returns>
-    /// <exception cref="NullReferenceException"></exception>
     //TODO can implement Delegate clashLoser and clashWinner to GameClash
     private void ClashLoserEvent(Dictionary<IPlayer, int> clashResult)
     {
@@ -150,6 +160,10 @@ public partial class GameRunner
 
     }
 
+    /// <summary>
+    /// Set the clash winner based on the clash event. Sets key value pair representing the number of pieces left as the value, and the winning player as the key
+    /// </summary>
+    /// <param name="clashResult"></param>
     private void ClashWinnerEvent(Dictionary<IPlayer, int> clashResult)
     {
         if (clashResult.All(kvp => kvp.Value == clashResult.First().Value))
@@ -159,11 +173,19 @@ public partial class GameRunner
         _clashWinner = clashResult.First();
     }
 
+    /// <summary>
+    /// Extract the clash loser key value pair after the clash event
+    /// </summary>
+    /// <returns>Key value pair representing damaged player as the key, and the damage done as the value</returns>
     public KeyValuePair<IPlayer, int> GetClashLoser()
     {
         return _clashLoser;
     }
 
+    /// <summary>
+    /// Extract the clash winner key value pair after the clash event
+    /// </summary>
+    /// <returns>Key value pair representing winnning player as the key, and the remaining pieces count as the value</returns>
     public KeyValuePair<IPlayer, int> TryGetClashWinner()
     {
         return _clashWinner;

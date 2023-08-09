@@ -195,7 +195,7 @@ public partial class GameRunner
         return true;
     }
 
-    //? include to player methods?
+    //? Issue: Dependency inversion args
     /// <summary>
     /// Simulate the piece transaction process by the player
     /// </summary>
