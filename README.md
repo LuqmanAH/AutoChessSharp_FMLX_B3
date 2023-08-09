@@ -1,75 +1,38 @@
-# AutoChess Simplest Form
+# AutoChessSharp Library 🤼
 
-#bootcamp #csharp
+👋 Welcome to AutoChessSharp library repository! This library provides simple API set to develop and interact with various aspects of the _auto chess game_ through the ease of C# language.
 
-## Overview
+## Game Features 🍎
 
-**Setup**
+- Support for two players
+- Lightweight console application
+- Piece randomizer for store stock
+- Clash randomizer to simulate auto chess war
+- Provided rarity and arche type properties for pieces
 
- - HP and Gold resources initiation
- - Shared Game Board
- - Access to common pool of units
+## Repository Navigation 🔎
 
-**Recruitment Phase**
+```txt
+src
+├── AutoChessSharp.Core
+│   ├── bin
+│   │   └── Release
+│   │       └── net7.0
+│   │           └── AutoChessSharp.Core.exe 
+│   └── Database
+│       └── PiecesToPlay.json    
+└── AutoChessSharp.PieceFactory
+```
 
- - Players take turns to recruit from the common pool using gold
- - Units in the common pool have different costs
+The library consists mainly of the **core library** csharp project and **piece factory** csharp project
 
-**Placement Phase**
+The core project provides the core library functionality and the piece factory used to generate the `PieceToPlay.json`
 
-- Player take turns placing the units/pieces on their side of the game board
-- Position placement should be strategic and define the outcome of the battle
+- [Navigate to the released binary](./src/AutoChessSharp.Core/bin/Release/net7.0)
+- [Navigate to the json database](./src/AutoChessSharp.Core/Database)
+- [Navigate to the core project](./src/AutoChessSharp.Core/)
+- [Navigate to the piece factory](./src/AutoChessSharp.PieceFactory/)
 
-**Combat Phase**
+## Roadmap 🗺️
 
-- Automatic combat begins
-- Deterministic outcome, by relying on the stats of the units on the board. No player intervention
-
-**Resolution**
-
-- Player HP would decrease based on the remaining units of the opponent
-- Defeated units removed from the board, partially damaged healed
-
-**Income and Upkeep**
-
-- Both players receive flat amount of income in the form of gold for each round end
-- *Idea:* Upkeep cost for units deployed on the board
-
-**Repeat turns**
-
-- Game continues with more powerful units in the pool (*also more expensive*)
-- Added gold would be incrementally larger
-
-**Winning Condition**
-
-- When one Player reaches 0 HP
-- Or when the game forced to stop before the first condition, the player with most victories accumulated
-
-## Core Functionality
-
-- Player HP and Gold concept
-- Recruitment phase with limited time (*must multithread*)
-- Placement phase with limited time
-- Positioning system
-- Auto combat *challenges:*
-	- each piece role has its own stats
-	- field randomizer to allow different piece attack each other
-	- *advanced:* add logic feature to allow strategic positioning
-- Turn keeping to track the number of turn passed
-- Multiplier for gold increase in each turn
-
-## Core Classes
-
-- Player (*should player info separated from player instance itself?*)
-- Board
-- Piece
-- Store
-- Position
-- Game Runner
-
-## Questions
-
-- Should PlayerInfo and the Player class separated?
-- IPlayerInfo or let the PlayerInfo class implement multiple interfaces?
-- Should exp and level a two different parameters?
-  
+TODO
