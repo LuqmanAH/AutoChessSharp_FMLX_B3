@@ -154,7 +154,7 @@ public partial class GameRunner
     {
         if (clashResult.All(kvp => kvp.Value == clashResult.First().Value))
         {
-            throw new Exception(message: "Clash returned as tied");
+            _clashWinner = new KeyValuePair<IPlayer, int>(clashResult.First().Key, -1);
         }
         _clashWinner = clashResult.First();
     }
@@ -164,7 +164,7 @@ public partial class GameRunner
         return _clashLoser;
     }
 
-    public KeyValuePair<IPlayer, int> GetClashWinner()
+    public KeyValuePair<IPlayer, int> TryGetClashWinner()
     {
         return _clashWinner;
     }
