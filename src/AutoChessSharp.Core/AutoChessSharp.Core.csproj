@@ -7,30 +7,31 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Enums\ArcheTypeEnum.cs" />
-    <Content Include="Enums\LevelInfoEnum.cs" />
-    <Content Include="Enums\HealthInfoEnum.cs" />
-    <Content Include="Class\PlayerInfo.cs" />
-    <Content Include="Enums\ExperienceInfoEnum.cs" />
+    <Content Include="Enum\ArcheTypeEnum.cs" />
+    <Content Include="Enum\LevelInfoEnum.cs" />
+    <Content Include="Enum\HealthInfoEnum.cs" />
+    <Content Include="Model\PlayerInfo.cs" />
+    <Content Include="Enum\ExperienceInfoEnum.cs" />
     <Content Include="Interface\IPiece.cs" />
     <Content Include="Interface\IPlayerExp.cs" />
-    <Content Include="Class\Board.cs" />
-    <Content Include="Class\Position.cs" />
-    <Content Include="Class\Player.cs" />
+    <Content Include="Model\Board.cs" />
+    <Content Include="Model\Position.cs" />
+    <Content Include="Model\Player.cs" />
     <Content Include="Interface\IBoard.cs" />
     <Content Include="Interface\IPlayer.cs" />
     <Content Include="Interface\IPlayerLevel.cs" />
     <Content Include="Interface\IPlayerInfo.cs" />
     <Content Include="Interface\IPlayerHealth.cs" />
-    <Content Include="Class\Piece.cs" />
-    <Content Include="Enums\RarityEnum.cs" />
-    <Content Include="Enums\GameStatusEnum.cs" />
+    <Content Include="Model\Piece.cs" />
+    <Content Include="Enum\RarityEnum.cs" />
+    <Content Include="Enum\GameStatusEnum.cs" />
     <Content Include="Program.cs" />
-    <Content Include="GameRunner\GameRunner.cs" />
-    <Content Include="GameRunner\GameRunner.PlayerMethods.cs" />
-    <Content Include="Class\Store.cs" />
+    <Content Include="Model\Store.cs" />
     <Content Include="Program.Display.cs" />
     <Content Include="Program.BuyPhase.cs" />
-    <Content Include="GameRunner\GameRunner.GameClash.cs" />
+    <Content Include="Controller\GameRunner.PlayerMethods.cs" />
+    <Content Include="Controller\GameRunner.cs" />
+    <Content Include="Controller\GameRunner.GameClash.cs" />
   </ItemGroup>
+ 
 </Project>

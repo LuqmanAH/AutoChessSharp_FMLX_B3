@@ -1,5 +1,7 @@
 using AutoChessSharp.Core;
 
+namespace Program;
+
 partial class Program
 {
     async static Task Main()

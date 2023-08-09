@@ -1,5 +1,7 @@
 ﻿using AutoChessSharp.Core;
 
+namespace Program;
+
 partial class Program
 {
     public static int BuyingPhaseLoop(GameRunner autoChessGame, Player player, List<Piece> storeStock)

@@ -1,5 +1,8 @@
 ﻿namespace AutoChessSharp.Core;
 
+/// <summary>
+/// Provides base structure for classes associated with game Player
+/// </summary>
 public interface IPlayer
 {
     public string GetName();
