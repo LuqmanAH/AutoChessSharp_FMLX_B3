@@ -2,7 +2,7 @@
 
 namespace AutoChessSharp.Core;
 
-public delegate void AfterClashEvent(SortedDictionary<int, IPlayer> clashResult); 
+public delegate void AfterClashEvent(Dictionary<IPlayer, int> clashResult); 
 
 public partial class GameRunner
 {
@@ -12,8 +12,8 @@ public partial class GameRunner
     private GameStatusEnum _gameStatus;
     private int _round;
     private int _countDown;
-    private KeyValuePair<int, IPlayer> _clashLoser;
-    private KeyValuePair<int, IPlayer> _clashWinner;
+    private KeyValuePair<IPlayer, int> _clashLoser;
+    private KeyValuePair<IPlayer, int> _clashWinner;
     private AfterClashEvent afterClashEvent;
 
     //* ctor

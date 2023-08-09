@@ -7,9 +7,9 @@ public partial class GameRunner
     /// Simulate a randomized war process in autochess, current version supports fixed small range random number generator
     /// </summary>
     /// <returns>SortedDictionary where the key represents IPiece left after the clash and the value represents the corresponding player</returns>
-    public SortedDictionary<int, IPlayer> GameClash()
+    public Dictionary<IPlayer, int> GameClash()
     {
-        SortedDictionary<int, IPlayer> afterClash = new SortedDictionary<int, IPlayer>();
+        Dictionary<IPlayer, int> clashResult = new Dictionary<IPlayer, int>();
         Random rng = new Random();
         
         List<IPiece>[] eachPlayerPieces = GetEachPlayerPiece();
@@ -23,13 +23,16 @@ public partial class GameRunner
         int survivorIndex = 0;
         foreach (var player in _playerDetail.Keys)
         {
-            afterClash.Add(playerSurvivorsCount[survivorIndex], player);
+            clashResult.Add(player, playerSurvivorsCount[survivorIndex]);
             survivorIndex ++;
         }
 
-        afterClashEvent.Invoke(afterClash);
+        var sortedResult = clashResult.OrderByDescending(kvp => kvp.Value)
+                        .ToDictionary(kvp => kvp.Key, kvp =>kvp.Value);
 
-        return afterClash;
+        afterClashEvent.Invoke(sortedResult);
+
+        return sortedResult;
     }
 
     /// <summary>
@@ -129,27 +132,39 @@ public partial class GameRunner
     /// <returns> key value pair representing the damage received as the key, and the damaged player as the value. Damage received based on winner remaining pieces </returns>
     /// <exception cref="NullReferenceException"></exception>
     //TODO can implement Delegate clashLoser and clashWinner to GameClash
-    
-    private void ClashLoserEvent(SortedDictionary<int, IPlayer> clashResult)
+    private void ClashLoserEvent(Dictionary<IPlayer, int> clashResult)
     {
-        KeyValuePair<int, IPlayer> loserPair = clashResult.First();
-        KeyValuePair<int, IPlayer> winnerPair = clashResult.Reverse().First();
-        KeyValuePair<int, IPlayer> playerDamaged = new KeyValuePair<int, IPlayer>(winnerPair.Key, loserPair.Value);
+        KeyValuePair<IPlayer, int> loserPair = clashResult.Reverse().First();
+        KeyValuePair<IPlayer, int> winnerPair = clashResult.First();
+        if (loserPair.Value == winnerPair.Value)
+        {
+            KeyValuePair<IPlayer, int> playerDamaged = new KeyValuePair<IPlayer, int>(loserPair.Key, -1);
+            _clashLoser = playerDamaged;
+        }
+        else
+        {
+            
+            KeyValuePair<IPlayer, int> playerDamaged = new KeyValuePair<IPlayer, int>(loserPair.Key, winnerPair.Value);
+            _clashLoser = playerDamaged;
+        }
 
-        _clashLoser = playerDamaged;
     }
 
-    private void ClashWinnerEvent(SortedDictionary<int, IPlayer> clashResult)
+    private void ClashWinnerEvent(Dictionary<IPlayer, int> clashResult)
     {
-        _clashWinner = clashResult.Reverse().First();
+        if (clashResult.All(kvp => kvp.Value == clashResult.First().Value))
+        {
+            throw new Exception(message: "Clash returned as tied");
+        }
+        _clashWinner = clashResult.First();
     }
 
-    public KeyValuePair<int, IPlayer> GetClashLoser()
+    public KeyValuePair<IPlayer, int> GetClashLoser()
     {
         return _clashLoser;
     }
 
-    public KeyValuePair<int, IPlayer> GetClashWinner()
+    public KeyValuePair<IPlayer, int> GetClashWinner()
     {
         return _clashWinner;
     }
@@ -159,18 +174,25 @@ public partial class GameRunner
     /// </summary>
     /// <param name="playerDamaged"></param>
     /// <returns>The updated player HP after the damage has done</returns>
-    public int DecreasePlayerHealth(KeyValuePair<int, IPlayer> playerDamaged)
+    public bool TryDecreasePlayerHealth(KeyValuePair<IPlayer, int> playerDamaged)
     {
-        var damagedPlayerInfo = _playerDetail.Where(kvp => kvp.Key == playerDamaged.Value).Select(kvp => kvp.Value).FirstOrDefault();
-        int updatedPlayerHealth = damagedPlayerInfo.GetHealth() - playerDamaged.Key;
+        if (playerDamaged.Value < 0)
+        {
+            return false;
+        }
+        var damagedPlayerInfo = _playerDetail.Where(kvp => kvp.Key == playerDamaged.Key)
+                                            .Select(kvp => kvp.Value)
+                                            .FirstOrDefault();
+
+        int updatedPlayerHealth = damagedPlayerInfo.GetHealth() - playerDamaged.Value;
 
         if (updatedPlayerHealth < 0)
         {
             damagedPlayerInfo.SetHealth(0);
-            return 0;
+            return false;
         }
 
         damagedPlayerInfo.SetHealth(updatedPlayerHealth);
-        return updatedPlayerHealth;
+        return true;
     }
 }
