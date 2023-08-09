@@ -104,6 +104,7 @@ partial class Program
             if (!clashStatus || clashWinner.Value < 0)
             {
                 CleanScreen();
+                autoChessGame.SetCountDown(0);
                 DisplayHelper("Clash Returned as tied, no damage done to players...");
             }
             else
