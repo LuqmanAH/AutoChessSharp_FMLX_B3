@@ -33,5 +33,4 @@
     <Content Include="Controller\GameRunner.cs" />
     <Content Include="Controller\GameRunner.GameClash.cs" />
   </ItemGroup>
- 
 </Project>
