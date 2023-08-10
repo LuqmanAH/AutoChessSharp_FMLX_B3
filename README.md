@@ -32,7 +32,12 @@ The core project provides the core library functionality and the piece factory u
 - [Navigate to the json database](./src/AutoChessSharp.Core/Database)
 - [Navigate to the core project](./src/AutoChessSharp.Core/)
 - [Navigate to the piece factory](./src/AutoChessSharp.PieceFactory/)
+- [Navigate to the Xunit test project (_ongoing_)](./src/AutoChessSharp.XTest/)
 
 ## Roadmap 🗺️
 
-TODO
+- Implement positioning mechanics into consideration
+- Implement attack and HP relation with clash outcome
+- Logger
+- Unit test _on going with Xunit_ 🕙
+- Docs _on going with docfx_ 🕙
