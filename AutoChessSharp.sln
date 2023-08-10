@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoChessSharp.Core", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoChessSharp.PieceFactory", "src\AutoChessSharp.PieceFactory\AutoChessSharp.PieceFactory.csproj", "{CA1039ED-2E9B-40E3-BF92-350C5E96BC05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoChessSharp.XTest", "src\AutoChessSharp.XTest\AutoChessSharp.XTest.csproj", "{ABCE9C02-6889-4441-99DF-37B5A0ABD4E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{CA1039ED-2E9B-40E3-BF92-350C5E96BC05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA1039ED-2E9B-40E3-BF92-350C5E96BC05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA1039ED-2E9B-40E3-BF92-350C5E96BC05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABCE9C02-6889-4441-99DF-37B5A0ABD4E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABCE9C02-6889-4441-99DF-37B5A0ABD4E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABCE9C02-6889-4441-99DF-37B5A0ABD4E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABCE9C02-6889-4441-99DF-37B5A0ABD4E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,5 +36,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1F2CA1C8-0C42-4E52-B376-19CDE07B84E1} = {7F2B4CE2-B589-4CAF-AB35-A1D0F1FC9635}
 		{CA1039ED-2E9B-40E3-BF92-350C5E96BC05} = {7F2B4CE2-B589-4CAF-AB35-A1D0F1FC9635}
+		{ABCE9C02-6889-4441-99DF-37B5A0ABD4E3} = {7F2B4CE2-B589-4CAF-AB35-A1D0F1FC9635}
 	EndGlobalSection
 EndGlobal

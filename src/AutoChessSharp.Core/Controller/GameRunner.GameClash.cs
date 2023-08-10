@@ -131,8 +131,10 @@ public partial class GameRunner
         int[] playerSurvivorsCount = new int[PlayersLeft()];
 
         //! iterate
-        playerSurvivorsCount[0] = survivorsToCount[0].Count;
-        playerSurvivorsCount[1] = survivorsToCount[1].Count;
+        for (int i = 0; i < PlayersLeft(); i++)
+        {
+            playerSurvivorsCount[i] = survivorsToCount[i].Count;
+        }
 
         return playerSurvivorsCount;
     }
