@@ -41,3 +41,8 @@ The core project provides the core library functionality and the piece factory u
 - Logger
 - Unit test _on going with Xunit_ 🕙
 - Docs _on going with docfx_ 🕙
+
+## TODOs ✅
+
+- branch out a new dev branch to reconfig store fields to implement interfaces
+- resolve dependency issues caused by the store fields
