@@ -30,6 +30,7 @@ jobs:
         dotnet-version: 7.x
 
     - run: dotnet tool update -g docfx
+    - run: dotnet tool restore
     - run: dotnet docfx docs/docfx.json
 
     - name: Deploy
