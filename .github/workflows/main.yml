@@ -30,7 +30,7 @@ jobs:
         dotnet-version: 7.x
 
     - run: dotnet tool update -g docfx
-    - run: docfx docs/docfx.json
+    - run: dotnet docfx docs/docfx.json
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3

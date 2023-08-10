@@ -4,7 +4,7 @@
       "src": [
         {
           "files": [
-            "src/AutoChessSharp.Core.dll"
+            "../src/AutoChessSharp.Core/bin/Release/net7.0/AutoChessSharp.Core.dll"
           ]
         }
       ],
