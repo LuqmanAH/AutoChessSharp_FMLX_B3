@@ -71,7 +71,10 @@ partial class Program
 
         while (autoChessGame.GetGameStatus() == GameStatusEnum.Ongoing)
         {
-            List<Piece> storeStock = autoChessGame.GetStore().GetStoreStock();
+            List<AutoChessPiece> storeStock = autoChessGame.GetStore()
+                                                            .GetStoreStock()
+                                                            .Select(piece => (AutoChessPiece)piece)
+                                                            .ToList();
             autoChessGame.SetCountDown(5);
 
             foreach (Player player in players)

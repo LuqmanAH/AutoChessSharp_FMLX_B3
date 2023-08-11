@@ -66,7 +66,7 @@ partial class Program
         }
     }
 
-    public static void ShowStoreStock(List<Piece> storeStock)
+    public static void ShowStoreStock(List<AutoChessPiece> storeStock)
     {
         foreach (var piece in storeStock)
         {

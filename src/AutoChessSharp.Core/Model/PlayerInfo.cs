@@ -168,7 +168,7 @@ public class PlayerInfo : IPlayerInfo
     /// </summary>
     /// <param name="piece"></param>
     /// <returns>true when the list of pieces is not null and the given piece is not null</returns>
-    public bool SetPieceToList(Piece piece)
+    public bool SetPieceToList(AutoChessPiece piece)
     {
         if (_pieceList is null || piece is null)
         {

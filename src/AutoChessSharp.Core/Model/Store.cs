@@ -5,8 +5,8 @@
 /// </summary>
 public class Store
 {
-    private List<Piece>? _storePieces;
-    private List<Piece> _availPieces;
+    private List<IPiece>? _storePieces;
+    private IEnumerable<IPiece> _availPieces;
 
     //* store now has composite relation with Piece, list of Piece to be precise
     /// <summary>
@@ -14,7 +14,7 @@ public class Store
     /// </summary>
     public Store()
     {
-        _availPieces = new List<Piece>();
+        _availPieces = new List<IPiece>();
     }
 
     // * LinQ implementation to populate storePieces
@@ -22,11 +22,11 @@ public class Store
     /// Randomly roll the available pieces, then set 5 items to the store pieces
     /// </summary>
     /// <returns>list of pieces representing the store pieces</returns>
-    public List<Piece> RerollStore()
+    public List<IPiece> RerollStore()
     {
         Random random= new Random();
 
-        List<Piece> rolledPieces = _availPieces.OrderByDescending(p => random.Next()).ToList();
+        List<IPiece> rolledPieces = _availPieces.OrderByDescending(p => random.Next()).ToList();
 
         //? fixed to take 5?
         _storePieces = rolledPieces.Take(5).ToList();
@@ -40,16 +40,18 @@ public class Store
     /// <returns>integer representing price when the store has been rolled and contains the piece</returns>
     /// <exception cref="NullReferenceException"></exception>
     /// <exception cref="Exception"></exception>
-    public int GetPiecePrice(Piece piece)
+    public int GetPiecePrice(IPiece piece)
     {
         if (_storePieces == null)
         {
             throw new NullReferenceException(message: "Roll the store first!");
         }
 
+        AutoChessPiece autoChessPiece = (AutoChessPiece)piece;
+
         if (_storePieces.Contains(piece))
         {
-            return piece.GetPrice();
+            return autoChessPiece.GetPrice();
         }
         else
         {
@@ -62,7 +64,7 @@ public class Store
     /// </summary>
     /// <returns>list of pieces representing the store stock when the store has been rolled at least once</returns>
     /// <exception cref="NullReferenceException"></exception>
-    public List<Piece> GetStoreStock()
+    public List<IPiece> GetStoreStock()
     {
         if (_storePieces == null)
         {
@@ -76,7 +78,7 @@ public class Store
     /// </summary>
     /// <param name="piecesList"></param>
     /// <returns>true when the given list of pieces is not null</returns>
-    public bool SetStorePieces(List<Piece> piecesList)
+    public bool SetStorePieces(IEnumerable<IPiece> piecesList)
     {
         if (piecesList == null)
         {

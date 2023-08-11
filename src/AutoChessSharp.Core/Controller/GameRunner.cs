@@ -49,7 +49,7 @@ public partial class GameRunner
     {
         try
         {
-            List<Piece> storePieces = GetStorePiecesDB(path);
+            List<AutoChessPiece> storePieces = GetStorePiecesDB(path);
             _store.SetStorePieces(storePieces);
             return true;
         }
@@ -64,13 +64,13 @@ public partial class GameRunner
     /// </summary>
     /// <param name="path"></param>
     /// <returns>Piece collection</returns>
-    private List<Piece> GetStorePiecesDB(string path)
+    private List<AutoChessPiece> GetStorePiecesDB(string path)
     {
-        var deserializer = new DataContractJsonSerializer(typeof(List<Piece>));
+        var deserializer = new DataContractJsonSerializer(typeof(List<AutoChessPiece>));
 
         using (FileStream fileStream = new FileStream(path, FileMode.Open))
         {
-            List<Piece>? piecesToPlay = (List<Piece>?)deserializer.ReadObject(fileStream);
+            List<AutoChessPiece>? piecesToPlay = (List<AutoChessPiece>?)deserializer.ReadObject(fileStream);
             return piecesToPlay;
         }
 
@@ -209,7 +209,7 @@ public partial class GameRunner
     /// <param name="player"></param>
     /// <param name="piece"></param>
     /// <returns>true when the corresponding player gold sufficient</returns>
-    public bool BuyFromStore(Player player, Piece piece)
+    public bool BuyFromStore(Player player, AutoChessPiece piece)
     {
         
         int piecePrice = _store.GetPiecePrice(piece);

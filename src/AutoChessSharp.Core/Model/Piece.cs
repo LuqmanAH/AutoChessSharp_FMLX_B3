@@ -6,7 +6,7 @@ namespace AutoChessSharp.Core;
 /// IPiece basic implementation for auto chess game
 /// </summary>
 [DataContract(Name = "Piece")]
-public class Piece : IPiece
+public class AutoChessPiece : IPiece
 {
     [DataMember(Name="_archeType")]
     private ArcheTypeEnum _archeType;
@@ -35,7 +35,7 @@ public class Piece : IPiece
     /// <param name="archeType"></param>
     /// <param name="rarity"></param>
     /// <param name="pieceName"></param>
-    public Piece(ArcheTypeEnum archeType, RarityEnum rarity, string? pieceName = null)
+    public AutoChessPiece(ArcheTypeEnum archeType, RarityEnum rarity, string? pieceName = null)
     {
         _archeType = archeType;
         _rarity = (int)rarity;
