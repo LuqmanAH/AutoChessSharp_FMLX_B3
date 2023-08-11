@@ -13,6 +13,7 @@ partial class Program
         {
             case 0:
                 CleanScreen();
+                _logger.Info($"{player.GetName()} exited store or attempted");
                 break;
 
             case 1 :

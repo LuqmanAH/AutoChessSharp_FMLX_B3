@@ -77,7 +77,7 @@ partial class Program
             foreach (Player player in players)
             {
                 DisplayHelper($"{player.GetName()} turn to pick\npress enter to continue..");
-                _logger.Info("${player.GetID()} turn to pick");
+                _logger.Info($"Player {player.GetID()} turn to pick");
                 UserInputPrompt();
                 int buyOrLeave;
                 do
@@ -139,7 +139,7 @@ partial class Program
                 autoChessGame.SetCountDown(0);
                 DisplayHelper($"{clashWinner.Key.GetName()} Wins the clash with {clashWinner.Value} Pieces left!");
                 DisplayHelper($"{clashLoser.Key.GetName()} has lost the clash, damaged, and the current HP is now: {autoChessGame.ShowPlayerHealth(clashLoser.Key)}");
-                _logger.Info($"clash succeed with {clashWinner.Key.GetName()} as the winner and {autoChessGame.ShowPlayerHealth(clashLoser.Key)} as the loser");
+                _logger.Info($"clash succeed with {clashWinner.Key.GetName()} as the winner and {autoChessGame.GetClashLoser().Key.GetName()} as the loser");
             }
 
             DisplayHelper($"\n{players[0].GetName()} Pieces:\n");
@@ -169,7 +169,7 @@ partial class Program
                 autoChessGame.SetGameStatus(GameStatusEnum.Completed);
                 DisplayHelper("Game Concluded");
                 DisplayHelper($"The winner is: {winner.GetName()}");
-                _logger.Info($"Clash winner of round {autoChessGame.GetCurrentRound()}: {winner.GetName()}");
+                _logger.Info($"Game ended in {autoChessGame.GetCurrentRound()} round: with {winner.GetName()} as the winner");
                 UserInputPrompt();
             }
 

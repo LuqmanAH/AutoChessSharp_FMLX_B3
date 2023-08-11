@@ -36,9 +36,9 @@ The core project provides the core library functionality and the piece factory u
 
 ## Roadmap 🗺️
 
-- Implement positioning mechanics into consideration
-- Implement attack and HP relation with clash outcome
-- Logger
+- Implement positioning mechanics into consideration _future_
+- Implement attack and HP relation with clash outcome _future_
+- Logger _on going with NLog_ 🕙
 - Unit test _on going with Xunit_ 🕙
 - Docs _on going with docfx_ 🕙
 
@@ -46,3 +46,13 @@ The core project provides the core library functionality and the piece factory u
 
 - branch out a new dev branch to reconfig store fields to implement interfaces
 - resolve dependency issues caused by the store fields
+
+## Known Issues ⚠️
+
+- Clash algorithm currently favors player with more pieces on the field
+- Player can not enter the clash with zero piece on the field
+- Buying piece from the store also means positioning them on the field
+- No position evaluator, currently every piece involved in a clash positioned at coordinate (0,0)
+- Multiple player name can be set as the value evaluated is the instance of the player, not its name field
+- Development for beyond 2 players support might cumbersome
+- Multiple log folders currently exist, this might lead to confusion when the program excuted multiple times from different release folder

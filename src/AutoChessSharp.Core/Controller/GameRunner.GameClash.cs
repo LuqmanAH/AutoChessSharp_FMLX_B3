@@ -213,7 +213,7 @@ public partial class GameRunner
         if (updatedPlayerHealth < 0)
         {
             damagedPlayerInfo.SetHealth(0);
-            return false;
+            return true;
         }
 
         damagedPlayerInfo.SetHealth(updatedPlayerHealth);
