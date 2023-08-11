@@ -33,4 +33,7 @@
     <Content Include="Controller\GameRunner.cs" />
     <Content Include="Controller\GameRunner.GameClash.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="5.2.3" />
+  </ItemGroup>
 </Project>

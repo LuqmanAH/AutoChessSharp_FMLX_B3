@@ -1,12 +1,27 @@
+using NLog;
+using NLog.Config;
 using AutoChessSharp.Core;
 
 namespace Program;
 
 partial class Program
 {
+    private static Logger _logger;
+    private static void LoggerInitializer()
+    {
+        var currentDirectory = Directory.GetCurrentDirectory();
+        var nlogConfigPath = Path.Combine(currentDirectory, ".//Logs//Nlog.config");
+        LogManager.Configuration = new XmlLoggingConfiguration(nlogConfigPath);
+
+        _logger = LogManager.GetCurrentClassLogger();
+    }
+
     async static Task Main()
     {
         //* env init
+        LoggerInitializer();
+        _logger.Info("Program Started");
+        _logger.Info("Attempting to load database");
         string pathForDebug = @"Database\Pieces.ToPlay.json";
         string pathForRelease = @"..\..\..\Database\Pieces.ToPlay.json";
         Board autoChessBoard = new Board(8);
@@ -15,7 +30,12 @@ partial class Program
 
         if (!autoChessGame.SetStorePieces(pathForDebug))
         {
+            _logger.Warn("Data loaded from the release path");
             autoChessGame.SetStorePieces(pathForRelease);
+        }
+        else
+        {
+            _logger.Info("Data loaded from the debug path");
         }
         
         //* players insertion
@@ -42,6 +62,7 @@ partial class Program
             DisplayHelper($"{player.GetName()} is player {player.GetID()}");
         }
         DisplayHelper("Let The Game Begins.. When you're ready (Press any key)");
+        _logger.Info("Game commencing");
         UserInputPrompt();
 
         //* Game commencing
@@ -56,6 +77,7 @@ partial class Program
             foreach (Player player in players)
             {
                 DisplayHelper($"{player.GetName()} turn to pick\npress enter to continue..");
+                _logger.Info("${player.GetID()} turn to pick");
                 UserInputPrompt();
                 int buyOrLeave;
                 do
@@ -86,6 +108,7 @@ partial class Program
             DisplayPlayerPieces(autoChessGame, players[1]);
             
             DisplayHelper("\n\nInitiating Clash... press any key when ready");
+            _logger.Info("Game clash commencing");
             UserInputPrompt();
             DisplayHelper($"Starting Randomized clash");
             
@@ -108,6 +131,7 @@ partial class Program
                 CleanScreen();
                 autoChessGame.SetCountDown(0);
                 DisplayHelper("Clash Returned as tied, no damage done to players...");
+                _logger.Warn("Clash tied, no winner or loser");
             }
             else
             {
@@ -115,6 +139,7 @@ partial class Program
                 autoChessGame.SetCountDown(0);
                 DisplayHelper($"{clashWinner.Key.GetName()} Wins the clash with {clashWinner.Value} Pieces left!");
                 DisplayHelper($"{clashLoser.Key.GetName()} has lost the clash, damaged, and the current HP is now: {autoChessGame.ShowPlayerHealth(clashLoser.Key)}");
+                _logger.Info($"clash succeed with {clashWinner.Key.GetName()} as the winner and {autoChessGame.ShowPlayerHealth(clashLoser.Key)} as the loser");
             }
 
             DisplayHelper($"\n{players[0].GetName()} Pieces:\n");
@@ -123,6 +148,7 @@ partial class Program
             DisplayPlayerPieces(autoChessGame, players[1]);
 
             DisplayHelper("\n\nPress any key..");
+            _logger.Info("Game clash completed");
             UserInputPrompt();
 
             CleanScreen();
@@ -130,6 +156,7 @@ partial class Program
             foreach (var playerHealth in autoChessGame.ShowPlayerHealth())
             {
                 DisplayHelper($"{playerHealth.Key.GetName()} Now Has HP of {playerHealth.Value}");
+                _logger.Info($"{playerHealth.Key.GetName()} updated HP: {playerHealth.Value}");
             }
 
             UserInputPrompt();
@@ -142,6 +169,7 @@ partial class Program
                 autoChessGame.SetGameStatus(GameStatusEnum.Completed);
                 DisplayHelper("Game Concluded");
                 DisplayHelper($"The winner is: {winner.GetName()}");
+                _logger.Info($"Clash winner of round {autoChessGame.GetCurrentRound()}: {winner.GetName()}");
                 UserInputPrompt();
             }
 
@@ -151,6 +179,7 @@ partial class Program
                 DisplayHelper("Proceeding to next round...");
                 autoChessGame.GoNextRound(1, 2);
                 autoChessGame.GetStore().RerollStore();
+                _logger.Info($"Proceeds to next round: {autoChessGame.GetCurrentRound()}");
                 UserInputPrompt();
             }
         }

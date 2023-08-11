@@ -19,12 +19,14 @@ partial class Program
         {
             CleanScreen();
             DisplayHelper("Name cannot be set, please Input another: ");
+            _logger.Warn($"Player {player.GetID()} insertion fail: name should not be empty!");
             playerOneName = UserInputPrompt();
             checkOne = player.SetPlayerName(playerOneName);
         }
 
         CleanScreen();
         DisplayHelper("Name successfully set, press any key to continue..");
+        _logger.Info($"Player {player.GetID()}: {player.GetName()} successfully added");
         UserInputPrompt();
     }
 

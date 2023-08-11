@@ -7,7 +7,6 @@ partial class Program
     public static int BuyingPhaseLoop(GameRunner autoChessGame, Player player, List<Piece> storeStock)
     {
         DisplayHelper("write the number of the piece in the store you want to buy, press other key to exit, you may only exit when you have at least 1 piece in your deck!");
-        //tryparse
         _ = int.TryParse(UserInputPrompt(), out int storeIndex);
 
         switch (storeIndex)
@@ -26,12 +25,14 @@ partial class Program
  
                     DisplayPlayerPieces(autoChessGame, player);
                     DisplayHelper("\nPress any key to continue..");
+                    _logger.Info($"Successfully bought {storeStock[0].GetName()}");
                     UserInputPrompt();
                     break;
                 }
                 CleanScreen();
                 DisplayHelper("Not enough gold!");
                 DisplayHelper("\nPress any key to continue..");
+                _logger.Warn($"{player.GetID()} does not have enough gold");
                 UserInputPrompt();
                 break;
 
@@ -45,12 +46,14 @@ partial class Program
 
                     DisplayPlayerPieces(autoChessGame, player);
                     DisplayHelper("\nPress any key to continue..");
+                    _logger.Info($"Successfully bought {storeStock[1].GetName()}");
                     UserInputPrompt();
                     break;
                 }
                 CleanScreen();
                 DisplayHelper("Not enough gold!");
                 DisplayHelper("\nPress any key to continue..");
+                _logger.Warn($"{player.GetID()} does not have enough gold");
                 UserInputPrompt();
                 break;
 
@@ -64,12 +67,14 @@ partial class Program
 
                     DisplayPlayerPieces(autoChessGame, player);
                     DisplayHelper("\nPress any key to continue..");
+                    _logger.Info($"Successfully bought {storeStock[2].GetName()}");
                     UserInputPrompt();
                     break;
                 }
                 CleanScreen();
                 DisplayHelper("Not enough gold!");
                 DisplayHelper("\nPress any key to continue..");
+                _logger.Warn($"{player.GetID()} does not have enough gold");
                 UserInputPrompt();
                 break;
 
@@ -83,12 +88,14 @@ partial class Program
 
                     DisplayPlayerPieces(autoChessGame, player);
                     DisplayHelper("\nPress any key to continue..");
+                    _logger.Info($"Successfully bought {storeStock[3].GetName()}");
                     UserInputPrompt();
                     break;
                 }
                 CleanScreen();
                 DisplayHelper("Not enough gold!");
                 DisplayHelper("\nPress any key to continue..");
+                _logger.Warn($"{player.GetID()} does not have enough gold");
                 UserInputPrompt();
                 break;
 
@@ -102,12 +109,14 @@ partial class Program
 
                     DisplayPlayerPieces(autoChessGame, player);
                     DisplayHelper("\nPress any key to continue..");
+                    _logger.Info($"Successfully bought {storeStock[4].GetName()}");
                     UserInputPrompt();
                     break;
                 }
                 CleanScreen();
                 DisplayHelper("Not enough gold!");
                 DisplayHelper("\nPress any key to continue..");
+                _logger.Warn($"{player.GetID()} does not have enough gold");
                 UserInputPrompt();
                 break;
         
