@@ -43,7 +43,7 @@ public partial class GameRunner
     {
         List<IPiece>[] eachPlayerPieces = new List<IPiece>[PlayersLeft()];
         int playerID = 0;
-        foreach (var playerData in _playerDetail.Values)
+        foreach (PlayerInfo playerData in _playerDetail.Values.Cast<PlayerInfo>())
         {
             eachPlayerPieces[playerID] = playerData.GetPieces();
             playerID ++;
@@ -97,7 +97,7 @@ public partial class GameRunner
         }
         foreach (var playerDetail in _playerDetail)
         {
-            ResetPlayerPieces(playerDetail.Value, playerSurvivorPieces[playerDetail.Key.GetID() - 1]);
+            ResetPlayerPieces((PlayerInfo)playerDetail.Value, playerSurvivorPieces[playerDetail.Key.GetID() - 1]);
         }
 
         return playerSurvivorPieces;

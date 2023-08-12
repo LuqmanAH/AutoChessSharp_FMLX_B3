@@ -127,7 +127,7 @@ partial class Program
 
     public static void DisplayPlayerPieces(GameRunner autoChessGame, Player player)
     {
-        foreach (AutoChessPiece piece in autoChessGame.GetPlayerPiece(player))
+        foreach (AutoChessPiece piece in autoChessGame.GetPlayerPiece(player).Cast<AutoChessPiece>())
         {
             DisplayHelper($"{piece.GetName()} {piece.GetRarityEnum()} {piece.GetArcheType()}");
         }

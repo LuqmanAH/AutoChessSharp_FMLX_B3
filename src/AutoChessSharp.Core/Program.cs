@@ -51,7 +51,7 @@ partial class Program
             InitPrompt(autoChessGame, player, player.GetID());
         }
 
-        Dictionary<IPlayer, PlayerInfo> playerInGame = autoChessGame.GetInGamePlayers();
+        Dictionary<IPlayer, IPlayerInfo> playerInGame = autoChessGame.GetInGamePlayers();
         autoChessGame.GetStore().RerollStore();
 
         //* player check

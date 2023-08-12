@@ -13,7 +13,7 @@ public delegate void AfterClashEvent(Dictionary<IPlayer, int> clashResult);
 /// </summary>
 public partial class GameRunner
 {
-    private Dictionary<IPlayer, PlayerInfo> _playerDetail;
+    private Dictionary<IPlayer, IPlayerInfo> _playerDetail;
     private IBoard _board;
     private Store _store;
     private GameStatusEnum _gameStatus;
@@ -35,7 +35,7 @@ public partial class GameRunner
         _store = new Store();
         _store.RerollStore();
         _gameStatus = GameStatusEnum.NotStarted;
-        _playerDetail = new Dictionary<IPlayer, PlayerInfo>();
+        _playerDetail = new Dictionary<IPlayer, IPlayerInfo>();
         afterClashEvent= new(ClashLoserEvent);
         afterClashEvent += ClashWinnerEvent;
     }
@@ -134,7 +134,7 @@ public partial class GameRunner
         {
             _round ++;
 
-            foreach (var playerInfos in _playerDetail.Values)
+            foreach (PlayerInfo playerInfos in _playerDetail.Values.Cast<PlayerInfo>())
             {
                 int exp = playerInfos.GetExperience();
                 int gold = playerInfos.GetGold();
@@ -216,14 +216,15 @@ public partial class GameRunner
         int playerBalance = GetPlayerCurrentGold(player);
 
         int updatedBalance = playerBalance - piecePrice;
-        bool buySuccess = GetInGamePlayers()[player].SetGold(updatedBalance);
+        PlayerInfo playerInfo = (PlayerInfo)GetInGamePlayers()[player];
+        bool buySuccess = playerInfo.SetGold(updatedBalance);
 
         if (!buySuccess)
         {
             return false;
         }
 
-        _playerDetail[player].SetPieceToList(piece);
+        playerInfo.SetPieceToList(piece);
         return true;
     }
     
