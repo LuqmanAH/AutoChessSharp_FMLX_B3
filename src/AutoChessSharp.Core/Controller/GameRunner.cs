@@ -202,14 +202,13 @@ public partial class GameRunner
         return true;
     }
 
-    //? Issue: Dependency inversion args
     /// <summary>
     /// Simulate the piece transaction process by the player
     /// </summary>
     /// <param name="player"></param>
     /// <param name="piece"></param>
     /// <returns>true when the corresponding player gold sufficient</returns>
-    public bool BuyFromStore(Player player, AutoChessPiece piece)
+    public bool BuyFromStore(IPlayer player, AutoChessPiece piece)
     {
         
         int piecePrice = _store.GetPiecePrice(piece);
