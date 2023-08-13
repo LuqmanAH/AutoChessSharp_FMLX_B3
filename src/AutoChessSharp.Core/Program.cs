@@ -51,7 +51,7 @@ partial class Program
             InitPrompt(autoChessGame, player, player.GetID());
         }
 
-        Dictionary<IPlayer, PlayerInfo> playerInGame = autoChessGame.GetInGamePlayers();
+        Dictionary<IPlayer, IPlayerInfo> playerInGame = autoChessGame.GetInGamePlayers();
         autoChessGame.GetStore().RerollStore();
 
         //* player check
@@ -71,7 +71,10 @@ partial class Program
 
         while (autoChessGame.GetGameStatus() == GameStatusEnum.Ongoing)
         {
-            List<Piece> storeStock = autoChessGame.GetStore().GetStoreStock();
+            List<AutoChessPiece> storeStock = autoChessGame.GetStore()
+                                                            .GetStoreStock()
+                                                            .Select(piece => (AutoChessPiece)piece)
+                                                            .ToList();
             autoChessGame.SetCountDown(5);
 
             foreach (Player player in players)

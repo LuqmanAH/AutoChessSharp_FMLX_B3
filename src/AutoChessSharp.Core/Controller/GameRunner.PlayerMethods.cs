@@ -17,7 +17,7 @@ public partial class GameRunner
     /// extracts signed up players that currently in game regardless of the HP value
     /// </summary>
     /// <returns>dictionary with IPlayer instances as the key, and player info as the value</returns>
-    public Dictionary<IPlayer, PlayerInfo> GetInGamePlayers()
+    public Dictionary<IPlayer, IPlayerInfo> GetInGamePlayers()
     {
         return _playerDetail;
     }
@@ -40,15 +40,16 @@ public partial class GameRunner
     /// <returns>Dictionary containing numeric player stats. namely, level, exp, hp, and gold as the key and its corresponding values as the value</returns>
     public Dictionary<string, int> GetPlayerStats(IPlayer player)
     {
-        PlayerInfo playerInfo = _playerDetail[player];
+        PlayerInfo playerInfo = (PlayerInfo)_playerDetail[player];
         Dictionary<string, int> playerStats = new();
 
-        KeyValuePair<string, int>[] stats = new KeyValuePair<string, int>[4]{
+        KeyValuePair<string, int>[] keyValuePairs = new KeyValuePair<string, int>[4]{
             new KeyValuePair<string, int>("Current Level", playerInfo.GetLevel()),
             new KeyValuePair<string, int>("Experience", playerInfo.GetExperience()),
             new KeyValuePair<string, int>("Health Point", playerInfo.GetHealth()),
-            new KeyValuePair<string, int>("Gold", playerInfo.GetGold()),
+            new KeyValuePair<string, int>("Gold", playerInfo.GetGold())
         };
+        KeyValuePair<string, int>[] stats = keyValuePairs;
 
         foreach (KeyValuePair<string, int> stat in stats)
         {
@@ -64,7 +65,7 @@ public partial class GameRunner
     /// <returns>integer representing the player level</returns>
     public int GetPlayerCurrentLevel(IPlayer player)
     {
-        PlayerInfo playerInfo = _playerDetail[player];
+        IPlayerInfo playerInfo = _playerDetail[player];
         return playerInfo.GetLevel();
 
     }
@@ -76,7 +77,7 @@ public partial class GameRunner
     /// <returns>integer representing the player experience</returns>
     public int GetPlayerCurrentExperience(IPlayer player)
     {
-        PlayerInfo playerInfo = _playerDetail[player];
+        IPlayerInfo playerInfo = _playerDetail[player];
         return playerInfo.GetExperience();
 
     }
@@ -88,7 +89,7 @@ public partial class GameRunner
     /// <returns>integer representing the player health point</returns>
     public int GetPlayerCurrentHP(IPlayer player)
     {
-        PlayerInfo playerInfo = _playerDetail[player];
+        IPlayerInfo playerInfo = _playerDetail[player];
         return playerInfo.GetHealth();
 
     }
@@ -100,7 +101,7 @@ public partial class GameRunner
     /// <returns>integer representing the player gold</returns>
     public int GetPlayerCurrentGold(IPlayer player)
     {
-        PlayerInfo playerInfo = _playerDetail[player];
+        PlayerInfo playerInfo = (PlayerInfo)_playerDetail[player];
         return playerInfo.GetGold();
 
     }
@@ -117,7 +118,8 @@ public partial class GameRunner
         {
             if (playerData.Key == player)
             {
-                playerPieces = playerData.Value.GetPieces();
+                PlayerInfo playerInfo = (PlayerInfo) playerData.Value;
+                playerPieces = playerInfo.GetPieces();
             }
         }
         return playerPieces;

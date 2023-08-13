@@ -4,14 +4,14 @@ using System.Runtime.Serialization.Json;
 
 class PieceFactory
 {
-    public static List<Piece> SetAvailablePieces()
+    public static List<AutoChessPiece> SetAvailablePieces()
     {
-        Piece axe = new Piece(ArcheTypeEnum.Warrior, RarityEnum.Uncommon);
-        Piece doom = new Piece(ArcheTypeEnum.Warrior, RarityEnum.Common);
-        Piece huskar = new Piece(ArcheTypeEnum.Hunter, RarityEnum.Uncommon);
-        Piece lina = new Piece(ArcheTypeEnum.Mage, RarityEnum.Common);
-        Piece mortdred = new Piece(ArcheTypeEnum.Assassin, RarityEnum.Uncommon);
-        Piece ezalor = new Piece(ArcheTypeEnum.Mage, RarityEnum.Uncommon);
+        AutoChessPiece axe = new AutoChessPiece(ArcheTypeEnum.Warrior, RarityEnum.Uncommon);
+        AutoChessPiece doom = new AutoChessPiece(ArcheTypeEnum.Warrior, RarityEnum.Common);
+        AutoChessPiece huskar = new AutoChessPiece(ArcheTypeEnum.Hunter, RarityEnum.Uncommon);
+        AutoChessPiece lina = new AutoChessPiece(ArcheTypeEnum.Mage, RarityEnum.Common);
+        AutoChessPiece mortdred = new AutoChessPiece(ArcheTypeEnum.Assassin, RarityEnum.Uncommon);
+        AutoChessPiece ezalor = new AutoChessPiece(ArcheTypeEnum.Mage, RarityEnum.Uncommon);
 
         axe.SetName("Axe");
         doom.SetName("Doom");
@@ -20,7 +20,7 @@ class PieceFactory
         mortdred.SetName("Mortdred");
         ezalor.SetName("Ezalor");
 
-        List<Piece> piecesToPlay = new List<Piece>()
+        List<AutoChessPiece> piecesToPlay = new List<AutoChessPiece>()
         {
             axe,
             doom,
@@ -40,11 +40,11 @@ class PieceFactory
             UseSimpleDictionaryFormat = true,
         };
 
-        List<Piece> piecesToSerialize = SetAvailablePieces();
+        List<AutoChessPiece> piecesToSerialize = SetAvailablePieces();
 
         string path = @"..\AutoChessSharp.Core\Database\Pieces.ToPlay.json";
 
-        var jsonSer = new DataContractJsonSerializer(typeof(List<Piece>), Settings);
+        var jsonSer = new DataContractJsonSerializer(typeof(List<AutoChessPiece>), Settings);
         FileStream streamer = new FileStream(path, FileMode.Create);
 
         using (var writer = JsonReaderWriterFactory.CreateJsonWriter(streamer, Encoding.UTF8, true, true, " "))

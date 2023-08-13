@@ -4,7 +4,7 @@ namespace Program;
 
 partial class Program
 {
-    public static int BuyingPhaseLoop(GameRunner autoChessGame, Player player, List<Piece> storeStock)
+    public static int BuyingPhaseLoop(GameRunner autoChessGame, Player player, List<AutoChessPiece> storeStock)
     {
         DisplayHelper("write the number of the piece in the store you want to buy, press other key to exit, you may only exit when you have at least 1 piece in your deck!");
         _ = int.TryParse(UserInputPrompt(), out int storeIndex);
@@ -127,7 +127,7 @@ partial class Program
 
     public static void DisplayPlayerPieces(GameRunner autoChessGame, Player player)
     {
-        foreach (Piece piece in autoChessGame.GetPlayerPiece(player))
+        foreach (AutoChessPiece piece in autoChessGame.GetPlayerPiece(player).Cast<AutoChessPiece>())
         {
             DisplayHelper($"{piece.GetName()} {piece.GetRarityEnum()} {piece.GetArcheType()}");
         }

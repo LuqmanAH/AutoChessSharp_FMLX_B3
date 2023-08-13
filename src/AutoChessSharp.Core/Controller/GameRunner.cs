@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization.Json;
+using NLog.Targets;
 
 namespace AutoChessSharp.Core;
 
@@ -13,7 +14,7 @@ public delegate void AfterClashEvent(Dictionary<IPlayer, int> clashResult);
 /// </summary>
 public partial class GameRunner
 {
-    private Dictionary<IPlayer, PlayerInfo> _playerDetail;
+    private Dictionary<IPlayer, IPlayerInfo> _playerDetail;
     private IBoard _board;
     private Store _store;
     private GameStatusEnum _gameStatus;
@@ -35,7 +36,7 @@ public partial class GameRunner
         _store = new Store();
         _store.RerollStore();
         _gameStatus = GameStatusEnum.NotStarted;
-        _playerDetail = new Dictionary<IPlayer, PlayerInfo>();
+        _playerDetail = new Dictionary<IPlayer, IPlayerInfo>();
         afterClashEvent= new(ClashLoserEvent);
         afterClashEvent += ClashWinnerEvent;
     }
@@ -49,11 +50,11 @@ public partial class GameRunner
     {
         try
         {
-            List<Piece> storePieces = GetStorePiecesDB(path);
+            List<AutoChessPiece> storePieces = GetStorePiecesDB(path);
             _store.SetStorePieces(storePieces);
             return true;
         }
-        catch (Exception)
+        catch (FileNotFoundException)
         {
             return false;
         }
@@ -63,16 +64,21 @@ public partial class GameRunner
     /// Deserializer to read from JSON serialized object
     /// </summary>
     /// <param name="path"></param>
-    /// <returns>Piece collection</returns>
-    private List<Piece> GetStorePiecesDB(string path)
+    /// <returns>piece collection, exception when the json file is null</returns>
+    /// <exception cref="NullReferenceException"></exception>
+    private List<AutoChessPiece> GetStorePiecesDB(string path)
     {
-        var deserializer = new DataContractJsonSerializer(typeof(List<Piece>));
+        var deserializer = new DataContractJsonSerializer(typeof(List<AutoChessPiece>));
 
         using (FileStream fileStream = new FileStream(path, FileMode.Open))
         {
-            List<Piece>? piecesToPlay = (List<Piece>?)deserializer.ReadObject(fileStream);
-            return piecesToPlay;
+            List<AutoChessPiece>? piecesToPlay = (List<AutoChessPiece>?)deserializer.ReadObject(fileStream);
+            if (piecesToPlay is not null)
+            {
+                return piecesToPlay;
+            }
         }
+        throw new NullReferenceException("DB path valid, but null");
 
     }
 
@@ -134,7 +140,7 @@ public partial class GameRunner
         {
             _round ++;
 
-            foreach (var playerInfos in _playerDetail.Values)
+            foreach (PlayerInfo playerInfos in _playerDetail.Values.Cast<PlayerInfo>())
             {
                 int exp = playerInfos.GetExperience();
                 int gold = playerInfos.GetGold();
@@ -202,28 +208,28 @@ public partial class GameRunner
         return true;
     }
 
-    //? Issue: Dependency inversion args
     /// <summary>
     /// Simulate the piece transaction process by the player
     /// </summary>
     /// <param name="player"></param>
     /// <param name="piece"></param>
     /// <returns>true when the corresponding player gold sufficient</returns>
-    public bool BuyFromStore(Player player, Piece piece)
+    public bool BuyFromStore(IPlayer player, AutoChessPiece piece)
     {
         
         int piecePrice = _store.GetPiecePrice(piece);
         int playerBalance = GetPlayerCurrentGold(player);
 
         int updatedBalance = playerBalance - piecePrice;
-        bool buySuccess = GetInGamePlayers()[player].SetGold(updatedBalance);
+        PlayerInfo playerInfo = (PlayerInfo)GetInGamePlayers()[player];
+        bool buySuccess = playerInfo.SetGold(updatedBalance);
 
         if (!buySuccess)
         {
             return false;
         }
 
-        _playerDetail[player].SetPieceToList(piece);
+        playerInfo.SetPieceToList(piece);
         return true;
     }
     
