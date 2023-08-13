@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization.Json;
+using NLog.Targets;
 
 namespace AutoChessSharp.Core;
 
@@ -53,7 +54,7 @@ public partial class GameRunner
             _store.SetStorePieces(storePieces);
             return true;
         }
-        catch (Exception)
+        catch (FileNotFoundException)
         {
             return false;
         }
@@ -63,7 +64,8 @@ public partial class GameRunner
     /// Deserializer to read from JSON serialized object
     /// </summary>
     /// <param name="path"></param>
-    /// <returns>Piece collection</returns>
+    /// <returns>piece collection, exception when the json file is null</returns>
+    /// <exception cref="NullReferenceException"></exception>
     private List<AutoChessPiece> GetStorePiecesDB(string path)
     {
         var deserializer = new DataContractJsonSerializer(typeof(List<AutoChessPiece>));
@@ -71,8 +73,12 @@ public partial class GameRunner
         using (FileStream fileStream = new FileStream(path, FileMode.Open))
         {
             List<AutoChessPiece>? piecesToPlay = (List<AutoChessPiece>?)deserializer.ReadObject(fileStream);
-            return piecesToPlay;
+            if (piecesToPlay is not null)
+            {
+                return piecesToPlay;
+            }
         }
+        throw new NullReferenceException("DB path valid, but null");
 
     }
 
