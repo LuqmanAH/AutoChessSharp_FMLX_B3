@@ -1,6 +1,5 @@
 ﻿namespace AutoChessSharp.Core;
 
-//* Bugs handled, but algorithm does not consider each piece atk and hp in the decision making
 public partial class GameRunner
 {
     /// <summary>
@@ -13,9 +12,7 @@ public partial class GameRunner
         Random rng = new Random();
         
         List<IPiece>[] eachPlayerPieces = GetEachPlayerPiece();
-        
         List<IPiece>[] shuffledPlayerPieces = PlayerPieceShuffle(eachPlayerPieces, rng);
-        
         List<IPiece>[] playerSurvivorPieces = SurvivorRandomExtract(shuffledPlayerPieces, rng, 3);
         
         int[] playerSurvivorsCount = SurvivorsCount(playerSurvivorPieces);
@@ -95,6 +92,7 @@ public partial class GameRunner
             
             playerSurvivorPieces[playerID] = survivorsToExtract[playerID].Take(firstExtract).ToList();
         }
+
         foreach (var playerDetail in _playerDetail)
         {
             ResetPlayerPieces((PlayerInfo)playerDetail.Value, playerSurvivorPieces[playerDetail.Key.GetID() - 1]);
@@ -130,7 +128,6 @@ public partial class GameRunner
     {
         int[] playerSurvivorsCount = new int[PlayersLeft()];
 
-        //! iterate
         for (int i = 0; i < PlayersLeft(); i++)
         {
             playerSurvivorsCount[i] = survivorsToCount[i].Count;
@@ -143,7 +140,6 @@ public partial class GameRunner
     /// Set the clash loser based on the clash event. Sets key value pair representing the damage received as the value, and the damaged player as the key. Damage received based on winner remaining pieces.
     /// </summary>
     /// <param name="clashResult"></param>
-    //TODO can implement Delegate clashLoser and clashWinner to GameClash
     private void ClashLoserEvent(Dictionary<IPlayer, int> clashResult)
     {
         KeyValuePair<IPlayer, int> loserPair = clashResult.Reverse().First();

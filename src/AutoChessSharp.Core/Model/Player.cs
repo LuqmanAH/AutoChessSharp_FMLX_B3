@@ -1,8 +1,5 @@
 ﻿namespace AutoChessSharp.Core;
 
-//? Guid Class is possible for ID implementation
-//? but requires string as the field type
-
 /// <summary>
 /// IPlayer basic implementation for auto chess game
 /// </summary>
@@ -12,7 +9,6 @@ public class Player : IPlayer
     private static int _IDIncrement = 1;
     private int _playerId;
 
-    //* attempt to make the ctor flexible but not overloading
     /// <summary>
     /// Represents the auto chess game player object
     /// </summary>

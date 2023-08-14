@@ -32,7 +32,6 @@ public partial class GameRunner
         return (Player)_playerDetail.Keys.ElementAt(playerIndex - 1);
     }
 
-    //// buat separasi methods, sesuai dengan stat yang diinput user
     /// <summary>
     /// extract the player info instance associated to the given IPlayer instance
     /// </summary>
