@@ -17,6 +17,27 @@ public class UnitTest1
 
     }
 
+    [Fact]
+    public void GetInitCountDownTest()
+    {
+        testBoard = new Board(8);
+        testGame = new GameRunner(testBoard);
+
+        int actualCountDown = testGame.GetCountDown();
+        Assert.Equal(0, actualCountDown);
+    }
+
+    [Fact]
+    public void GetBoardSizeFromGameTest()
+    {
+        int boardSize = 8;
+        testBoard = new Board(boardSize);
+        testGame = new GameRunner(testBoard);
+
+        int actualBoardSize = testGame.GetBoard().GetBoardSize();
+        Assert.Equal(boardSize, actualBoardSize);
+    }
+
     [Theory]
     [InlineData(-1, false)]
     [InlineData(0, true)]
@@ -58,5 +79,15 @@ public class UnitTest1
 
         bool setStatus = testGame.SetGameStatus(gameStatus);
         Assert.Equal(expected, setStatus);
+    }
+
+    [Fact]
+    public void PlayerAdditionTest()
+    {
+        testBoard = new Board(8);
+        testGame = new GameRunner(testBoard);
+
+        Player player = new();
+        Assert.True(testGame.AddPlayer(player));
     }
 }

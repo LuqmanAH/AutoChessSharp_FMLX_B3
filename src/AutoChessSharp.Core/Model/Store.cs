@@ -25,11 +25,15 @@ public class Store
     public List<IPiece> RerollStore()
     {
         Random random= new Random();
+        if (_availPieces is null)
+        {
+            throw new NullReferenceException(message: "no avail pieces loaded!");
+        }
+        List<IPiece> rolledPieces = _availPieces.OrderByDescending(p => random.Next())
+                                                .ToList();
 
-        List<IPiece> rolledPieces = _availPieces.OrderByDescending(p => random.Next()).ToList();
-
-        //? fixed to take 5?
-        _storePieces = rolledPieces.Take(5).ToList();
+        _storePieces = rolledPieces.Take(5)
+                                    .ToList();
         return _storePieces;
     }
 
@@ -78,7 +82,7 @@ public class Store
     /// </summary>
     /// <param name="piecesList"></param>
     /// <returns>true when the given list of pieces is not null</returns>
-    public bool SetStorePieces(IEnumerable<IPiece> piecesList)
+    public bool SetStorePieces(IEnumerable<IPiece>? piecesList)
     {
         if (piecesList == null)
         {
