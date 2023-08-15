@@ -118,7 +118,7 @@ public partial class GameRunner
             if (playerData.Key == player)
             {
                 PlayerInfo playerInfo = (PlayerInfo) playerData.Value;
-                playerPieces = playerInfo.GetPieces();
+                playerPieces = playerInfo.GetOwnedPieces();
             }
         }
         return playerPieces;

@@ -227,8 +227,48 @@ public partial class GameRunner
             return false;
         }
 
-        playerInfo.SetPieceToList(piece);
+        playerInfo.SetPieceToOwned(piece);
         return true;
+    }
+
+    public bool PlacePiece(AutoChessPiece piece, Position position, IPlayer player)
+    {
+        bool horiCondition = position.GetX() > _board.GetBoardSize() || position.GetX() < 0;
+        bool vertCondition = position.GetY() > _board.GetBoardSize() || position.GetY() < 0;
+
+        if (!horiCondition || !vertCondition) 
+        {
+            return false;
+        }
+        if (!_playerDetail.ContainsKey(player))
+        {
+            return false;
+        }
+
+        var playerInfo = (PlayerInfo)_playerDetail[player];
+        if (AllowedZone(player, position))
+        {
+            return playerInfo.SetPieceOnField(piece, position);
+        }
+        return false;
+    }
+
+    private bool AllowedZone(IPlayer player, Position position)
+    {
+        bool playerOneCondition;
+        bool playerTwoCondition;
+
+        if (position.GetY() <= 4 && player.GetID() == 1)
+        {
+            playerOneCondition = true;
+            return playerOneCondition;
+        }
+        else if (position.GetY() >= 5  && player.GetID() == 2)
+        {
+            playerTwoCondition = true;
+            return playerTwoCondition;
+        }
+        return false;
     }
     
 }

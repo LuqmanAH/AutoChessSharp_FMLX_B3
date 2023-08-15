@@ -42,6 +42,12 @@ public class AutoChessPiece : IPiece
         _pieceName = pieceName;
         _position = new Position(0,0);
 
+        DefaultStats(archeType, rarity);
+
+    }
+
+    private void DefaultStats(ArcheTypeEnum archeType, RarityEnum rarity)
+    {
         switch (archeType)
         {
             case ArcheTypeEnum.Warrior:
@@ -69,7 +75,6 @@ public class AutoChessPiece : IPiece
                 break;
 
         }
-
     }
 
     /// <summary>
@@ -84,6 +89,16 @@ public class AutoChessPiece : IPiece
             throw new NullReferenceException(message:"Position unset!");
         }
         return _position;
+    }
+
+    public bool SetPosition(Position position)
+    {
+        if (position == null)
+        {
+            return false;
+        }
+        _position = position;
+        return true;
     }
     
     /// <summary>
