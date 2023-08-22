@@ -130,9 +130,13 @@ partial class Program
         List<AutoChessPiece> playerPieces = new();
         playerPieces.AddRange(autoChessGame.GetPlayerPiece(player).Cast<AutoChessPiece>().Select(playerPieces => playerPieces));
 
+        int index = 1;
+
         foreach (AutoChessPiece piece in playerPieces)
         {
-            DisplayHelper($"{playerPieces.IndexOf(piece) + 1}] {piece.GetName()} {piece.GetRarityEnum()} {piece.GetArcheType()}");
+            DisplayHelper($"{index}] {piece.GetName()} {piece.GetRarityEnum()} {piece.GetArcheType()}");
+
+            index ++;
         }
     }
 

@@ -90,6 +90,20 @@ public class PlayerInfo : IPlayerInfo
         return _pieceOwned;
     }
 
+    public IPiece GetOwnedPiece(IPiece piece)
+    {
+        if (_pieceOwned == null)
+        {
+            throw new NullReferenceException(message: "No Piece is owned by player!");
+        }
+
+        if (_pieceOwned.Contains(piece))
+        {
+            return piece;
+        }
+        return default;
+    }
+
     public List<IPiece> GetOnFieldPieces()
     {
         if (_pieceOnField == null)

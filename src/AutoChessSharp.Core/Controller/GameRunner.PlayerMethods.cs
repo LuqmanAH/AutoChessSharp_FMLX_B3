@@ -113,15 +113,33 @@ public partial class GameRunner
     public List<IPiece> GetPlayerPiece(IPlayer player)
     {
         List<IPiece> playerPieces = new();
-        foreach (var playerData in _playerDetail)
+        foreach (var playerInGame in _playerDetail)
         {
-            if (playerData.Key == player)
+            if (playerInGame.Key == player)
             {
-                PlayerInfo playerInfo = (PlayerInfo) playerData.Value;
+                PlayerInfo playerInfo = (PlayerInfo) playerInGame.Value;
                 playerPieces = playerInfo.GetOwnedPieces();
             }
         }
         return playerPieces;
+    }
+
+    public IPiece GetPlayerPiece(IPlayer player, IPiece piece)
+    {
+        AutoChessPiece returnedPiece = default;
+        foreach (var playerInGame in _playerDetail)
+        {
+            if (playerInGame.Key == player)
+            {
+                PlayerInfo playerInfo = (PlayerInfo) playerInGame.Value;
+                if (EqualityComparer<IPiece>.Default.Equals(playerInfo.GetOwnedPiece(piece), default))
+                {
+                    throw new Exception("Piece is not available in player!");
+                }
+                returnedPiece = (AutoChessPiece) playerInfo.GetOwnedPiece(piece);
+            }
+        }
+        return returnedPiece;
     }
 
     /// <summary>

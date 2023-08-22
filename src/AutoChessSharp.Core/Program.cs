@@ -68,19 +68,75 @@ partial class Program
                 int buyOrLeave;
                 do
                 {
-                    CleanScreen();
-                    DisplayHelper($"==== Beginning Round {autoChessGame.GetCurrentRound()} ====\n");
-                    DisplayHelper($"player {player.GetName()} stats:");
-                    ShowPlayerStats(autoChessGame, player);
-                    DisplayHelper($"\nplayer {player.GetName()} pieces List:");
+                    DisplayHelper("Select your owned piece index to place on the board, You must place at least one piece");
                     DisplayPlayerPieces(autoChessGame, player);
                     DisplayHelper($"\n==== Buying Phase ====");
                     DisplayHelper($"index\tStore stock");
                     ShowStoreStock(storeStock);
-                    buyOrLeave = BuyingPhaseLoop(autoChessGame, player, storeStock);
+                    buyOrLeave = BuyingPhaseLoop(autoChessGame, player,storeStock);
 
-                } while (buyOrLeave != 0 || autoChessGame.GetPlayerPiece(player).Count == 0);
+                }while (buyOrLeave != 0 || autoChessGame.GetPlayerPiece(player).Count == 0);
                 CleanScreen();
+            }
+
+            foreach (Player player in players)
+            {
+                int placeOrLeave = 0;
+                bool postionLoopCondition;
+                bool pieceLoopCondition;
+                DisplayHelper($"{player.GetName()} turn to place piece");
+                
+                do
+                {
+                    DisplayHelper("Select your owned piece index to place on the board, You must place at least one piece");
+                    DisplayPlayerPieces(autoChessGame, player);
+
+                    DisplayHelper("Enter your piece index: ");
+                    int pieceIndex;
+                    bool validIndex = int.TryParse(UserInputPrompt(), out pieceIndex);
+                    pieceLoopCondition = validIndex && pieceIndex >= 0 && pieceIndex <=autoChessGame.GetPlayerPiece(player).Count(); 
+
+                    if (pieceLoopCondition)
+                    {
+                        AutoChessPiece selectedPiece = (AutoChessPiece)autoChessGame.GetPlayerPiece(player)[pieceIndex - 1];
+                        DisplayHelper($"Selected {selectedPiece.GetName()}. proceed to place position");
+                        UserInputPrompt();
+                    }
+
+                    else
+                    {
+                        DisplayHelper("Index out of bounds!");
+                        UserInputPrompt();
+                    }
+
+                }while(!pieceLoopCondition);
+
+                do
+                {
+                    Position placeDestination = new Position();
+                    DisplayHelper("Input your desired position (x,y): ");
+
+                    var posInput = UserInputPrompt();
+                    string[] coordInput = posInput.Split(',');
+
+                    bool condX = int.TryParse(coordInput[0], out int x);
+                    bool condY = int.TryParse(coordInput[1], out int y);
+
+                    postionLoopCondition = condX && condY;
+
+                    if (postionLoopCondition)
+                    {
+                        placeDestination.SetX(x);
+                        placeDestination.SetY(y);
+                        DisplayHelper($"confirm position at: ({placeDestination.GetX()}, {placeDestination.GetY()})");
+                        UserInputPrompt();
+                    }
+                    else
+                    {
+                        DisplayHelper("Invalid Position format!");
+                    }
+
+                }while (!postionLoopCondition);
             }
 
             //* Pre clash startup
@@ -134,6 +190,27 @@ partial class Program
             CheckFinishOrContinue(autoChessGame);
         }
 
+        static void NewMethod(GameRunner autoChessGame, List<AutoChessPiece> storeStock, Player player)
+        {
+            DisplayHelper($"{player.GetName()} turn to pick\npress enter to continue..");
+            _logger.Info($"Player {player.GetID()} turn to pick");
+            UserInputPrompt();
+            int buyOrLeave;
+            do
+            {
+                CleanScreen();
+                DisplayHelper($"==== Beginning Round {autoChessGame.GetCurrentRound()} ====\n");
+                DisplayHelper($"player {player.GetName()} stats:");
+                ShowPlayerStats(autoChessGame, player);
+                DisplayHelper($"\nplayer {player.GetName()} pieces List:");
+                DisplayPlayerPieces(autoChessGame, player);
+                DisplayHelper($"\n==== Buying Phase ====");
+                DisplayHelper($"index\tStore stock");
+                ShowStoreStock(storeStock);
+                buyOrLeave = BuyingPhaseLoop(autoChessGame, player, storeStock);
+
+            } while (buyOrLeave != 0 || autoChessGame.GetPlayerPiece(player).Count == 0);
+        }
     }
 
 }
