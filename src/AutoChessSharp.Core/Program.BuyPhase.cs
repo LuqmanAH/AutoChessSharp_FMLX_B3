@@ -132,4 +132,75 @@ partial class Program
             DisplayHelper($"{piece.GetName()} {piece.GetRarityEnum()} {piece.GetArcheType()}");
         }
     }
+
+        private static void DisplayRegisteredPlayers(Dictionary<IPlayer, IPlayerInfo> playerInGame)
+    {
+        foreach (var playerData in playerInGame)
+        {
+            IPlayer player = playerData.Key;
+            DisplayHelper($"{player.GetName()} is player {player.GetID()}");
+        }
+        DisplayHelper("Let The Game Begins.. When you're ready (Press any key)");
+        _logger.Info("Game commencing");
+    }
+
+    private static async Task ClashPhase(GameRunner autoChessGame, Player[] players)
+    {
+        DisplayHelper($"\n{players[0].GetName()} Pieces:\n");
+        DisplayPlayerPieces(autoChessGame, players[0]);
+        DisplayHelper("\nVs\n");
+        DisplayHelper($"\n{players[1].GetName()} Pieces:\n");
+        DisplayPlayerPieces(autoChessGame, players[1]);
+
+        DisplayHelper("\n\nInitiating Clash... press any key when ready");
+        _logger.Info("Game clash commencing");
+        UserInputPrompt();
+        DisplayHelper($"Starting Randomized clash");
+
+        for (int elapsedCountDown = 0; elapsedCountDown < autoChessGame.GetCountDown(); elapsedCountDown++)
+        {
+            await Task.Delay(1000);
+            InlineDisplayHelper(".");
+        }
+    }
+
+    private static void CheckFinishOrContinue(GameRunner autoChessGame)
+    {
+        if (autoChessGame.PlayersLeft() == 1)
+        {
+            IPlayer winner = autoChessGame.GetAlivePlayers().First();
+            autoChessGame.SetGameStatus(GameStatusEnum.Completed);
+            DisplayHelper("Game Concluded");
+            DisplayHelper($"The winner is: {winner.GetName()}");
+            _logger.Info($"Game ended in {autoChessGame.GetCurrentRound()} round: with {winner.GetName()} as the winner");
+            UserInputPrompt();
+        }
+
+        else
+        {
+
+            DisplayHelper("Proceeding to next round...");
+            autoChessGame.GoNextRound(1, 2);
+            autoChessGame.GetStore().RerollStore();
+            _logger.Info($"Proceeds to next round: {autoChessGame.GetCurrentRound()}");
+            UserInputPrompt();
+        }
+    }
+
+    private static GameRunner ExtractGamePieces(string pathForDebug, string pathForRelease, Board autoChessBoard)
+    {
+        GameRunner autoChessGame = new GameRunner(autoChessBoard);
+
+        if (!autoChessGame.SetStorePieces(pathForDebug))
+        {
+            _logger.Warn("Data loaded from the release path");
+            autoChessGame.SetStorePieces(pathForRelease);
+        }
+        else
+        {
+            _logger.Info("Data loaded from the debug path");
+        }
+
+        return autoChessGame;
+    }
 }

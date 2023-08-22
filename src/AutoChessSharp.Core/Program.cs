@@ -6,7 +6,7 @@ namespace Program;
 
 partial class Program
 {
-    private static Logger _logger;
+    private static Logger _logger = null!;
     private static void LoggerInitializer()
     {
         var currentDirectory = Directory.GetCurrentDirectory();
@@ -25,19 +25,8 @@ partial class Program
         string pathForDebug = @"Database\Pieces.ToPlay.json";
         string pathForRelease = @"..\..\..\Database\Pieces.ToPlay.json";
         Board autoChessBoard = new Board(8);
+        GameRunner autoChessGame = ExtractGamePieces(pathForDebug, pathForRelease, autoChessBoard);
 
-        GameRunner autoChessGame = new GameRunner(autoChessBoard);
-
-        if (!autoChessGame.SetStorePieces(pathForDebug))
-        {
-            _logger.Warn("Data loaded from the release path");
-            autoChessGame.SetStorePieces(pathForRelease);
-        }
-        else
-        {
-            _logger.Info("Data loaded from the debug path");
-        }
-        
         //* players insertion
         CleanScreen();
         Player[] players = new Player[2]
@@ -51,18 +40,12 @@ partial class Program
             InitPrompt(autoChessGame, player, player.GetID());
         }
 
-        Dictionary<IPlayer, IPlayerInfo> playerInGame = autoChessGame.GetInGamePlayers();
         autoChessGame.GetStore().RerollStore();
 
         //* player check
         CleanScreen();
-        foreach (var playerData in playerInGame)
-        {
-            IPlayer player = playerData.Key;
-            DisplayHelper($"{player.GetName()} is player {player.GetID()}");
-        }
-        DisplayHelper("Let The Game Begins.. When you're ready (Press any key)");
-        _logger.Info("Game commencing");
+        Dictionary<IPlayer, IPlayerInfo> playerInGame = autoChessGame.GetInGamePlayers();
+        DisplayRegisteredPlayers(playerInGame);
         UserInputPrompt();
 
         //* Game commencing
@@ -94,35 +77,17 @@ partial class Program
                     DisplayHelper($"\n==== Buying Phase ====");
                     DisplayHelper($"index\tStore stock");
                     ShowStoreStock(storeStock);
-                    buyOrLeave = BuyingPhaseLoop(autoChessGame, player,storeStock);
+                    buyOrLeave = BuyingPhaseLoop(autoChessGame, player, storeStock);
 
-                }while (buyOrLeave != 0 || autoChessGame.GetPlayerPiece(player).Count == 0);
+                } while (buyOrLeave != 0 || autoChessGame.GetPlayerPiece(player).Count == 0);
                 CleanScreen();
             }
 
             //* Pre clash startup
-            //TODO decouple and try to omit using thread sleep (resolved, yet to decouple)
             CleanScreen();
-
-            DisplayHelper($"\n{players[0].GetName()} Pieces:\n");
-            DisplayPlayerPieces(autoChessGame, players[0]);
-            DisplayHelper("\nVs\n");
-            DisplayHelper($"\n{players[1].GetName()} Pieces:\n");
-            DisplayPlayerPieces(autoChessGame, players[1]);
-            
-            DisplayHelper("\n\nInitiating Clash... press any key when ready");
-            _logger.Info("Game clash commencing");
-            UserInputPrompt();
-            DisplayHelper($"Starting Randomized clash");
-            
-            for (int elapsedCountDown = 0; elapsedCountDown < autoChessGame.GetCountDown(); elapsedCountDown++)
-            {
-                await Task.Delay(1000);
-                InlineDisplayHelper(".");
-            }
+            await ClashPhase(autoChessGame, players);
 
             //* Chaos Ensues
-            //TODO Debug step in to this brok
             autoChessGame.GameClash();
             KeyValuePair<IPlayer, int> clashLoser = autoChessGame.GetClashLoser();
             KeyValuePair<IPlayer, int> clashWinner = autoChessGame.TryGetClashWinner();
@@ -166,25 +131,7 @@ partial class Program
 
             //? might be better to implement a standalone logic in gamerunner to invoke winner
             CleanScreen();
-            if (autoChessGame.PlayersLeft() == 1)
-            {
-                IPlayer winner  = autoChessGame.GetAlivePlayers().First();
-                autoChessGame.SetGameStatus(GameStatusEnum.Completed);
-                DisplayHelper("Game Concluded");
-                DisplayHelper($"The winner is: {winner.GetName()}");
-                _logger.Info($"Game ended in {autoChessGame.GetCurrentRound()} round: with {winner.GetName()} as the winner");
-                UserInputPrompt();
-            }
-
-            else
-            {
-
-                DisplayHelper("Proceeding to next round...");
-                autoChessGame.GoNextRound(1, 2);
-                autoChessGame.GetStore().RerollStore();
-                _logger.Info($"Proceeds to next round: {autoChessGame.GetCurrentRound()}");
-                UserInputPrompt();
-            }
+            CheckFinishOrContinue(autoChessGame);
         }
 
     }
