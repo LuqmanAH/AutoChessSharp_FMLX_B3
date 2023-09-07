@@ -23,7 +23,8 @@ public class PlayerInfo : IPlayerInfo
     private int _gold;
     private int _requiredExperience = 1;
 
-    private List<IPiece>? _pieceList;
+    private List<IPiece>? _pieceOwned;
+    private List<IPiece>? _pieceOnField;
 
     /// <summary>
     /// Represents the auto chess player info, set starting gold to 5 by default
@@ -34,7 +35,8 @@ public class PlayerInfo : IPlayerInfo
         _level = (int)LevelInfoEnum.MinLevel;
         _experience = (int)ExperienceInfoEnum.MinExperience;
         _health = (int)HealthInfoEnum.MaxHealth;
-        _pieceList = new List<IPiece>();
+        _pieceOwned = new List<IPiece>();
+        _pieceOnField = new List<IPiece>();
         this._gold = _gold;
     }
 
@@ -79,13 +81,36 @@ public class PlayerInfo : IPlayerInfo
     /// </summary>
     /// <returns>List of pieces representing the pieces owned by the player info</returns>
     /// <exception cref="NullReferenceException"></exception>
-    public List<IPiece> GetPieces()
+    public List<IPiece> GetOwnedPieces()
     {
-        if (_pieceList == null)
+        if (_pieceOwned == null)
         {
-            throw new NullReferenceException(message: "No Piece is set to player!");
+            throw new NullReferenceException(message: "No Piece is owned by player!");
         }
-        return _pieceList;
+        return _pieceOwned;
+    }
+
+    public IPiece GetOwnedPiece(IPiece piece)
+    {
+        if (_pieceOwned == null)
+        {
+            throw new NullReferenceException(message: "No Piece is owned by player!");
+        }
+
+        if (_pieceOwned.Contains(piece))
+        {
+            return piece;
+        }
+        return default;
+    }
+
+    public List<IPiece> GetOnFieldPieces()
+    {
+        if (_pieceOnField == null)
+        {
+            throw new NullReferenceException(message: "No Piece is set on field!");
+        }
+        return _pieceOnField;
     }
 
     /// <summary>
@@ -153,13 +178,13 @@ public class PlayerInfo : IPlayerInfo
     /// </summary>
     /// <param name="pieceList"></param>
     /// <returns>true when the given collection is not null</returns>
-    public bool SetPieces (List<IPiece>? pieceList)
+    public bool SetOwnedPieces (List<IPiece>? pieceList)
     {
         if (pieceList is null)
         {
             return false;
         }
-        _pieceList = pieceList;
+        _pieceOwned = pieceList;
         return true;
     }
 
@@ -168,13 +193,24 @@ public class PlayerInfo : IPlayerInfo
     /// </summary>
     /// <param name="piece"></param>
     /// <returns>true when the list of pieces is not null and the given piece is not null</returns>
-    public bool SetPieceToList(AutoChessPiece piece)
+    public bool SetPieceToOwned(AutoChessPiece piece)
     {
-        if (_pieceList is null || piece is null)
+        if (_pieceOwned is null || piece is null)
         {
             return false;
         }
-        _pieceList.Add(piece);
+        _pieceOwned.Add(piece);
+        return true;
+    }
+
+    public bool SetPieceOnField(AutoChessPiece piece, Position position)
+    {
+        if (!_pieceOwned.Contains(piece) || !piece.SetPosition(position))
+        {
+            return false;
+        }
+        piece.SetPosition(position);
+        _pieceOnField.Add(piece);
         return true;
     }
 

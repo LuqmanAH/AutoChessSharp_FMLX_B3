@@ -42,7 +42,7 @@ public partial class GameRunner
         int playerID = 0;
         foreach (PlayerInfo playerData in _playerDetail.Values.Cast<PlayerInfo>())
         {
-            eachPlayerPieces[playerID] = playerData.GetPieces();
+            eachPlayerPieces[playerID] = playerData.GetOnFieldPieces();
             playerID ++;
 
         }
@@ -114,7 +114,7 @@ public partial class GameRunner
             return false;
         }
 
-        playerInfo.SetPieces(playerSurvivorPiece);
+        playerInfo.SetOwnedPieces(playerSurvivorPiece);
 
         return true;
     }
