@@ -140,7 +140,7 @@ partial class Program
         }
     }
 
-        private static void DisplayRegisteredPlayers(Dictionary<IPlayer, IPlayerInfo> playerInGame)
+    private static void DisplayRegisteredPlayers(Dictionary<IPlayer, IPlayerInfo> playerInGame)
     {
         foreach (var playerData in playerInGame)
         {

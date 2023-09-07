@@ -233,10 +233,10 @@ public partial class GameRunner
 
     public bool PlacePiece(AutoChessPiece piece, Position position, IPlayer player)
     {
-        bool horiCondition = position.GetX() > _board.GetBoardSize() || position.GetX() < 0;
-        bool vertCondition = position.GetY() > _board.GetBoardSize() || position.GetY() < 0;
+        bool horiViolateCondition = !(position.GetX() > _board.GetBoardSize() || position.GetX() < 0);
+        bool vertViolateCondition = !(position.GetY() > _board.GetBoardSize() || position.GetY() < 0);
 
-        if (!horiCondition || !vertCondition) 
+        if (!horiViolateCondition || !vertViolateCondition) 
         {
             return false;
         }

@@ -1,6 +1,7 @@
 using NLog;
 using NLog.Config;
 using AutoChessSharp.Core;
+using NLog.LayoutRenderers.Wrappers;
 
 namespace Program;
 
@@ -66,78 +67,106 @@ partial class Program
                 _logger.Info($"Player {player.GetID()} turn to pick");
                 UserInputPrompt();
                 int buyOrLeave;
+                bool placeOrLeave = true;
                 do
                 {
-                    DisplayHelper("Select your owned piece index to place on the board, You must place at least one piece");
+                    DisplayHelper("Pieces in deck: ");
                     DisplayPlayerPieces(autoChessGame, player);
                     DisplayHelper($"\n==== Buying Phase ====");
                     DisplayHelper($"index\tStore stock");
                     ShowStoreStock(storeStock);
                     buyOrLeave = BuyingPhaseLoop(autoChessGame, player,storeStock);
-
+                    CleanScreen();
                 }while (buyOrLeave != 0 || autoChessGame.GetPlayerPiece(player).Count == 0);
-                CleanScreen();
-            }
 
-            foreach (Player player in players)
-            {
-                int placeOrLeave = 0;
-                bool postionLoopCondition;
-                bool pieceLoopCondition;
-                DisplayHelper($"{player.GetName()} turn to place piece");
-                
-                do
+                while (placeOrLeave)
                 {
+                    bool promptValid;
+                    bool postionLoopCondition;
+                    bool pieceLoopCondition;
+                    AutoChessPiece selectedPiece = default!;
+                    Position placeDestination = new Position();
+
                     DisplayHelper("Select your owned piece index to place on the board, You must place at least one piece");
                     DisplayPlayerPieces(autoChessGame, player);
 
-                    DisplayHelper("Enter your piece index: ");
-                    int pieceIndex;
-                    bool validIndex = int.TryParse(UserInputPrompt(), out pieceIndex);
-                    pieceLoopCondition = validIndex && pieceIndex >= 0 && pieceIndex <=autoChessGame.GetPlayerPiece(player).Count(); 
-
-                    if (pieceLoopCondition)
+                    do
                     {
-                        AutoChessPiece selectedPiece = (AutoChessPiece)autoChessGame.GetPlayerPiece(player)[pieceIndex - 1];
-                        DisplayHelper($"Selected {selectedPiece.GetName()}. proceed to place position");
-                        UserInputPrompt();
-                    }
+                        DisplayHelper("Enter your piece index: ");
+                        int pieceIndex;
+                        bool validIndex = int.TryParse(UserInputPrompt(), out pieceIndex);
+                        pieceLoopCondition = validIndex && pieceIndex >= 0 && pieceIndex <=autoChessGame.GetPlayerPiece(player).Count(); 
 
-                    else
+                        if (pieceLoopCondition)
+                        {
+                            selectedPiece = (AutoChessPiece)autoChessGame.GetPlayerPiece(player)[pieceIndex - 1];
+                            DisplayHelper($"Selected {selectedPiece.GetName()}. proceed to place position");
+                            UserInputPrompt();
+                        }
+
+                        else
+                        {
+                            DisplayHelper("No character with that index!");
+                            UserInputPrompt();
+                        }
+
+                    }while(!pieceLoopCondition);
+
+                    do
                     {
-                        DisplayHelper("Index out of bounds!");
-                        UserInputPrompt();
-                    }
+                        DisplayHelper("Input your desired position (x,y): ");
 
-                }while(!pieceLoopCondition);
+                        var posInput = UserInputPrompt();
+                        string[] coordInput = posInput!.Split(',');
 
-                do
-                {
-                    Position placeDestination = new Position();
-                    DisplayHelper("Input your desired position (x,y): ");
+                        bool condX = int.TryParse(coordInput[0], out int x);
+                        bool condY = int.TryParse(coordInput[1], out int y);
 
-                    var posInput = UserInputPrompt();
-                    string[] coordInput = posInput.Split(',');
+                        postionLoopCondition = condX && condY;
 
-                    bool condX = int.TryParse(coordInput[0], out int x);
-                    bool condY = int.TryParse(coordInput[1], out int y);
+                        if (postionLoopCondition)
+                        {
+                            placeDestination.SetX(x);
+                            placeDestination.SetY(y);
+                            DisplayHelper($"confirm position at: ({placeDestination.GetX()}, {placeDestination.GetY()})");
+                            UserInputPrompt();
 
-                    postionLoopCondition = condX && condY;
+                            var validPlace = autoChessGame.PlacePiece(selectedPiece, placeDestination, player);
+                            DisplayHelper($"Successfully placed {selectedPiece.GetName()} at ({selectedPiece.GetPosition().GetX()}, {selectedPiece.GetPosition().GetY()})");
+                            UserInputPrompt();
+                        }
+                        else
+                        {
+                            DisplayHelper("Invalid Position format!");
+                        }
 
-                    if (postionLoopCondition)
+                    }while (!postionLoopCondition);
+    
+                    do
                     {
-                        placeDestination.SetX(x);
-                        placeDestination.SetY(y);
-                        DisplayHelper($"confirm position at: ({placeDestination.GetX()}, {placeDestination.GetY()})");
-                        UserInputPrompt();
-                    }
-                    else
-                    {
-                        DisplayHelper("Invalid Position format!");
-                    }
-
-                }while (!postionLoopCondition);
+                        DisplayHelper("Continue positioning? y/n");
+                        var placeAgain = UserInputPrompt()!;
+    
+                        if (placeAgain!.ToLower() == "y")
+                        {
+                            placeOrLeave = true;
+                            promptValid = false;
+                        }
+                        else if (placeAgain!.ToLower() == "n")
+                        {
+                            placeOrLeave = false;
+                            promptValid = false;
+                        }
+                        else
+                        {
+                            promptValid = true;
+                            DisplayHelper("unidentified character!");
+                        }
+                    } while (promptValid);
+                }
+                CleanScreen();
             }
+        }
 
             //* Pre clash startup
             CleanScreen();
@@ -212,5 +241,3 @@ partial class Program
             } while (buyOrLeave != 0 || autoChessGame.GetPlayerPiece(player).Count == 0);
         }
     }
-
-}
